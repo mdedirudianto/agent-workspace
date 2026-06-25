@@ -71,3 +71,25 @@ The `<server-or-app>` prefix matches the report directory slug (e.g. `monitor`, 
 - Permanent fixes (e.g. "Claude.app uninstalled — VM regrowth cycle broken") are load-bearing — if a fix is listed as Done in a prior session, don't re-recommend it without checking current state.
 - The `db`, `proxy`, `monitor`, `backup`, and `erp` servers form a private cluster on `10.0.0.0/24`: db `10.0.0.1`, proxy `10.0.0.2`, monitor `10.0.0.3`, backup `10.0.0.4`, erp `10.0.0.6`. Public traffic enters via `proxy`; stateful data lives on `db`; `backup` pulls dumps from db + erp. Sessions reference these by internal IP.
 - Servers carry pending work forward: numa in its "Decisions Pending / Next Session Plan" section, and the cluster servers (backup, monitor, erp) in an "Open follow-ups" section in their `README.md`. Pick these up rather than re-deriving from scratch.
+
+## Workflow rules
+
+### Server action approval
+
+- **Read-only SSH** (logs, `ps`, `systemctl status`, `df`, `cat`, `tail`, health checks) → proceed freely, no approval needed.
+- **Write steps** (installs, deploys, restarts, file edits, nginx reload, PM2 restart, DB changes, migrations) → describe the step and the commands it will run, then **wait for explicit user approval** before executing anything.
+- Approval is **per step** (a logical unit of work), not per individual shell command within a step.
+
+### Session commit convention
+
+At the end of a session, commit when the user signals (e.g. "commit this session"). Stage the new session file(s) + README update(s) together and use this format:
+
+```
+docs(<dir-slug>): session-NNN — <topic> (YYYY-MM-DD)
+```
+
+Examples:
+- `docs(ytgrab): session-019 — LB plan for CPU saturation (2026-06-25)`
+- `docs(disk-cleanup): session-015 — Tier 1-3 cleanup, 11GB freed (2026-06-24)`
+
+If a session touches multiple directories, one commit covers all of them.
