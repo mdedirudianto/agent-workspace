@@ -1,0 +1,21 @@
+# Disk Cleanup Reports
+
+Session-based cleanup reports for `/Users/dedi` on macOS (228GB disk).
+
+| Session | Date | Recovered | Disk Free After |
+| ------- | ---- | --------- | --------------- |
+| [Session 1](session-001-2026-04-07.md) | 2026-04-07 | ~6GB | 14GB |
+| [Session 2](session-002-2026-04-07.md) | 2026-04-07 | ~21GB | 22GB |
+| [Session 3](session-003-2026-04-22.md) | 2026-04-22 | ~16GB | 19GB |
+| [Session 4](session-004-2026-04-23.md) | 2026-04-23 | ~14GB | 23GB |
+| [Session 5](session-005-2026-04-24.md) | 2026-04-24 | ~15GB | 16GB |
+| [Session 6](session-006-2026-04-25.md) | 2026-04-25 | ~31GB | 34GB |
+| [Session 7](session-007-2026-05-13.md) | 2026-05-13 | ~13GB | 26GB |
+| [Session 8](session-008-2026-05-19.md) | 2026-05-19 | ~14GB | 15GB |
+| [Session 9](session-009-2026-05-19.md) | 2026-05-19 | ~26GB | 30GB |
+| [Session 10](session-010-2026-05-22.md) | 2026-05-22 | ~13GB (+~13GB pending reboot) | 19GB |
+| [Session 11](session-011-2026-06-10.md) | 2026-06-10 | ~10GB | 27GB |
+| [Session 12](session-012-2026-06-11.md) | 2026-06-11 | ~12GB | 28GB |
+| [Session 13](session-013-2026-06-21.md) | 2026-06-21 | ~18GB (+~13GB restart) | 36GB |
+| [Session 14](session-014-2026-06-23.md) | 2026-06-23 | ~11GB | 31GB |
+| [Session 15](session-015-2026-06-24.md) | 2026-06-24 | ~8GB | 21GB |
