@@ -4,11 +4,13 @@ App-scoped reports for the **ytgrab** product family (`youtubegrab.com`).
 Covers cross-server work: app server deployments, proxy/nginx changes, env/secret management, schema migrations, version bumps.
 
 **Server footprint:**
-- `app` (`154.26.129.104`) — Docker compose stack: api (3001), web (3000), nginx (80/443)
-- `proxy` (`46.250.234.153`) — public nginx, terminates TLS for `youtubegrab.com` + `api.youtubegrab.com`
+- `numa` (`10.0.0.7`) — ytgrab-api (PM2, :7009, nice 0, weight=2 primary) + bgutil-pot (127.0.0.1:4416), repo `/root/ytgrab`
+- `db` (`10.0.0.1`) — ytgrab-api (PM2, :7009, nice -n 10, weight=1 secondary) + bgutil-pot (127.0.0.1:4416), repo `/root/ytgrab`; also hosts ytgrab_prod PostgreSQL
+- `app` (`154.26.129.104`) — ytgrab-web only (PM2, :3009 on 10.0.0.5), repo `~/ytgrab`; ytgrab-api + bgutil-pot removed (session-018 Phase 3 complete)
+- `proxy` (`46.250.234.153`) — public nginx, `least_conn` LB → numa:7009 (w=2) + db:7009 (w=1) for API; app:3009 for web
 - `monitor` (`10.0.0.3`) — GlitchTip (errors.biji.uk), OpenObserve (observe.biji.uk), OpenPanel (analytics.biji.uk)
 
-**Current deployed SHA:** **app: api + web `e522632` (v1.5.0)** (2026-06-25 — admin charts + service-status banner + migration 0006, session-019). **dev: `136a4e9` (v1.1.2)** (session-014; no proxy pool on dev — direct egress, by design, so the proxy-gate changes don't affect it).
+**Current deployed SHA:** **`9abf4aa` (api 1.7.0 / web 1.10.0)** on all nodes (numa + db + app, 2026-06-28 — audience + retention analytics + migration 0007, session-020). **dev: `136a4e9` (v1.1.2)** (session-014; no proxy pool on dev — direct egress, by design, so the proxy-gate changes don't affect it).
 
 **Proxy pool credential (session-015):** sourced from the **Webshare REST API** via a single **`WEBSHARE_API_KEY`** in `apps/api/.env` (the old `WEBSHARE_PROXY_LIST_URL`/`WEBSHARE_RESIDENTIAL_LIST_URL` are **removed**). Plans **auto-discovered** (only `status=active` count; static ISP→residential, datacenter→metadata, backbone excluded); dead proxies **recycled** via `POST /api/v3/proxy/replace/` with `recycled_at` denylist. **This self-heals plan swaps** — replacing a Webshare plan no longer strands a dead `plan_id` (the session-015 incident). Active plans: `13641117` (datacenter, 100), `13653319` (ISP/residential, 5). No `WEBSHARE_*_PLAN_ID` pins (auto-discovery is unambiguous).
 
@@ -30,12 +32,13 @@ Covers cross-server work: app server deployments, proxy/nginx changes, env/secre
 - [ ] Verify `/api/metrics` ACL accessible from `10.0.0.3`
 - [ ] Remove legacy dirs `ytgrab-be`/`ytgrab-fe` from app server once stable
 - [ ] Decide whether to enable Webshare proxy on dev (currently prod-only)
-- [ ] **LB migration in progress (session-018):** app at 100% CPU; plan: ytgrab-api LB across **numa (10.0.0.7, weight=2)** + **db (10.0.0.1, weight=1, nice -n 10)** with `least_conn`; **ytgrab-web stays on app** (0% CPU, no reason to move); bgutil-pot on each api node; phased: numa first → 48h verify → add db → stop api+bgutil on app
+- [x] **LB migration complete (session-018):** ytgrab-api LB live across numa (weight=2) + db (weight=1, nice -n 10), least_conn; ytgrab-web stays on app; Phase 3 cleanup (stop api+bgutil on app) confirmed done session-020
 
 ## Sessions
 
 | # | Date | Topic | Key outcomes |
 |---|------|-------|-------------|
+| [020](session-020-2026-06-28.md) | 2026-06-28 | Redeploy all nodes → `9abf4aa` (api 1.7.0 / web 1.10.0): audience + retention analytics + migration 0007 | Built + restarted on numa + db (api) + app (web). Migration 0007 (`download_events.client_id`). New admin Audience + Retention tabs. Phase 3 cleanup confirmed (ytgrab-api gone from app). Decision: keep ytgrab-web on app (SSR routes prevent static move to proxy). |
 | [001](session-001-2026-05-25.md) | 2026-05-25 | Production env setup | All env vars compiled; GlitchTip project `biji/ytgrab` created; `infra/docker/.env` written |
 | [002](session-002-2026-05-25.md) | 2026-05-25 | Production cutover + redeploy to `17b8ee8` | Cutover COMPLETE (native pm2, SHA `3feeba9`); both dev+app redeployed to `17b8ee8` |
 | [003](session-003-2026-05-26.md) | 2026-05-26 | Ko-fi tip-jar + Webshare proxy | `NEXT_PUBLIC_KOFI_URL` set on dev + app (web rebuilt); `YTDLP_PROXY` (Webshare `-rotate`) set on app — bot challenge resolved |
