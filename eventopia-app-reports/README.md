@@ -31,6 +31,7 @@ environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on t
 | [005](session-005-2026-06-24.md) | 2026-06-24 | Pull `main` (**operator console**) to **dev** + full reseed (showcase seeds) | dev `1d7cc57`→`f812ca3` (63 commits); **+36 migrations** (31→67, `oc_*`); new app `apps/admin` deployed first time → **`operator.dev.eventopia.my`** (PM2 :38400, nginx vhost, cert expanded to 8 SANs); **DB wiped** (kept `platform_rate_config`) + Redis db2 flushed, reseeded **organizer + operator showcase only** (7 operators / 18+1 orgs, organizer 44/44); operator login verified (JWT); all surfaces green |
 | [006](session-006-2026-07-09.md) | 2026-07-09 | Pull `main` (**multi-gateway payments + operator console**) to **prod** | prod `1d7cc57`→`2e3994a` (132+ commits); **+40 migrations** (31→71); DOKU+Midtrans payment gateways live (Xendit still unconfigured, no prod keys); operator console deployed to prod first time (`operator.eventopia.my`, PM2 :38400, no cert change — covered by existing wildcard); real `SUPER_ADMIN` bootstrapped (`hi@eventopia.my`); hotfixed a new prod-only fail-closed check (`OPERATOR_PREVIEW_SECRET`) that crash-looped `eventopia-api`; all surfaces green both domains |
 | [007](session-007-2026-07-09.md) | 2026-07-09 | **WhatsApp/miaw-route refactor** + `.env` cleanup, **dev + prod** | `2e3994a`→`3f2c631` (5 commits, no frontend changes); migration 0071 drops dead `verify_token` column (72 total); eventopia's own Meta webhook verify-handshake removed — miaw-route now owns verification/forwarding (fleet convention); removed 4 dead `.env` vars (`META_WEBHOOK_VERIFY_TOKEN`/`META_WABA_ID`/`META_BUSINESS_ACCOUNT_ID`/`WEB_DATA_SOURCE`) on both envs; miaw-route app+route registration left to user (dashboard); all surfaces green both envs |
+| [008](session-008-2026-07-10.md) | 2026-07-10 | **Register eventopia's WABA with `miaw-route`** (prod) | Found the WABA subscribed to **no** Meta app (dedicated app's webhook was a dead `local.biji.uk` tunnel); fixed by reusing the shared **BIJI Dev** app instead of registering a new dedicated one — `.env` `META_APP_ID`/`META_APP_SECRET` corrected, WABA subscribed to BIJI Dev via Graph API, `routes` row added in `miaw_route`; hit + fixed a PM2 `ecosystem.config.cjs` env-reload gotcha; verified end-to-end with signed synthetic webhooks, including after a concurrent session's redeploy (`3f2c631`) |
 
 ## Production footprint (`app` / eventopia.my + eventopia.co.id)
 
@@ -57,13 +58,18 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
 ## Open follow-ups
 
 **Production + dev (session-007):**
-- **Register eventopia with `miaw-route`** (new `apps` + `routes` rows — see session-007 for exact
-  values) — eventopia's own Meta webhook verify-handshake was removed upstream; inbound WhatsApp is
-  non-functional until this is done. User will register via the miaw-route dashboard.
-- Confirm which `miaw-route` instance (dev's PM2-managed one vs `app`'s systemd one) actually fronts
-  production Meta traffic before registering.
+- ~~Register eventopia with `miaw-route`~~ — **done (session-008)**, prod only: WABA subscribed to the
+  shared **BIJI Dev** app (not a new dedicated `apps` row as originally proposed here — that WABA turned
+  out to have zero apps subscribed at all), `routes` row added, verified end-to-end. `app`'s systemd
+  instance behind `routes.biji.uk` confirmed as the one fronting production Meta traffic.
 - `UPLOADS_BASE_URL`/`PUBLIC_UPLOADS_BASE` unset on both envs (default to unroutable
   `https://uploads.local`) — moot until real object storage replaces the fake stub.
+
+**Production (session-008):**
+- No real WhatsApp message has been sent through the live path yet — only synthetic signed webhooks;
+  worth a real inbound test to `wa.me/6285178123275` when convenient.
+- eventopia's now-unused dedicated Meta app (`307017735009770`) still has its own dead webhook config
+  pointing at `local.biji.uk` — harmless, left alone; candidate for cleanup later.
 
 **Production (session-006):**
 - **Payouts hard-wired to Xendit** for every tenant regardless of collection gateway — no Xendit prod
