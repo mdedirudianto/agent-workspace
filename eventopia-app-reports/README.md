@@ -2,8 +2,8 @@
 
 App-scoped reports for **eventopia** — an organizer-first, WhatsApp-native, QRIS-first event
 platform (github.com/biji-dev/eventopia; pnpm/turbo monorepo: `api`, `workers`, `web-public`,
-`console`, `checkin`). Upstream ships a Docker-Compose deploy; the dev environment runs
-**bare-metal** (system nginx + PM2 + local Postgres/Redis) on the `dev` host.
+`console`, `admin` (operator console), `checkin`). Upstream ships a Docker-Compose deploy; the dev
+environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on the `dev` host.
 
 ## Deploy footprint (dev)
 
@@ -29,12 +29,24 @@ platform (github.com/biji-dev/eventopia; pnpm/turbo monorepo: `api`, `workers`, 
 | [003](session-003-2026-06-17.md) | 2026-06-17 | **`eventopia.co.id`** public marketing face (proxy + cert + DNS; `.my` apex/www → co.id) | Marketing split onto co.id via `MARKETING_HOST` middleware (`3531450`), same web-public instance; LE cert DNS-01 (exp 2026-09-15); `.my` stays the organizer/attendee app — all surfaces green |
 | [004](session-004-2026-06-20.md) | 2026-06-20 | Pull `main` forward (console **event-workspace** redesign) to **dev + prod** | dev `b0b75e6`→`1d7cc57` (34 commits), prod `a289aaa`→`1d7cc57` (33); **no DB migration/backfill** (same 31 migrations); superseded local patches stashed, clones now drift-free on env-driven `main`; web-public+console rebuilt clean; all surfaces green both envs |
 | [005](session-005-2026-06-24.md) | 2026-06-24 | Pull `main` (**operator console**) to **dev** + full reseed (showcase seeds) | dev `1d7cc57`→`f812ca3` (63 commits); **+36 migrations** (31→67, `oc_*`); new app `apps/admin` deployed first time → **`operator.dev.eventopia.my`** (PM2 :38400, nginx vhost, cert expanded to 8 SANs); **DB wiped** (kept `platform_rate_config`) + Redis db2 flushed, reseeded **organizer + operator showcase only** (7 operators / 18+1 orgs, organizer 44/44); operator login verified (JWT); all surfaces green |
+| [006](session-006-2026-07-09.md) | 2026-07-09 | Pull `main` (**multi-gateway payments + operator console**) to **prod** | prod `1d7cc57`→`2e3994a` (132+ commits); **+40 migrations** (31→71); DOKU+Midtrans payment gateways live (Xendit still unconfigured, no prod keys); operator console deployed to prod first time (`operator.eventopia.my`, PM2 :38400, no cert change — covered by existing wildcard); real `SUPER_ADMIN` bootstrapped (`hi@eventopia.my`); hotfixed a new prod-only fail-closed check (`OPERATOR_PREVIEW_SECRET`) that crash-looped `eventopia-api`; all surfaces green both domains |
+| [007](session-007-2026-07-09.md) | 2026-07-09 | **WhatsApp/miaw-route refactor** + `.env` cleanup, **dev + prod** | `2e3994a`→`3f2c631` (5 commits, no frontend changes); migration 0071 drops dead `verify_token` column (72 total); eventopia's own Meta webhook verify-handshake removed — miaw-route now owns verification/forwarding (fleet convention); removed 4 dead `.env` vars (`META_WEBHOOK_VERIFY_TOKEN`/`META_WABA_ID`/`META_BUSINESS_ACCOUNT_ID`/`WEB_DATA_SOURCE`) on both envs; miaw-route app+route registration left to user (dashboard); all surfaces green both envs |
 
 ## Production footprint (`app` / eventopia.my + eventopia.co.id)
 
 CF (orange, **Full-strict**) → `proxy` nginx → `app` `10.0.0.5:380xx` (PM2 under `devops`, Next bound
 `10.0.0.5`). DB+Redis on `db` `10.0.0.1` (PG16, role `eventopia` w/ `BYPASSRLS`, **Redis db6**). Bun +
-pgvector installed as prereqs. No seed. checkin static served from proxy.
+pgvector installed as prereqs. No seed. checkin static served from proxy. **71 migrations applied
+(session-006).**
+
+**Operator console (session-006):** `operator.eventopia.my` → `app` `10.0.0.5:38400` (PM2
+`eventopia-operator`, admin standalone), covered by the existing `*.eventopia.my` wildcard cert (no
+cert change needed). MFA off, no IP allowlist — internet-reachable, password-only login. First real
+account: `hi@eventopia.my` (`SUPER_ADMIN`).
+
+**Payments (session-006):** DOKU + Midtrans live (`PAYMENTS_DEFAULT_GATEWAY=midtrans`); Xendit
+unconfigured (no prod keys) — **payouts/disbursements are hard-wired to Xendit for every tenant
+regardless of collection gateway**, so no organizer can be paid out until real Xendit keys land.
 
 **Two-TLD split (session-003):** `eventopia.co.id` = public **marketing landing only** (apex + `www` →
 the same `web-public` :38100 instance, via the `MARKETING_HOST` middleware guard). `eventopia.my` = the
@@ -43,6 +55,29 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
 `eventopia-coid.conf` on proxy.
 
 ## Open follow-ups
+
+**Production + dev (session-007):**
+- **Register eventopia with `miaw-route`** (new `apps` + `routes` rows — see session-007 for exact
+  values) — eventopia's own Meta webhook verify-handshake was removed upstream; inbound WhatsApp is
+  non-functional until this is done. User will register via the miaw-route dashboard.
+- Confirm which `miaw-route` instance (dev's PM2-managed one vs `app`'s systemd one) actually fronts
+  production Meta traffic before registering.
+- `UPLOADS_BASE_URL`/`PUBLIC_UPLOADS_BASE` unset on both envs (default to unroutable
+  `https://uploads.local`) — moot until real object storage replaces the fake stub.
+
+**Production (session-006):**
+- **Payouts hard-wired to Xendit** for every tenant regardless of collection gateway — no Xendit prod
+  keys exist, so payouts will queue up unfilled. Get real Xendit production credentials before
+  organizers expect real disbursements.
+- **Object storage is a fake in-memory stub** — no real S3 client implemented anywhere in the code.
+  DigitalOcean Spaces credentials are in `.env` (`S3_*`) unused; needs a real `ObjectStorage`
+  implementation before uploads (KYC docs, event covers, certificates) persist across restarts.
+- Operator console has no `ADMIN_IP_ALLOWLIST` and MFA off — internet-reachable, password-only
+  (user's explicit choice; revisit later).
+- `apps/api/scripts/bootstrap-operator.ts` (real, non-fixture operator bootstrap) was written and run
+  on prod but not committed/pushed — worth a PR if useful going forward.
+- Confirm the Meta App's webhook subscription uses the new self-generated `META_WEBHOOK_VERIFY_TOKEN`
+  (given to the user out-of-band) — otherwise inbound WhatsApp webhooks fail the verification handshake.
 
 **Production (session-003):**
 - Confirm CF SSL mode = **Full (strict)** for the `eventopia.co.id` zone in the dashboard (works today;
