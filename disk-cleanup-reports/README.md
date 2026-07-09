@@ -29,3 +29,5 @@ Session-based cleanup reports for `/Users/dedi` on macOS (228GB disk).
 | [Session 23](session-023-2026-07-08.md) | 2026-07-08 | ~9GB | 27GB |
 | [Session 24](session-024-2026-07-09.md) | 2026-07-09 | ~20GB | 19GB |
 | [Session 25](session-025-2026-07-09.md) | 2026-07-09 | ~9GB | 38GB |
+| [Session 26](session-026-2026-07-09.md) | 2026-07-09 | ~12GB | 32GB |
+| [Session 27](session-027-2026-07-10.md) | 2026-07-10 | ~10GB | 17GB |
