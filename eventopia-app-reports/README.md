@@ -49,13 +49,15 @@ environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on t
 | [018](session-018-2026-07-13.md) | 2026-07-13 | Pull `main` to **dev** (192 commits, catch-up to prod parity) + **real Midtrans sandbox payment test** | dev `3f2c631`→`1b1cfd9` (192 commits, dev's largest gap ever — last touched session-007); **+6 migrations** (72→78, incl. new global `account` table + RLS); also rebuilt+redeployed `checkin` (unlike prod, dev's snapshot wasn't current) and restarted the dev-only `wa-stub` process; patched a missing `NEXT_PUBLIC_CONSOLE_BASE` pre-emptively (the exact session-011 gotcha); **found + worked around a real product gap**: the self-service Midtrans Connect form hardcodes `environment: 'production'` with no sandbox toggle, causing a false 401 on valid sandbox keys — traced to the config resolver, fixed via a direct DB patch; completed a **genuine Midtrans sandbox payment** through Midtrans's own hosted simulator (simulator.sandbox.midtrans.com, BCA VA) — first payment-gateway test in this workspace verified against the real gateway rather than a synthetic webhook — order `PAID`, ticket `ISSUED` via 2 real inbound Midtrans webhooks; all test data cleaned up (13 PG rows + 8 Redis keys, zero residue), all surfaces green |
 | [019](session-019-2026-07-14.md) | 2026-07-14 | Pull `main` (**admin ticket/order tracking page + search PII fix**) to **prod + dev** | `1b1cfd9`→`0bc4d61` (3 commits, no migrations/env/deps); new operator-only `/admin/orders` list+detail (troubleshooting, composed timeline); closes a PII leak in `/admin/search` (order/ticket results now gated behind `Order`-read, matching the dedicated endpoints); live-verified on both envs with a real free-ticket order + two temp operator roles (`SUPPORT_OPS` sees it, `COMPLIANCE_OPS` gets 403/empty-search), all test data cleaned up zero-residue; **found 2 new pre-existing prod issues (documented only, not fixed)**: self-service "platform" collection is hard-wired to Xendit ignoring `PAYMENTS_DEFAULT_GATEWAY`, already breaking a real event's checkout (4 `EXPIRED` orders); separately, prod's real Midtrans merchant account has zero payment channels activated — as of today **no gateway can process a real prod payment** |
 | [020](session-020-2026-07-14.md) | 2026-07-14 | Pull `main` (**Xendit webhook tenant-resolution fix — money-in/no-ticket**) to **dev** | `0bc4d61`→`507c15c` (35 commits); **+1 migration** (78→79, additive `orders(created_at,id)` index); per-organizer Xendit webhook URL + auto-registration + `payment-reconcile` worker + placeholder guard + VA/cross-tenant fixes, plus a rider admin orders-readability pass, an order-detail tenant-scope fix, and new Terms/Privacy/Refund legal pages; added missing `PUBLIC_API_BASE_URL` env var; rebuilt api/console/admin/web-public (hit + fixed the documented session-009 `tsc` OOM), all 5 procs restarted clean; **isolated DIRECT-Xendit smoke test** (reused platform sandbox key as a stand-in org key, safely isolated): auto-registration confirmed live against real Xendit sandbox API, but the actual webhook 401'd on a stale sandbox dashboard token — the new **`payment-reconcile` worker self-healed it for real** (`RECOVERED` a captured-but-unnotified payment, order `PAID`, ticket `ISSUED`), all test data + temp credentials cleaned up zero-residue; **prod deploy of this same fix intentionally deferred** (dev-first per user instruction) — prod needs its own extra prerequisites (remove placeholder keys, add `PUBLIC_API_BASE_URL`, rotate leaked credentials) before it can go out |
+| [021](session-021-2026-07-14.md) | 2026-07-14 | **Planning only** — production hardening + 20,000-ticket load-test & scaling plan | No code/config/infra changed. Analyzed current prod topology (`app`/`db`/`proxy` hardware, PM2 fleet, Postgres/PgBouncer state, existing k6/order-storm load-test harness) and confirmed scope with user: one large single event, 20k tickets over a sustained sale window + event-day check-in burst, ~1 month timeline, payment-gateway routing bugs (session-019/020) out of scope, hybrid staging-then-guarded-prod-rehearsal testing, reuse-existing-capacity scaling. Landed on a **dual-node architecture**: clone `eventopia-api`/`eventopia-workers` onto the underused `db` box (12 cores/48GB, ~2GB used) alongside the existing `app`-box node, load-balanced by `proxy` (`least_conn` + passive health checks), both pointed at one unreplicated Postgres/Redis instance. 5-phase plan (staging build → hardening incl. PgBouncer + BullMQ concurrency + mandatory resource isolation on the `db`-side node → staging load test → guarded prod rehearsal w/ kill-node failover test → runbook + scale-decision point). Phase 0 is the next actionable step, pending user review of this plan. |
+| [022](session-022-2026-07-14.md) | 2026-07-14 | Retroactive doc (undocumented `507c15c` prod deploy found already live) + **payment activation ladder** (`affc654`) to prod | Found prod already on `507c15c` (session-020's Xendit webhook fix), fully deployed at 10:36-10:47 that morning but never documented — retroactively recorded. Deployed `507c15c`→`affc654` (35 commits, +3 migrations 79→82): `PAYMENTS_DEFAULT_GATEWAY` fix (closes session-019 Finding 1) + new payment activation ladder (KYC/MoU + operator DIRECT approval); `admin` rebuilt, `api`/`workers`/`operator` restarted, all surfaces green. `org_03f297927f184c0d` grandfathered correctly by the migration but hit a new KYC gate (never formally submitted pre-ladder) — resolved via the real audited operator flow with placeholder bank info (owner's instruction, real info pending). **Found a platform-wide blocker:** `canUseDirect`'s `gatewayAvailable` check gates ALL Xendit-DIRECT organizers on the *platform's* Xendit credentials (still the deferred Step-1 placeholder), not the organizer's own — no Xendit-DIRECT org, including this one, can collect a real payment until Step 1 lands. Documented only, per user decision. Also: an accidental `.env` grep leaked a live WhatsApp token into the transcript (flagged, rotation optional). |
 
 ## Production footprint (`app` / eventopia.my + eventopia.co.id)
 
 CF (orange, **Full-strict**) → `proxy` nginx → `app` `10.0.0.5:380xx` (PM2 under `devops`, Next bound
 `10.0.0.5`). DB+Redis on `db` `10.0.0.1` (PG16, role `eventopia` w/ `BYPASSRLS`, **Redis db6**). Bun +
-pgvector installed as prereqs. No seed. checkin static served from proxy. **78 migrations applied
-(session-017). Code at `0bc4d61` (session-019).**
+pgvector installed as prereqs. No seed. checkin static served from proxy. **82 migrations applied
+(session-022). Code at `affc654` (session-022).**
 
 **Observability (session-009):** GlitchTip org `eventopia` (projects `eventopia-backend`/`-web`/`-checkin`,
 `errors.biji.uk`), OpenObserve service account `eventopia-ingest@biji.uk` + stream `eventopia_api`
@@ -74,18 +76,23 @@ is an explicit `CORS_ORIGINS` entry on `app` (doesn't match the `*.eventopia.my`
 rule other first-party frontends rely on). MFA off, no IP allowlist — internet-reachable, password-only
 login. First real account: `hi@eventopia.my` (`SUPER_ADMIN`).
 
-**Payments (session-006, hardened session-016, self-service since session-017):** DOKU + Midtrans live
-(`PAYMENTS_DEFAULT_GATEWAY=midtrans`); Xendit **code shipped session-016 (BYO-keys, operator-gated
-DIRECT) but stays dark** — still no prod `XENDIT_API_KEY` (placeholder value), safe because the
-boot-time fail-closed check only fires when Xendit is the *default* gateway, which it isn't —
-**payouts/disbursements are hard-wired to Xendit for every tenant regardless of collection gateway**,
-so no organizer can be paid out until real Xendit keys land. Session-016 also landed a
-frozen-`collection_mode` webhook-verification fix across all three gateways, closing a latent
-money-loss bug (an account-switch mid-flight could previously 401-reject a real, already-captured
-payment notification). **Session-017** replaced the old operator-gated payment-activation queue with a
-**self-service organizer Payment Settings page** (pick + configure your own collector, plus a
-read-only "Test connection" credential check on Midtrans/Xendit) — organizers no longer wait on an
-operator to approve gateway activation.
+**Payments (session-006, hardened session-016, self-service since session-017, activation ladder
+session-022):** DOKU + Midtrans live (`PAYMENTS_DEFAULT_GATEWAY=midtrans`, real credentials but
+**Midtrans has zero payment channels activated on the real merchant** — session-019 Finding 2, still
+open, MAP-dashboard gap not code); platform Xendit **still has no `XENDIT_API_KEY`/`XENDIT_WEBHOOK_TOKEN`
+at all** (not even a placeholder — deploy-doc "Step 1", still pending real credentials from the owner).
+Session-022 shipped a **4-rung payment activation ladder**
+(`BLOCKED → FREE_ONLY → PAID_PLATFORM (KYC VERIFIED + MoU SIGNED) → DIRECT (+ per-provider operator
+approval)`, `packages/payments/src/capability.ts`) and fixed the session-019 hard-coded-Xendit bug
+(platform-mode collection now stores `NULL` and resolves `PAYMENTS_DEFAULT_GATEWAY` live). **Known
+gap (session-022, undecided):** DIRECT collection's `canUseDirect` also requires the *platform's*
+credentials for that gateway to be configured (`gatewayAvailable`), even though DIRECT never uses
+them — so with the platform Xendit key still absent, **no Xendit-DIRECT organizer can currently
+collect a real payment**, including the one BYO-keys pilot org (`org_03f297927f184c0d`). Payouts are
+still hard-wired to Xendit for every tenant regardless of collection gateway (session-006) — no real
+Xendit keys, no payouts yet either. Session-016 landed a frozen-`collection_mode` webhook-verification
+fix across all three gateways, closing a latent money-loss bug. **Session-017** replaced the old
+operator-gated payment-activation queue with a **self-service organizer Payment Settings page**.
 
 **Buyer checkout verification (session-016):** alongside the existing email-OTP method (session-014),
 buyers can now verify via **reverse-WhatsApp** (send a code to the Eventopia number, no template needed)
@@ -100,9 +107,33 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
 
 ## Open follow-ups
 
+**New (session-022):**
+- **No Xendit-DIRECT organizer can collect a real payment on prod** — `canUseDirect`'s
+  `gatewayAvailable[gateway]` check (`packages/payments/src/capability.ts`) gates DIRECT
+  collection on the *platform's* credentials for that gateway, which DIRECT doesn't otherwise
+  use. Blocked until platform Xendit keys land (deploy-doc Step 1) or the gate is reconsidered.
+  Documented only this session per user decision — see session-022 for the full trace.
+- `org_03f297927f184c0d`'s bank details in `organizer_payout_profile` are a **placeholder**
+  (`PENDING-REAL-BANK-INFO`) — needs real bank info before any payout can be disbursed.
+- `hi@eventopia.my`'s operator password was reset session-022 (forgotten/rotated) — new
+  credential given to the user out-of-band, not in any report file.
+- Consider rotating `META_GRAPH_API_ACCESS_TOKEN` — briefly exposed in the session-022
+  transcript via a redaction-regex bug on an `.env` grep. No prod/payment impact.
+
+**Production hardening / 20,000-ticket-sale readiness (session-021, planning only):**
+- Phase 0 (isolated staging: `eventopia-api`/`eventopia-workers` cloned onto `db` alongside the
+  existing `app`-box node, load-balanced by `proxy`) is the next actionable step — pending user
+  review of the plan and go-ahead to start. See session-021 for the full 5-phase plan
+  (staging → hardening incl. PgBouncer + BullMQ concurrency + mandatory resource isolation on
+  the `db`-side node → staging load test → guarded prod rehearsal w/ kill-node failover test →
+  runbook + scale-decision point). Explicitly does not include the payment-gateway bugs below —
+  tracked separately.
+
 **Production (session-019):**
-- **Self-service "platform" collection is hard-wired to Xendit** — `apps/api/src/modules/payments/credentials-module.ts`'s `collectionRoute` sets `activeGateway = 'xendit'` unconditionally when `collector === 'platform'` (and `organizer_account.payment_gateway` defaults to `'xendit'` at the schema level), ignoring `PAYMENTS_DEFAULT_GATEWAY=midtrans`. Xendit only has a placeholder key on prod. **Any organizer on platform-mode collection cannot collect real payments right now** — already broke a real event's checkout today (org `org_03f297927f184c0d`, "Test - Festival Mbois 11 - Malang Menyala", 4 real orders all `EXPIRED`). User chose to document only this session (not fix); needs a dedicated fix session.
-- **Prod's real Midtrans merchant account (`M073614114`) has zero payment channels activated** — confirmed via direct API calls with the real prod Server Key: VA/QRIS → `402 Payment channel is not activated`, GoPay → `404`. This is a Midtrans-dashboard-side (MAP portal) config gap, not code. Combined with the Xendit bug above, **no gateway can process a real payment on prod as of today**.
+- ~~Self-service "platform" collection is hard-wired to Xendit~~ — **done (session-022):** the
+  `PAYMENTS_DEFAULT_GATEWAY` fix shipped in `affc654` makes platform-mode collection store
+  `NULL` and resolve the configured default live, per request.
+- **Prod's real Midtrans merchant account (`M073614114`) has zero payment channels activated** — confirmed via direct API calls with the real prod Server Key: VA/QRIS → `402 Payment channel is not activated`, GoPay → `404`. This is a Midtrans-dashboard-side (MAP portal) config gap, not code. **Still open (session-022):** combined with the new DIRECT-Xendit gating gap above, no gateway can process a real payment on prod as of session-022 either.
 
 **Dev (session-018):**
 - Self-service Midtrans (and likely Xendit/DOKU) BYO-keys Connect form has no
