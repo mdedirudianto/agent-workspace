@@ -17,8 +17,11 @@ environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on t
 - **Postgres 14** (local): db `eventopia`, role `eventopia`/`pgdev123` — **owns `public` schema,
   member of `app_tenant`, has `BYPASSRLS`** (the app assumes a superuser-equivalent connection).
   pgvector enabled. **Redis** db 2.
-- **Env:** `dev` with third-party doubles (fake payments/AI, WA Graph stub), seeded org
-  `kopikita-e2e`. TLS via LE cert `eventopia-dev` (HTTP-01, multi-SAN).
+- **Env:** `dev` with a WA Graph stub (`eventopia-wa-stub`, dev-only PM2 process) and
+  fake AI, but **real DOKU/Midtrans/Xendit sandbox credentials** configured (not payment
+  doubles), seeded org `kopikita-e2e`. TLS via LE cert `eventopia-dev` (HTTP-01,
+  multi-SAN). **78 migrations applied (session-018). Code at `0bc4d61` (session-019) —
+  full parity with prod.**
 
 ## Sessions
 
@@ -40,13 +43,16 @@ environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on t
 | [014](session-014-2026-07-10.md) | 2026-07-10 | Pull `main` (**smoke-test fixes A–E**) to prod + fix nginx drift from session-013 | prod `00d7d27`→`38b3b3c` (7 commits, all 6 apps); closes every session-010 finding: OpenPanel `apiUrl` (needed 2 new env vars + admin's distinct client-id override), buyer email-OTP checkout, e-ticket email status SENT/FAILED, share-link host fix, **and** fully closes org-rename (new `PATCH /v1/auth/org` for existing "Organizer Baru" orgs); also found+fixed session-013's nginx `sites-enabled`/`sites-available` drift and closed its flagged OpenPanel-CORS follow-up for `admin.eventopia.co.id` — briefly added a redirect for the retired `operator.eventopia.my` before finding session-013's explicit "no redirect" decision and reverting it; all surfaces green, 0 new GlitchTip issues |
 | [015](session-015-2026-07-10.md) | 2026-07-10 | **Re-verify smoke-test fixes A–E with a real order** — closes session-014's "not exercised against a real order" gap | Fresh live rerun of session-010's smoke test on prod (`38b3b3c`, unchanged): all 5 findings confirmed fixed — OpenPanel events now land (0→19 in ClickHouse), buyer checkout completed via the new email-OTP UI path (zero WhatsApp involvement), e-ticket `email_delivery_status` flipped to `SENT` immediately (was stuck `ENQUEUED`), org name settable at signup **and** renameable after the fact, share-link now resolves on `.my`; found pre-existing non-test-looking data (4 accounts/events, real event names) predating this session — left untouched, flagged for the user to confirm; all test data created this session deleted, DB back to pre-session baseline |
 | [016](session-016-2026-07-10.md) | 2026-07-10 | Pull `main` (**DOKU hardening, buyer email-link/reverse-WA verify, Xendit BYO-keys**) to prod | prod `38b3b3c`→`7b49712` (48 commits, largest since session-009); **+2 migrations** (75→77 — widened `organizer_payment_credential` provider CHECK to add `xendit`, new `organizer_account.xendit_direct_approved` column); frozen-`collection_mode` webhook-verification fix closes a latent money-loss bug across all 3 gateways; **first pg_dump backup** (prod now holds real user data); found + fixed a ~2-month-old fossil (`WEB_DATA_SOURCE=api` only lived in PM2's saved env, not `.env`, since session-007); live-tested both new buyer verification methods with real orders — reverse-WhatsApp via a signed synthetic webhook (session-008's technique), email magic-link via the real confirm/complete API — both `PAID`/`ISSUED`; Xendit ships dark (safe, confirmed `PAYMENTS_DEFAULT_GATEWAY=midtrans`); all test data cleaned up, all surfaces green |
+| [017](session-017-2026-07-13.md) | 2026-07-13 | Pull `main` (**public ticketing flow redesign, self-service payments, admin/console UX overhaul**) to prod | prod `7b49712`→`1b1cfd9` (84 commits, largest pull to date); **+1 migration** (77→78 — additive `organizer_account.last_login_at`); guest checkout (no account) + self-service organizer Payment Settings (replaces the operator-gated activation queue) + restyled e-ticket/QR + console/admin UX overhaul with full admin i18n; live-tested guest checkout end-to-end via the real UI — confirmed via reverse-WhatsApp signed synthetic webhook — `PAID`/`ISSUED`; **new finding:** pre-existing `operator_audit_log` hash-chain break at seq 56 (2026-07-10, unrelated to this pull, unresolved); cleanup caught a new gotcha (base `account` row has no FK from event/organizer_account, only reachable via a Redis `membership:acc:*` key); all test data cleaned up (verified against session-016's exact row-count baseline), all surfaces green |
+| [018](session-018-2026-07-13.md) | 2026-07-13 | Pull `main` to **dev** (192 commits, catch-up to prod parity) + **real Midtrans sandbox payment test** | dev `3f2c631`→`1b1cfd9` (192 commits, dev's largest gap ever — last touched session-007); **+6 migrations** (72→78, incl. new global `account` table + RLS); also rebuilt+redeployed `checkin` (unlike prod, dev's snapshot wasn't current) and restarted the dev-only `wa-stub` process; patched a missing `NEXT_PUBLIC_CONSOLE_BASE` pre-emptively (the exact session-011 gotcha); **found + worked around a real product gap**: the self-service Midtrans Connect form hardcodes `environment: 'production'` with no sandbox toggle, causing a false 401 on valid sandbox keys — traced to the config resolver, fixed via a direct DB patch; completed a **genuine Midtrans sandbox payment** through Midtrans's own hosted simulator (simulator.sandbox.midtrans.com, BCA VA) — first payment-gateway test in this workspace verified against the real gateway rather than a synthetic webhook — order `PAID`, ticket `ISSUED` via 2 real inbound Midtrans webhooks; all test data cleaned up (13 PG rows + 8 Redis keys, zero residue), all surfaces green |
+| [019](session-019-2026-07-14.md) | 2026-07-14 | Pull `main` (**admin ticket/order tracking page + search PII fix**) to **prod + dev** | `1b1cfd9`→`0bc4d61` (3 commits, no migrations/env/deps); new operator-only `/admin/orders` list+detail (troubleshooting, composed timeline); closes a PII leak in `/admin/search` (order/ticket results now gated behind `Order`-read, matching the dedicated endpoints); live-verified on both envs with a real free-ticket order + two temp operator roles (`SUPPORT_OPS` sees it, `COMPLIANCE_OPS` gets 403/empty-search), all test data cleaned up zero-residue; **found 2 new pre-existing prod issues (documented only, not fixed)**: self-service "platform" collection is hard-wired to Xendit ignoring `PAYMENTS_DEFAULT_GATEWAY`, already breaking a real event's checkout (4 `EXPIRED` orders); separately, prod's real Midtrans merchant account has zero payment channels activated — as of today **no gateway can process a real prod payment** |
 
 ## Production footprint (`app` / eventopia.my + eventopia.co.id)
 
 CF (orange, **Full-strict**) → `proxy` nginx → `app` `10.0.0.5:380xx` (PM2 under `devops`, Next bound
 `10.0.0.5`). DB+Redis on `db` `10.0.0.1` (PG16, role `eventopia` w/ `BYPASSRLS`, **Redis db6**). Bun +
-pgvector installed as prereqs. No seed. checkin static served from proxy. **77 migrations applied
-(session-016). Code at `7b49712` (session-016).**
+pgvector installed as prereqs. No seed. checkin static served from proxy. **78 migrations applied
+(session-017). Code at `0bc4d61` (session-019).**
 
 **Observability (session-009):** GlitchTip org `eventopia` (projects `eventopia-backend`/`-web`/`-checkin`,
 `errors.biji.uk`), OpenObserve service account `eventopia-ingest@biji.uk` + stream `eventopia_api`
@@ -65,14 +71,18 @@ is an explicit `CORS_ORIGINS` entry on `app` (doesn't match the `*.eventopia.my`
 rule other first-party frontends rely on). MFA off, no IP allowlist — internet-reachable, password-only
 login. First real account: `hi@eventopia.my` (`SUPER_ADMIN`).
 
-**Payments (session-006, hardened session-016):** DOKU + Midtrans live (`PAYMENTS_DEFAULT_GATEWAY=midtrans`);
-Xendit **code shipped session-016 (BYO-keys, operator-gated DIRECT) but stays dark** — still no prod
-`XENDIT_API_KEY` (placeholder value), safe because the boot-time fail-closed check only fires when Xendit
-is the *default* gateway, which it isn't — **payouts/disbursements are hard-wired to Xendit for every
-tenant regardless of collection gateway**, so no organizer can be paid out until real Xendit keys land.
-Session-016 also landed a frozen-`collection_mode` webhook-verification fix across all three gateways,
-closing a latent money-loss bug (an account-switch mid-flight could previously 401-reject a real,
-already-captured payment notification).
+**Payments (session-006, hardened session-016, self-service since session-017):** DOKU + Midtrans live
+(`PAYMENTS_DEFAULT_GATEWAY=midtrans`); Xendit **code shipped session-016 (BYO-keys, operator-gated
+DIRECT) but stays dark** — still no prod `XENDIT_API_KEY` (placeholder value), safe because the
+boot-time fail-closed check only fires when Xendit is the *default* gateway, which it isn't —
+**payouts/disbursements are hard-wired to Xendit for every tenant regardless of collection gateway**,
+so no organizer can be paid out until real Xendit keys land. Session-016 also landed a
+frozen-`collection_mode` webhook-verification fix across all three gateways, closing a latent
+money-loss bug (an account-switch mid-flight could previously 401-reject a real, already-captured
+payment notification). **Session-017** replaced the old operator-gated payment-activation queue with a
+**self-service organizer Payment Settings page** (pick + configure your own collector, plus a
+read-only "Test connection" credential check on Midtrans/Xendit) — organizers no longer wait on an
+operator to approve gateway activation.
 
 **Buyer checkout verification (session-016):** alongside the existing email-OTP method (session-014),
 buyers can now verify via **reverse-WhatsApp** (send a code to the Eventopia number, no template needed)
@@ -86,6 +96,25 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
 `eventopia-coid.conf` on proxy.
 
 ## Open follow-ups
+
+**Production (session-019):**
+- **Self-service "platform" collection is hard-wired to Xendit** — `apps/api/src/modules/payments/credentials-module.ts`'s `collectionRoute` sets `activeGateway = 'xendit'` unconditionally when `collector === 'platform'` (and `organizer_account.payment_gateway` defaults to `'xendit'` at the schema level), ignoring `PAYMENTS_DEFAULT_GATEWAY=midtrans`. Xendit only has a placeholder key on prod. **Any organizer on platform-mode collection cannot collect real payments right now** — already broke a real event's checkout today (org `org_03f297927f184c0d`, "Test - Festival Mbois 11 - Malang Menyala", 4 real orders all `EXPIRED`). User chose to document only this session (not fix); needs a dedicated fix session.
+- **Prod's real Midtrans merchant account (`M073614114`) has zero payment channels activated** — confirmed via direct API calls with the real prod Server Key: VA/QRIS → `402 Payment channel is not activated`, GoPay → `404`. This is a Midtrans-dashboard-side (MAP portal) config gap, not code. Combined with the Xendit bug above, **no gateway can process a real payment on prod as of today**.
+
+**Dev (session-018):**
+- Self-service Midtrans (and likely Xendit/DOKU) BYO-keys Connect form has no
+  sandbox/production toggle (`apps/console/components/payments/gateway-connect-form.tsx`
+  hardcodes `environment: 'production'`) — by design for real organizers, but means
+  testing a BYO gateway connection against sandbox needs a manual `organizer_payment_
+  credential.environment` DB patch. Worth a deliberate decision (accept as permanent, or
+  add a hidden/dev-only toggle).
+
+**Production (session-017):**
+- **`operator_audit_log` hash-chain break at seq 56** (`action=audit.export`, 2026-07-10 17:27:30) —
+  found via the `operator-audit-verify` cron logging `CHAIN BREAK ... row_hash_mismatch` every 10
+  minutes; predates session-017 by 3 days, unrelated to that session's pull. Root cause not
+  investigated — an unresolved break undermines the audit log's tamper-evidence guarantee.
+- Public event pages on tenant subdomains 404 on `icon.svg` (missing favicon) — cosmetic, low priority.
 
 **Production (session-016):**
 - `WEB_DATA_SOURCE` was undocumented/fossil-only for ~2 months (session-007 to now, living only in PM2's
