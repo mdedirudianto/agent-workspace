@@ -72,7 +72,6 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 - [ ] Marketing locale on `.co.id`: next-intl auto-detects (curl with no `Accept-Language` → `/en`).
       Confirm `.co.id` defaults to ID for real visitors, or force ID per-domain if desired.
 - [ ] Payment gateways (Midtrans/Xendit) left unconfigured — add keys to `apps/backend/.env` when needed.
-- [ ] No seed run on prod DB (`db:seed` skipped); demo data for `demo.hoteru.uk` is empty until seeded.
 
 ## Sessions
 
@@ -80,3 +79,4 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 | --- | --- | --- | --- |
 | [Session 1](session-001-2026-06-16.md) | 2026-06-16 | Initial deploy (app+db+proxy) + hoteru.uk/.co.id proxy sites + wildcard TLS | Done |
 | [Session 2](session-002-2026-06-18.md) | 2026-06-18 | First per-hotel tenant `technoparkmalang.hoteru.co.id` — dedicated clone/DB/backend, technopark booking site + mgmt SPA, minimal seed | Done |
+| [Session 3](session-003-2026-07-16.md) | 2026-07-16 | `app.hoteru.uk` login fix — prod DB was never seeded, ran `db:seed`, verified in browser | Done |
