@@ -52,13 +52,23 @@ environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on t
 | [021](session-021-2026-07-14.md) | 2026-07-14 | **Planning only** — production hardening + 20,000-ticket load-test & scaling plan | No code/config/infra changed. Analyzed current prod topology (`app`/`db`/`proxy` hardware, PM2 fleet, Postgres/PgBouncer state, existing k6/order-storm load-test harness) and confirmed scope with user: one large single event, 20k tickets over a sustained sale window + event-day check-in burst, ~1 month timeline, payment-gateway routing bugs (session-019/020) out of scope, hybrid staging-then-guarded-prod-rehearsal testing, reuse-existing-capacity scaling. Landed on a **dual-node architecture**: clone `eventopia-api`/`eventopia-workers` onto the underused `db` box (12 cores/48GB, ~2GB used) alongside the existing `app`-box node, load-balanced by `proxy` (`least_conn` + passive health checks), both pointed at one unreplicated Postgres/Redis instance. 5-phase plan (staging build → hardening incl. PgBouncer + BullMQ concurrency + mandatory resource isolation on the `db`-side node → staging load test → guarded prod rehearsal w/ kill-node failover test → runbook + scale-decision point). Phase 0 is the next actionable step, pending user review of this plan. |
 | [022](session-022-2026-07-14.md) | 2026-07-14 | Retroactive doc (undocumented `507c15c` prod deploy found already live) + **payment activation ladder** (`affc654`) to prod | Found prod already on `507c15c` (session-020's Xendit webhook fix), fully deployed at 10:36-10:47 that morning but never documented — retroactively recorded. Deployed `507c15c`→`affc654` (35 commits, +3 migrations 79→82): `PAYMENTS_DEFAULT_GATEWAY` fix (closes session-019 Finding 1) + new payment activation ladder (KYC/MoU + operator DIRECT approval); `admin` rebuilt, `api`/`workers`/`operator` restarted, all surfaces green. `org_03f297927f184c0d` grandfathered correctly by the migration but hit a new KYC gate (never formally submitted pre-ladder) — resolved via the real audited operator flow with placeholder bank info (owner's instruction, real info pending). **Found a platform-wide blocker:** `canUseDirect`'s `gatewayAvailable` check gates ALL Xendit-DIRECT organizers on the *platform's* Xendit credentials (still the deferred Step-1 placeholder), not the organizer's own — no Xendit-DIRECT org, including this one, can collect a real payment until Step 1 lands. Documented only, per user decision. Also: an accidental `.env` grep leaked a live WhatsApp token into the transcript (flagged, rotation optional). |
 | [023](session-023-2026-07-15.md) | 2026-07-15 | Deploy `f5dc400` (**custom landing pages + custom domains**) to prod; build 2 custom event pages; **fix landing-page UI** | `affc654`→`f5dc400` (32 commits, +2 migrations 82→84 additive: `event_page` table + RLS, `domain` cert cols): **custom event landing pages** (block editor + `data-lp` renderer), **custom domains** (Cloudflare for SaaS), and the **DIRECT-collection decouple fix** (`b21cfe8`) — which **refutes session-022's blocker**: `org_03f297927f184c0d`'s `POST /v1/payments` now returns 201 with a real Xendit-DIRECT QRIS intent, not 503. Added `CF_API_TOKEN`/`CF_ZONE_ID`/`DOMAINS_CNAME_TARGET`; rebuilt/restarted api/console/web-public. **Custom domains blocked, not live:** Cloudflare setup done (DNS + Fallback Origin `active`) and TXT ownership verifies, but cert issuance fails — `custom_origin_sni` (SNI Rewrite) is **Cloudflare Enterprise-only** and the zone is Free plan; plan/billing gate, not a code bug (documented `f104ea1`). Built **two custom landing pages** by direct `event_page` SQL (validated against the real contract first, ISR-purged): a test ocarina page + the **real Festival Mbois 11 / Malang Menyala** page (`epg_9370435c…`, 17 blocks — showcase style, real content + honest placeholders, real tickets untouched, the festival's own **glowing-orb** hero artwork self-hosted). Driving it live surfaced **3 shared-feature UI bugs**, fixed + committed (`1749989`, pushed, prod git reconciled): scroll-reveal `opacity:0` left viewport-taller blocks (tickets/map) **permanently invisible on Chromium** → made transform-only; 11px eyebrow/label text bumped; replaced the ugly CSS orb with a generic hero **`sideImage`** field. Gotcha: `PageDoc` is parsed in `apps/api` (Bun in-memory) so a new contracts field needs an **api restart**; console-editor publishes and direct-DB writes **clobber each other** (user chose DB as source of truth, pausing console edits). |
+| [024](session-024-2026-07-16.md) | 2026-07-16 | Deploy `70e4aec` (**AI page-gen, Audience CRM, ticket capacity, custom-domains free-tier fix**, 94 commits — largest pull yet) to prod; new Cloudflare screenshot Worker; hero-artwork migration; **custom domains verified LIVE end-to-end** | `1749989`→`70e4aec`, **+1 migration** (84→85, additive `event.max_tickets` + nullable `ticket_type.quota`); AI landing-page generation enabled live (Claude Opus 4.8, **OAuth** token from the operator's Keychain — no refresh loop, user's explicit choice over the doc's API-key recommendation); built + deployed a **new standalone Cloudflare Browser Rendering Worker** (`infra/cf-screenshot-worker/`, outside the pnpm workspace) backing the AI page-gen URL-screenshot feature, verified live end-to-end; **custom-domains free-tier fix shipped AND proven live** — user flipped the `eventopia.my` zone Full-strict→Full, a test domain (`custom-test.biji.uk`) walked the full `PENDING→VERIFIED→PROVISIONING→LIVE` path against the real Cloudflare API and served real HTTPS traffic (`200`, not `526`) — **refutes session-023's Enterprise-SNI blocker**, released/cleaned up after; hero-artwork migration done for the real Mbois page via direct S3 upload + DB update (no organizer console credentials available), ocarina page had nothing to migrate; console/web-public rebuilt, api/workers restarted, re-checked stable ~50min later, 0 new errors both passes. **Feature-level smoke test** (a short-lived token minted with the real prod signing key, scoped to the test org, user-approved): ticket-cap enforcement, ticket-visibility toggle, and the sliding-banner block all **proven live** with real API calls (real `409` on cap overflow, real image render) then fully cleaned up; found a real gap — Audience CRM shows 0 contacts for the org's 4 pre-existing PAID orders (no backfill for orders older than the feature). **Self-caught incident:** an `.env` line-range dump briefly printed the DO Spaces access/secret key into the transcript — flagged, rotation deferred by user request. |
 
 ## Production footprint (`app` / eventopia.my + eventopia.co.id)
 
-CF (orange, **Full-strict**) → `proxy` nginx → `app` `10.0.0.5:380xx` (PM2 under `devops`, Next bound
+CF (orange, **`eventopia.my` zone now Full, not strict** — flipped session-024 to unblock custom
+domains) → `proxy` nginx → `app` `10.0.0.5:380xx` (PM2 under `devops`, Next bound
 `10.0.0.5`). DB+Redis on `db` `10.0.0.1` (PG16, role `eventopia` w/ `BYPASSRLS`, **Redis db6**). Bun +
-pgvector installed as prereqs. No seed. checkin static served from proxy. **84 migrations applied
-(session-023). Code at `f5dc400` + landing-page UI fix `1749989` (session-023).**
+pgvector installed as prereqs. No seed. checkin static served from proxy. **85 migrations applied
+(session-024). Code at `70e4aec` (session-024, 94-commit pull — largest yet).**
+
+**AI landing-page generation (session-024):** `AI_PROVIDER=anthropic`, Claude Opus 4.8, enabled live.
+Auth is **OAuth** (`ANTHROPIC_AUTH_TOKEN`, the operator's Claude Max 20x Keychain token) — **no refresh
+loop wired in eventopia's code**, so it will start 401ing once the token expires (~8h typical) until
+someone manually re-extracts + redeploys it. URL-source screenshots go through a **new standalone
+Cloudflare Browser Rendering Worker** (`infra/cf-screenshot-worker/` in the repo, outside the pnpm
+workspace — deploys independently to Cloudflare, not to `app`/`dev`), `https://eventopia-page-screenshot.biji.workers.dev`,
+on the Workers Free tier's Browser Rendering allotment.
 
 **Observability (session-009):** GlitchTip org `eventopia` (projects `eventopia-backend`/`-web`/`-checkin`,
 `errors.biji.uk`), OpenObserve service account `eventopia-ingest@biji.uk` + stream `eventopia_api`
@@ -107,6 +117,34 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
 `eventopia-coid.conf` on proxy.
 
 ## Open follow-ups
+
+**New (session-024):**
+- ~~Custom-domains live test unfinished~~ — **done, same session**: user published the DNS records, a
+  test domain (`custom-test.biji.uk`, org `org_03f297927f184c0d`) walked the real Cloudflare API through
+  `PENDING→VERIFIED→PROVISIONING→LIVE` and served real HTTPS (`200`, not `526`) — **refutes session-023's
+  Enterprise-SNI blocker**. Test hostname + DB row released/deleted after. The two now-unneeded DNS
+  records on `biji.uk` can be removed whenever convenient.
+- **Prod's git clone is 1 commit behind `origin/main`** (`70e4aec` vs. `bbb41d5`, the `cf-screenshot-worker`
+  files the user committed directly) — zero functional drift (that path is outside the pnpm workspace,
+  not deployed via the app server), a plain `git pull` next session closes it.
+- **`ANTHROPIC_AUTH_TOKEN` has no refresh loop** — will need manual re-extraction from the operator's
+  Keychain + `.env` update + `eventopia-api` restart once the current token expires.
+- **DO Spaces `S3_ACCESS_KEY`/`S3_SECRET_KEY` were briefly exposed in a session-024 transcript** (a
+  `.env` line-range dump, self-caught, no evidence of misuse) — user deferred rotation to a later
+  session, noted here as a reminder.
+- **Audience CRM shows nothing for orders that predate the feature** — `org_03f297927f184c0d` has 4 real
+  PAID orders (2026-07-14/15) but 0 `contacts` rows; `upsertContact` only runs on new buyer checkouts, no
+  backfill exists for historical orders. Confirmed live session-024 (`GET /v1/crm/contacts` → empty despite
+  real orders). Worth a backfill script if the directory needs pre-launch customers, else accept as-is.
+- Ticket-cap enforcement, ticket-visibility toggle, and the sliding-banner block were all **click-tested
+  live** session-024 (a minted test token against a throwaway event, real `409` on cap overflow, real
+  image render) — see session-024 Part 5b. AI-gen was skipped intentionally (real Opus 4.8 cost) — route
+  confirmed wired, generation itself not yet exercised.
+- `/lp/hero-orb-mbois.png` stopgap + its passthrough branch in `apps/web-public/proxy.ts` are no longer
+  referenced by any `event_page` (confirmed) but weren't retired — harmless to leave, a code change to
+  finish if anyone wants to close it out.
+- No per-organizer rate limit on `POST /v1/events/{id}/page/generate` yet — the button is visible to
+  every organizer now that the flag is on; watch the Anthropic bill (Opus 4.8 is the premium tier).
 
 **New (session-022):**
 - **No Xendit-DIRECT organizer can collect a real payment on prod** — `canUseDirect`'s
