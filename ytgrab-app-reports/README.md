@@ -38,6 +38,7 @@ Covers cross-server work: app server deployments, proxy/nginx changes, env/secre
 
 | # | Date | Topic | Key outcomes |
 |---|------|-------|-------------|
+| [021](session-021-2026-07-20.md) | 2026-07-20 | Rotate `RESEND_API_KEY` fleet-wide — admin magic-link login broken | Resend key rotated but never propagated. Updated `apps/web/.env` + `apps/api/.env` on `app`, `apps/api/.env` on `numa` + `db` (4 files). Restarted `ytgrab-web` (app) + `ytgrab-api` (numa, db) via `pm2 restart --update-env` — no rebuild needed (runtime secret via `--env-file`). Verified magic-link send `{"status":true}`. |
 | [020](session-020-2026-06-28.md) | 2026-06-28 | Redeploy all nodes → `9abf4aa` (api 1.7.0 / web 1.10.0): audience + retention analytics + migration 0007 | Built + restarted on numa + db (api) + app (web). Migration 0007 (`download_events.client_id`). New admin Audience + Retention tabs. Phase 3 cleanup confirmed (ytgrab-api gone from app). Decision: keep ytgrab-web on app (SSR routes prevent static move to proxy). |
 | [001](session-001-2026-05-25.md) | 2026-05-25 | Production env setup | All env vars compiled; GlitchTip project `biji/ytgrab` created; `infra/docker/.env` written |
 | [002](session-002-2026-05-25.md) | 2026-05-25 | Production cutover + redeploy to `17b8ee8` | Cutover COMPLETE (native pm2, SHA `3feeba9`); both dev+app redeployed to `17b8ee8` |
