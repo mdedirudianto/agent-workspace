@@ -20,10 +20,15 @@ environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on t
 - **Env:** `dev` with a WA Graph stub (`eventopia-wa-stub`, dev-only PM2 process) and
   fake AI, but **real DOKU/Midtrans/Xendit sandbox credentials** configured (not payment
   doubles), seeded org `kopikita-e2e`. TLS via LE cert `eventopia-dev` (HTTP-01,
-  multi-SAN). **79 migrations applied (session-020). Code at `507c15c` (session-020) —
-  ahead of prod, which is still on `0bc4d61` pending the Xendit webhook fix deploy.**
-  `PUBLIC_API_BASE_URL=https://api.dev.eventopia.my` set (session-020, required for Xendit
-  BYO-keys webhook auto-registration).
+  multi-SAN). **98 migrations applied (session-025). Code at `f8515b9b` (session-025) —
+  now AHEAD of prod (`70e4aec`, 85 migrations) on both migrations and features** (refund
+  requests, ticket groups, organizer landing pages, embed/BRImo groundwork, WA BYO numbers
+  all live on dev only). `PUBLIC_API_BASE_URL=https://api.dev.eventopia.my` set
+  (session-020). **New `eventopia-wa-gateway` PM2 service** (session-025, `WA_GATEWAY_SOCKET=fake`
+  — no real Baileys socket on dev). `NEXT_PUBLIC_WEB_PUBLIC_BASE=https://dev.eventopia.my`
+  set (session-025, required or console preview links break). BRImo code present but
+  **not activated** (`BRIMO_*` unset, deliberately deferred — see session-025); still on
+  the fake in-memory object-storage stub (no `S3_*` set).
 
 ## Sessions
 
@@ -53,6 +58,7 @@ environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on t
 | [022](session-022-2026-07-14.md) | 2026-07-14 | Retroactive doc (undocumented `507c15c` prod deploy found already live) + **payment activation ladder** (`affc654`) to prod | Found prod already on `507c15c` (session-020's Xendit webhook fix), fully deployed at 10:36-10:47 that morning but never documented — retroactively recorded. Deployed `507c15c`→`affc654` (35 commits, +3 migrations 79→82): `PAYMENTS_DEFAULT_GATEWAY` fix (closes session-019 Finding 1) + new payment activation ladder (KYC/MoU + operator DIRECT approval); `admin` rebuilt, `api`/`workers`/`operator` restarted, all surfaces green. `org_03f297927f184c0d` grandfathered correctly by the migration but hit a new KYC gate (never formally submitted pre-ladder) — resolved via the real audited operator flow with placeholder bank info (owner's instruction, real info pending). **Found a platform-wide blocker:** `canUseDirect`'s `gatewayAvailable` check gates ALL Xendit-DIRECT organizers on the *platform's* Xendit credentials (still the deferred Step-1 placeholder), not the organizer's own — no Xendit-DIRECT org, including this one, can collect a real payment until Step 1 lands. Documented only, per user decision. Also: an accidental `.env` grep leaked a live WhatsApp token into the transcript (flagged, rotation optional). |
 | [023](session-023-2026-07-15.md) | 2026-07-15 | Deploy `f5dc400` (**custom landing pages + custom domains**) to prod; build 2 custom event pages; **fix landing-page UI** | `affc654`→`f5dc400` (32 commits, +2 migrations 82→84 additive: `event_page` table + RLS, `domain` cert cols): **custom event landing pages** (block editor + `data-lp` renderer), **custom domains** (Cloudflare for SaaS), and the **DIRECT-collection decouple fix** (`b21cfe8`) — which **refutes session-022's blocker**: `org_03f297927f184c0d`'s `POST /v1/payments` now returns 201 with a real Xendit-DIRECT QRIS intent, not 503. Added `CF_API_TOKEN`/`CF_ZONE_ID`/`DOMAINS_CNAME_TARGET`; rebuilt/restarted api/console/web-public. **Custom domains blocked, not live:** Cloudflare setup done (DNS + Fallback Origin `active`) and TXT ownership verifies, but cert issuance fails — `custom_origin_sni` (SNI Rewrite) is **Cloudflare Enterprise-only** and the zone is Free plan; plan/billing gate, not a code bug (documented `f104ea1`). Built **two custom landing pages** by direct `event_page` SQL (validated against the real contract first, ISR-purged): a test ocarina page + the **real Festival Mbois 11 / Malang Menyala** page (`epg_9370435c…`, 17 blocks — showcase style, real content + honest placeholders, real tickets untouched, the festival's own **glowing-orb** hero artwork self-hosted). Driving it live surfaced **3 shared-feature UI bugs**, fixed + committed (`1749989`, pushed, prod git reconciled): scroll-reveal `opacity:0` left viewport-taller blocks (tickets/map) **permanently invisible on Chromium** → made transform-only; 11px eyebrow/label text bumped; replaced the ugly CSS orb with a generic hero **`sideImage`** field. Gotcha: `PageDoc` is parsed in `apps/api` (Bun in-memory) so a new contracts field needs an **api restart**; console-editor publishes and direct-DB writes **clobber each other** (user chose DB as source of truth, pausing console edits). |
 | [024](session-024-2026-07-16.md) | 2026-07-16 | Deploy `70e4aec` (**AI page-gen, Audience CRM, ticket capacity, custom-domains free-tier fix**, 94 commits — largest pull yet) to prod; new Cloudflare screenshot Worker; hero-artwork migration; **custom domains verified LIVE end-to-end** | `1749989`→`70e4aec`, **+1 migration** (84→85, additive `event.max_tickets` + nullable `ticket_type.quota`); AI landing-page generation enabled live (Claude Opus 4.8, **OAuth** token from the operator's Keychain — no refresh loop, user's explicit choice over the doc's API-key recommendation); built + deployed a **new standalone Cloudflare Browser Rendering Worker** (`infra/cf-screenshot-worker/`, outside the pnpm workspace) backing the AI page-gen URL-screenshot feature, verified live end-to-end; **custom-domains free-tier fix shipped AND proven live** — user flipped the `eventopia.my` zone Full-strict→Full, a test domain (`custom-test.biji.uk`) walked the full `PENDING→VERIFIED→PROVISIONING→LIVE` path against the real Cloudflare API and served real HTTPS traffic (`200`, not `526`) — **refutes session-023's Enterprise-SNI blocker**, released/cleaned up after; hero-artwork migration done for the real Mbois page via direct S3 upload + DB update (no organizer console credentials available), ocarina page had nothing to migrate; console/web-public rebuilt, api/workers restarted, re-checked stable ~50min later, 0 new errors both passes. **Feature-level smoke test** (a short-lived token minted with the real prod signing key, scoped to the test org, user-approved): ticket-cap enforcement, ticket-visibility toggle, and the sliding-banner block all **proven live** with real API calls (real `409` on cap overflow, real image render) then fully cleaned up; found a real gap — Audience CRM shows 0 contacts for the org's 4 pre-existing PAID orders (no backfill for orders older than the feature). **Self-caught incident:** an `.env` line-range dump briefly printed the DO Spaces access/secret key into the transcript — flagged, rotation deferred by user request. |
+| [025](session-025-2026-07-21.md) | 2026-07-21 | Pull `main` (**WA BYO numbers, payment ladder, refunds, ticket groups, organizer landing pages, embed/BRImo groundwork**, 349 commits — largest pull yet) to **dev** | `507c15c`→`f8515b9b`; **+19 migrations** (79→98); pre-checked both data-migrations (`0080` KYC/MoU CHECK, `0087` active-phone unique index) against dev's real data before running — both clean; **new `eventopia-wa-gateway` PM2 service** added (`WA_GATEWAY_SOCKET=fake`); built web-public/console/admin sequentially under a capped heap (dev has only 417MB free RAM, 30+ other tenants on the box) — no OOM; rebuilt+rsynced `checkin` (stale since session-023); added `NEXT_PUBLIC_WEB_PUBLIC_BASE` (new required var, avoids baking `localhost` into console preview links); all surfaces green, 0 new errors. **Deliberately deferred:** BRImo left inactive (today's own `docs/launch/brimo-sandbox-validation.md` scoped dev as the last validation step, not the next one), real S3/media-CORS wiring, real Cloudflare custom-domain credentials. **Dev now ahead of prod** on both migrations (98 vs 85) and features. |
 
 ## Production footprint (`app` / eventopia.my + eventopia.co.id)
 
@@ -117,6 +123,21 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
 `eventopia-coid.conf` on proxy.
 
 ## Open follow-ups
+
+**New (session-025):**
+- **Prod is now behind dev** on both migrations (85 vs dev's 98) and features (refund requests,
+  ticket groups, organizer landing pages, embed/BRImo groundwork, WA BYO numbers all live on
+  dev only) — inverts the usual dev-catches-up-to-prod direction. Prod's pull of this range is
+  a separate, larger task: real payment-gateway credentials, real Meta WABA, real S3 — dev's
+  "leave unset" shortcuts don't apply there.
+- BRImo Layers 2a (production-key VA + phone) and 2b (URL interception) are still unrun (see
+  `docs/launch/brimo-sandbox-validation.md`). Dev is now current enough that Layer 2c is a
+  config-only follow-up (set `BRIMO_SECRET_KEY`/`BRIMO_ENVIRONMENT`, point a test org's
+  gateway at `xendit`, enable BRImo in Settings → Payments) rather than a deploy.
+- `@whiskeysockets/baileys` installed on dev but its native build scripts were skipped by pnpm
+  — harmless while `WA_GATEWAY_SOCKET=fake`; needs `pnpm approve-builds` before ever flipping
+  dev to a real Baileys socket (`WA_GATEWAY_SOCKET=miaw`).
+- No real WhatsApp BYO-number pairing tested yet on dev (fake transport only).
 
 **New (session-024):**
 - ~~Custom-domains live test unfinished~~ — **done, same session**: user published the DNS records, a
