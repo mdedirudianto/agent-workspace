@@ -66,6 +66,8 @@ environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on t
 | [025](session-025-2026-07-21.md) | 2026-07-21 | Pull `main` (**WA BYO numbers, payment ladder, refunds, ticket groups, organizer landing pages, embed/BRImo groundwork**, 349 commits — largest pull yet) to **dev** | `507c15c`→`f8515b9b`; **+19 migrations** (79→98); pre-checked both data-migrations (`0080` KYC/MoU CHECK, `0087` active-phone unique index) against dev's real data before running — both clean; **new `eventopia-wa-gateway` PM2 service** added (`WA_GATEWAY_SOCKET=fake`); built web-public/console/admin sequentially under a capped heap (dev has only 417MB free RAM, 30+ other tenants on the box) — no OOM; rebuilt+rsynced `checkin` (stale since session-023); added `NEXT_PUBLIC_WEB_PUBLIC_BASE` (new required var, avoids baking `localhost` into console preview links); all surfaces green, 0 new errors. **Deliberately deferred:** BRImo left inactive (today's own `docs/launch/brimo-sandbox-validation.md` scoped dev as the last validation step, not the next one), real S3/media-CORS wiring, real Cloudflare custom-domain credentials. **Dev now ahead of prod** on both migrations (98 vs 85) and features. |
 | [026](session-026-2026-07-21.md) | 2026-07-21 | Unblock BRImo sandbox testing on **dev** (missing `BRIMO_SECRET_KEY`, gateway pin) | Added `BRIMO_SECRET_KEY` (BRI's own publicly-published dev key, already in the repo's committed docs — not a real secret) + `BRIMO_ENVIRONMENT=dev`; confirmed dev already has a working Xendit sandbox key (prod has none at all); `PAYMENTS_DEFAULT_GATEWAY` flipped `doku`→`xendit`→`doku`→**`xendit`** (3 restarts) — briefly scoped back to `doku` + a single pinned org (`org_3c6828c4cdd245af`, "Festival Mbois 11 - Malang Menyala", already `payment_gateway=xendit`+`xendit_direct_approved=true`, zero DB change needed), then the user explicitly asked to keep `xendit` as dev's platform-wide default after all — final state is `xendit` dev-wide; all restarts `/readyz` green, no migration/rebuild. **Next actionable step:** enable BRImo for that org in Console → Settings → Payments (left for the user), then the phone/embed-page test in `docs/launch/brimo-sandbox-validation.md`. |
 | [028](session-028-2026-07-22.md) | 2026-07-22 | Deploy **Google sign-in (better-auth), policy pages, "one WhatsApp number"** (24 commits) to prod | `59985653`→`edbd0ab`; **+2 migrations** (98→100, `ba_*` better-auth tables + RLS deny-all); found + fixed a stale `API_BASE_URL=http://127.0.0.1:38001` on prod that would have broken Google's redirect-uri check outright, added the missing `CONSOLE_BASE_URL`, generated `BETTER_AUTH_SECRET` on-host; console (0.22.0) + web-public (0.16.0) rebuilt, api (0.29.0)/workers restarted, operator untouched; **hit and fixed a real gotcha**: `pm2 restart <name> --update-env` doesn't re-read `ecosystem.config.cjs`, so the first restart silently kept the stale env — caught by a live smoke test, fixed via `pm2 restart ecosystem.config.cjs --only ... --update-env`. Verified end-to-end with a real Playwright click-through to a genuine `accounts.google.com` sign-in page (correct `client_id`/PKCE/`redirect_uri`); WA landing-page CTAs confirmed auto-inheriting the existing `WA_PLATFORM_NUMBER` with zero extra config. All 5 PM2 procs green, 0 unstable restarts. |
+| [029](session-029-2026-07-22.md) | 2026-07-22 | 🟢 **Deploy the check-in white-screen fix (LIVE)** + panitia WhatsApp sign-in, payment-method toggles, org-name self-heal, custom-domain embed page (53 commits) to prod | `edbd0ab`→`b63c7200`; **+2 migrations** (100→102, additive `domain.target` + `organizer_account.disabled_payment_methods`); fixed `VITE_TICKET_PUBLIC_KEY` (the session-027 outage — wrong encoding, independently re-derived and confirmed matching), added missing `CHECKIN_BASE_URL` + the undocumented-in-`.env.example` `NEXT_PUBLIC_CHECKIN_URL`; console (0.26.0)/web-public (0.18.0) rebuilt, checkin (0.5.0) rebuilt + redeployed to `proxy` (old broken dist backed up first), api/workers restarted via the ecosystem-file form from the start (no repeat of session-028's gotcha). **Playwright-verified live: `checkin.eventopia.my` renders 0 console errors, full staff sign-in screen** — the 6+-week outage is over on prod. `dev` still needs the same fix (out of scope this session). All PM2 procs green, `↺:1` each. |
+| [030](session-030-2026-07-22.md) | 2026-07-22 | Root-cause: creating a duplicate-name event 500s ("Terjadi kesalahan internal") | **Read-only investigation, nothing changed on either server.** User hit the error creating "Festival Mbois 11 - Concert"; `eventopia-api` logs showed the real cause — a `DrizzleQueryError` unique-violation on `event_organizer_slug_uq` (the organizer already had a same-named `DRAFT` event from 2026-07-17, auto-generated slugs collided), uncaught in `createEventRoute` and uncaught by the global `onError` handler, which has no `23505` case — falls through to the generic 500. Confirmed this is a real gap: 5+ other modules in the codebase already catch unique-violations this way, the events module is the outlier. **Bug filed** in the `eventopia` repo's own `docs/engineering/known-issues.md` (file:line pointers + fix direction); code fix explicitly **not implemented** per user instruction — documentation only. |
 | [027](session-027-2026-07-21.md) | 2026-07-21 | 🔴 **Root-cause: `checkin.eventopia.my` white-screens on boot** (`invalid base64url character`) — **prod AND dev both down** | **Read-only investigation, nothing changed.** User reported an uncaught `invalid base64url character` on prod check-in and asked whether it was "not yet built" — it's the opposite: it *was* built, with a malformed value baked in. `VITE_TICKET_PUBLIC_KEY` on both hosts is the **standard-base64 SPKI DER** value copy-pasted from the adjacent `EVENTOPIA_ED25519_PUBLIC_KEY` (`MCowBQYDK2VwAyEA…=`), but `apps/checkin/src/config.ts:32` decodes it as **base64url of the raw 32 bytes** — `/` and `=` aren't in the base64url alphabet, so `packages/qr/src/encoding.ts:57` throws at **module top level**: the ES module never finishes evaluating, React never mounts, `#root` stays empty, and **GlitchTip sees nothing** (Sentry.init is in the same dead module graph). Reproduced live on prod with Playwright (`index-BqzWQyxm.js`, 2026-07-10); the hash in the user's report (`index-DJKbUFQ1.js`) turned out to be **dev's** bundle, built today by session-025 — both environments broken independently, same cause. **Broken since at least 2026-06-24**: both archived prod dists on `proxy` contain the same bad value, so **there is no known-good build to roll back to** — forward-fix only. Decoded the value to prove both defects (44-byte DER-wrapped, not raw 32; standard base64, not base64url) and computed the correct values against each host's own signing key: prod `JRLeS3Gqgqa6Hb_Qfg9aYxgbcV8MpIaf3kxNje4DNds`, dev `SXKtc6W8-wRzdT0JkxuRRJGUag_mDzzCR0Xeyhw5f54`. Bounded the security impact by tracing the runtime override (`EventGateSelector.tsx:58` → `savePublicKey` → `resolvePublicKey`): a device that can scan has already overwritten the build-time key, so the fail-soft-to-DEV-key path — whose *private* half is committed in `packages/keys` — isn't reachable for scanning. **Why it survived 6 weeks:** deploy verification was `curl` status only (sessions 009/014 both recorded `checkin.eventopia.my | 200` — a static SPA 200s even when its JS throws), nothing validates the value at build time, and check-in is only exercised at a real event. **Fix proven live, not inferred:** a controlled A/B against the production bundle (SW blocked, `/assets/index-*.js` intercepted, that **one string** swapped in-flight and nothing else) took the page from `invalid base64url character` + empty `#root` to **0 console errors and a fully rendered staff login screen** — so the env value is the only defect, with no second bug behind it; WebCrypto `importKey('spki')→exportKey('raw')` further confirmed both computed values are **byte-identical** to what the API ships as `bundle.publicKey` (no split-brain after the fix). Also measured in-browser: `window.__SENTRY__` undefined (**telemetry blind spot proven, not assumed**) while the SW registers fine (separate classic script). **⚠️ New operational finding:** the Workbox precache holds the stale `index.html` **and** the crashing bundle and serves them ahead of the network (it silently defeated the first interception attempt) — so after the fix deploys, an installed device **white-screens once more on the first load** and only boots on the **second**; door staff must be told "if it's still blank, close and reopen once". Fix handed to a coding agent: correct the env + rebuild/redeploy, plus repo hardening (shared `parseEd25519PublicKey` normalizer accepting all 3 encodings, **build-time guard that fails the build instead of the browser**, a third `VITE_TICKET_PUBLIC_KEY=` line emitted by `generate-keypair.ts` to kill the copy-paste trap at source, tests, browser-render deploy check). |
 
 ## Production footprint (`app` / eventopia.my + eventopia.co.id)
@@ -73,10 +75,11 @@ environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on t
 CF (orange, **`eventopia.my` zone now Full, not strict** — flipped session-024 to unblock custom
 domains) → `proxy` nginx → `app` `10.0.0.5:380xx` (PM2 under `devops`, Next bound
 `10.0.0.5`). DB+Redis on `db` `10.0.0.1` (PG16, role `eventopia` w/ `BYPASSRLS`, **Redis db6**). Bun +
-pgvector installed as prereqs. No seed. checkin static served from proxy (currently white-screening —
-see session-027). **100 migrations applied (session-028). Code at `edbd0ab` (session-028) — includes
-tonight's earlier undocumented `59985653` BRImo/Xendit-switch deploy plus session-028's 24-commit
-Google sign-in / policy-pages / one-WhatsApp-number pull.**
+pgvector installed as prereqs. No seed. checkin static served from proxy — **fixed and live as of
+session-029** (was white-screening since ≥2026-06-24, see session-027). **102 migrations applied
+(session-029). Code at `b63c7200` (session-029) — includes the check-in key-encoding fix + panitia
+WhatsApp sign-in, per-organizer payment-method toggles, org-name self-heal onboarding, and
+custom-domain embedded-page target (53 commits since session-028's `edbd0ab`).**
 
 **Google sign-in (session-028):** "Continue with Google" on the organizer console, via better-auth
 — OAuth dance only, bridges into the same identity funnel as every other login channel (one account
@@ -142,6 +145,29 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
 
 ## Open follow-ups
 
+**New (session-030):**
+- **Event-creation 500 on duplicate slug** — `createEventRoute` (`apps/api/src/modules/events/module.ts:73-88`)
+  doesn't catch a unique-violation on `event_organizer_slug_uq`, and the global `onError` handler
+  (`apps/api/src/app.ts:721-746`) has no `23505` case, so it surfaces as an opaque 500 instead of a
+  clear "an event with this name already exists" message. Filed in the `eventopia` repo's
+  `docs/engineering/known-issues.md` with fix direction (catch + `409`, or auto-disambiguate the
+  slug); **not fixed, not committed in that repo** — user's explicit call to document only this
+  session. See session-030.
+- Confirm with the user whether the pre-existing `evt_8543d237-2d6a-4873-97d8-391bbc2ffd0b`
+  ("Festival Mbois 11 - Concert", `DRAFT`, created 2026-07-17) should be kept, renamed, or deleted —
+  it's what's blocking today's same-named event from being created in the meantime.
+
+**New (session-029):**
+- **`checkin.dev.eventopia.my` still white-screens** — the `dev` host carries the same defect with
+  its own key value (`SXKtc6W8-wRzdT0JkxuRRJGUag_mDzzCR0Xeyhw5f54`, computed session-027), explicitly
+  out of scope for this prod-only deploy. Needs its own `.env` fix + rebuild + rsync on `dev`.
+- **Tell door staff:** installed devices need two loads to recover post-deploy (Workbox precache) —
+  not yet verified against a real installed device, only a fresh browser load. Verify before any event.
+- **`.env.example` doc gap:** `NEXT_PUBLIC_CHECKIN_URL` (read by `apps/console/lib/config.ts:77`) isn't
+  documented in `.env.example` at all — found live-grepping, not from the docs. Small doc PR worth doing.
+- Payment-methods UI, org-name onboarding, and domain-target/embed page are live but only
+  route-reachability tested (no organizer login available this session) — worth a real click-through.
+
 **New (session-028):**
 - Nothing outstanding from the Google sign-in / policy-pages / WA-number deploy itself — verified
   end-to-end including a real click-through to Google's live sign-in page.
@@ -153,27 +179,18 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
   Session-028 hit this live (Google's redirect_uri stayed wrong until caught by a smoke test);
   sessions 008/013 hit an adjacent version of the same class of bug.
 
-**New (session-027) — 🔴 check-in PWA is DOWN on prod and dev:**
-- **`VITE_TICKET_PUBLIC_KEY` is the wrong encoding on both hosts** (`app:.env:66`, `dev:.env:68`) —
-  set to the standard-base64 SPKI DER value copy-pasted from the adjacent
-  `EVENTOPIA_ED25519_PUBLIC_KEY`, but `apps/checkin/src/config.ts:32` decodes it as base64url of the
-  raw 32 bytes. The `/` and `=` throw at **module top level** → white screen, no React, no Sentry
-  event. Correct values are computed in session-027: prod `JRLeS3Gqgqa6Hb_Qfg9aYxgbcV8MpIaf3kxNje4DNds`,
-  dev `SXKtc6W8-wRzdT0JkxuRRJGUag_mDzzCR0Xeyhw5f54`. **Not yet applied** — needs approval + rebuild + redeploy.
-- **No known-good build to roll back to** — both archived prod dists on `proxy` carry the same bad
-  value. Forward-fix only.
-- **Repo hardening still open:** shared `parseEd25519PublicKey` normalizer in `packages/qr`, a
-  build-time guard in `apps/checkin/vite.config.ts` that fails the build instead of the browser,
-  a third `VITE_TICKET_PUBLIC_KEY=` line from `packages/keys/scripts/generate-keypair.ts`, and tests.
-- **Deploy verification gap:** sessions 009/014 recorded `checkin.eventopia.my | 200` — a static SPA
-  200s even when its JS throws. Deploy checks for static frontends need a real browser render.
-- **⚠️ Installed devices need TWO loads to recover after the fix ships.** Measured in session-027:
-  the Workbox precache holds the stale `index.html` **and** the crashing bundle and serves them ahead
-  of the network, so the first post-deploy load still white-screens; the SW updates in the background
-  and the second load boots. **Tell door staff "if it's still blank, close and reopen once"** and
-  verify on a real installed device before any event.
+**session-027 — 🟢 check-in PWA outage resolved on prod (session-029), dev still open:**
+- ~~`VITE_TICKET_PUBLIC_KEY` is the wrong encoding~~ — **fixed on prod (session-029)**, live and
+  Playwright-verified (0 console errors, staff screen renders). **`dev` still has the same defect**
+  (`.env:68`) — see session-029's new follow-up above.
+- Repo hardening (shared `parseEd25519PublicKey` normalizer, build-time guard in
+  `apps/checkin/vite.config.ts`, third `generate-keypair.ts` output line, tests) — **all shipped**,
+  merged as part of the same branch session-029 deployed.
+- **Deploy verification gap** (sessions 009/014 recorded `curl 200` only, which a white-screened SPA
+  still returns) — closed going forward: session-029 verified with a real Playwright render + console
+  error check, not `curl`.
 - **Unanswered:** has any real event run check-in since 2026-06-24? If so, staff had no working
-  scanner at the door. Needs a direct answer from the user.
+  scanner at the door for ~6 weeks. Still needs a direct answer from the user.
 
 **New (session-026):**
 - **BRImo Layer 2c is now config-ready but not yet exercised.** `org_3c6828c4cdd245af`
