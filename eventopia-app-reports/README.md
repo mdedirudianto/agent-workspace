@@ -76,6 +76,8 @@ environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on t
 | [035](session-035-2026-07-23.md) | 2026-07-23 | Activate real organizer **"Ocarinesia"** (`org_b6966137a3254ada`) for platform payment collection — KYC verified, MoU signed, verification badge | Traced identity via the Redis-only account→organizer link (`account.primary_phone` → `membership:{phone}` → `org_b6966137a3254ada`, slug `ocarinesia`); found `organizer_account.status` already `ACTIVE` but `kyc_status=UNVERIFIED` and `mou_status` reset to `GENERATED` by an accidental MoU-regenerate one minute after the user had already signed it earlier the same morning (superseded the signed doc, per the ladder's own versioning design). Plan reviewed + approved by user before any write. Direct-DB'd the same effect as the operator console's `kyc.approve`/`mou.sign` actions (`organizer_payout_profile.kyc_status→VERIFIED`, `mou_status→SIGNED`; `mou_document.status→SIGNED`) plus `organizer_account.verification_badge→VERIFIED` (user-requested), all in one transaction, independently re-verified after commit. Deliberately did **not** hand-write matching `operator_audit_log` rows — that table is sha256 hash-chained and append-only; fabricating entries in a compliance-relevant audit trail isn't appropriate even when algorithmically correct, so this session file is the record instead. Re-derived `deriveOrganizerPaymentCapability` by hand: stage now **`PAID_PLATFORM`** (platform-only, per user's explicit choice — no Xendit DIRECT approval added). Org has no BYO gateway keys, so it collects via the platform's own Xendit (live, BRI/BNI/MANDIRI/PERMATA VAs since session-032). Payout bank details left empty — user explicitly deferred ("no need payout"); collection works without them, disbursement will need them later. |
 | [036](session-036-2026-07-23.md) | 2026-07-23 | **Live production payment-gateway smoke test** — QRIS, generic VA, BRI VA (BRImo), BNI/BRI diagnostic, all via the **platform** Xendit gateway | Real disposable organizer (email-OTP signup, OTP read from Redis since `devCode` is prod-disabled) pushed to PAID_PLATFORM tier (KYC via a disposable operator account, MoU via organizer self-service) → real event + paid ticket type published → 3 real buyer checkouts, concurrently with session-035's real Ocarinesia activation (explains this session's own +2 order/payment_intent delta, independently verified as unrelated). **QRIS ✅** real Xendit QR (not the fake-provider marker). **Generic VA ❌** real `400 BANK_NOT_ACTIVATED_ERROR` for BCA (confirmed `collectionMode:PLATFORM`, zero stray `payment_intent`) — root cause: the method is hardcoded to `bank_code:'BCA'`, the one bank not activated on the platform account. **BRI VA via BRImo ✅** real VA, decrypted from the redirect payload. **Diagnostic** (`xendit-channels.ts`, bypasses the app): both BRI and BNI mint fine on the platform key — proves the VA failure is avoidable, not a Xendit-side gap. Filed as a known issue (doc only, fix deferred per user instruction) — 3rd local-only commit on top of session-033's pending push. All test data (org/event/tickets/orders/intents/operator) deleted; row-count diff independently verified as real unrelated traffic (session-035's), not leakage. |
 | [037](session-037-2026-07-23.md) | 2026-07-23 | **Root-cause: "Malang Creative Fusion" BRImo "belum aktif"** (their own Xendit account has BRI **Fixed-VA** off — a Xendit-side bug) + built a **VA-activation proof script** + found **v3 Payments** as an in-app workaround | Read-only investigation + tooling + docs; no deploy/config/app-code change. MCF = `org_03f297927f184c0d` = the org sessions 031/032 called **EPOCHSTREAM** (Xendit business `67e001d933376768bcd990ff`, `account_holder_name:"EPOCHSTREAM"`), running "Festival Mbois 11". **Root cause:** MCF collects **DIRECT** through its own key `…5GIJ` whose BRI Fixed VA returns `BANK_NOT_ACTIVATED_ERROR`, so the BRImo BRI-VA mint 422s "belum aktif"; Ocarinesia works because it collects **PLATFORM** (platform account has BRI). Proven 4 ways (`organizer_payment_method_status` DIRECT/BRIMO=NOT_ACTIVATED, 10 live API logs, live Playwright repro, `embed_page` scope = 1 active BRImo embed). Built **`scripts/check-xendit-va-activation.mjs`** (dependency-free, safe to hand to the organizer) probing **Fixed VA / Invoice VA / v3 Payments** per bank; ran on the platform key + MCF's decrypted key. **Invoice VA is NOT an escape hatch** (raw dump: BRI `collection_type:POOL`, no `bank_account_number`, on create + GET-refetch — hosted-page only; binding a Fixed VA needs an active Fixed VA). **v3 `/v3/payment_requests` IS** — returns a raw 17-digit BRIVA prefix `13282` (same corp code as working BRImo VAs) even with Fixed VA off, tapping the VA-Aggregator activation the org already has. **Re-confirmed a Xendit-side bug:** MCF re-activated BRI Fixed VA + confirmed, yet the API still 400s. Updated `known-issues.md` (escape-hatch findings + dev-agent note: migrate BRImo VA mint to v3 Payments — redirect builder unchanged, new `payment.succeeded` webhook the real work, verify end-to-end first). App-repo commits `7e6cf7df`/`5056cec9`/`99d0ef0b`. No `payment_intent` persisted for any failed attempt; all Xendit test artifacts unpaid/auto-expiring. |
+| [038](session-038-2026-07-23.md) | 2026-07-23 | Deploy **per-bank VA selection + Xendit Fixed→v3 fallback** (38 commits) to prod; hit + worked around a **`drizzle-kit migrate` CLI failure** | `fc32f4f1`→`66c1a329`; **+2 migrations** (106→108, additive `organizer_account.disabled_va_banks` + `organizer_payment_method_status.bank_code`). Buyers now pick a VA bank, organizers toggle banks per-method, and the Xendit adapter falls back Fixed→v3 when a bank sits on the VA-Aggregator track but not Fixed VA (the fix that came directly out of session-037's BRImo root-cause). Caught that the new deploy note's "no DB migration" claim only covers the later of the two bundled merges — checked the migrator cursor (`1784778344153`) against both new `when` values before running, confirmed no repeat of sessions 032/033's cursor-skip landmine. **`pnpm --filter @eventopia/db db:migrate` failed outright** (CLI swallowed the real error behind its spinner, `ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL`, no partial DDL) — worked around via the direct `drizzle-orm` migrator script (`run-migrate.mjs`, already sitting untracked on prod from session-032/033), which applied both migrations cleanly; independently verified via `information_schema`. Console (0.30.0)/web-public (0.21.0) rebuilt, api (0.40.0)/workers restarted; operator/checkin untouched. All 4 processes stable, 0 crash loops. **Live-proved the v3 fallback against real Xendit** (platform key, `PROBES=fixed,v3 BANKS=BRI` — both return a raw BRI VA, `13282…` prefix) and Playwright-verified MCF's real checkout page (0 new console errors). **Not done — carried forward:** the mandatory Xendit Dashboard "Payment" webhook (platform account + MCF's DIRECT account) — without it a v3-minted VA mints but never settles; MCF's BRImo is therefore still not fully fixed in practice. |
+| [039](session-039-2026-07-24.md) | 2026-07-24 | **Live payment smoke test** — baseline (disposable org) + Ocarinesia (real event, all methods) + MCF (real BRImo event); found + filed a real bug | No deploy/config change — pure verification of session-038's deploy via real `POST /v1/payments` calls against real Xendit, all test data deleted after (0 residue verified against real pre-existing baselines). **Baseline (disposable org):** QRIS/VA(BRI)/BRIMO all ✅. **Ocarinesia** (all methods, nothing organizer-disabled): QRIS ✅, VA BRI/BNI/MANDIRI/PERMATA ✅ (4 real VAs), BRIMO ✅; VA-BCA correctly rejected by Xendit but **found a real bug** — the app returns it as a retryable 503 instead of terminal 422 (v3's `INVALID_MERCHANT_SETTINGS` isn't in `CHANNEL_NOT_ACTIVATED_CODES`), filed in the app repo's `known-issues.md` (`2dfcb741`, not pushed); e-wallets (GOPAY/OVO/DANA/SHOPEEPAY) initially failed on my own test's missing fields (`returnUrl`/buyer phone), retried correctly and confirmed genuinely NOT_ACTIVATED — a Xendit-dashboard gap, not a code bug. **MCF (real live "Festival Mbois 11 - Concert by BRImo"):** QRIS ✅ (own DIRECT account, merchant "EPOCHSTREAM"); **BRIMO ✅ — the actual target** — minted via the v3 fallback (`providerPaymentId` prefixed `pr-`), the exact flow that 422'd before session-038. Mint proven; full real-money settlement not yet exercised (dashboard webhook confirmed set by the user). |
 
 ## Production footprint (`app` / eventopia.my + eventopia.co.id)
 
@@ -83,13 +85,15 @@ CF (orange, **`eventopia.my` zone now Full, not strict** — flipped session-024
 domains) → `proxy` nginx → `app` `10.0.0.5:380xx` (PM2 under `devops`, Next bound
 `10.0.0.5`). DB+Redis on `db` `10.0.0.1` (PG16, role `eventopia` w/ `BYPASSRLS`, **Redis db6**). Bun +
 pgvector installed as prereqs. No seed. checkin static served from proxy — **fixed and live as of
-session-029** (was white-screening since ≥2026-06-24, see session-027). **106 migrations applied
-(session-033, `0103_brimo_org_secret_key` fixed live after the same class of migration-journal
-timestamp bug as session-032's 0102 — this time caused by session-032's own remediation; the
-journal is now fixed at the repo level for both incidents plus a dormant third span — see
-session-033). Code at `fc32f4f1` (session-033) — per-method payment gateway status + BRImo
-per-org keys (21 commits since session-032's `ac2504e5`, via `7aa5ec1c`).** BRImo/BRI-VA collection remains broken for `org_03f297927f184c0d`
-(EPOCHSTREAM) specifically — see the Payments section below and session-032.
+session-029** (was white-screening since ≥2026-06-24, see session-027). **108 migrations applied
+(session-038, `0106_va_bank_prefs` + `0107_va_bank_status` — additive, no landmine hit this time,
+though `drizzle-kit migrate`'s CLI itself failed and had to be worked around via a direct
+`drizzle-orm` migrator script; see session-038). Code at `66c1a329` (session-038) — per-bank VA
+selection + Xendit Fixed→v3 fallback (38 commits since session-033's `fc32f4f1`).** BRImo/BRI-VA
+collection remains broken **in practice** for `org_03f297927f184c0d` (EPOCHSTREAM/MCF) — the v3
+fallback code is live and proven against Xendit's real API (session-038), but the required Xendit
+Dashboard "Payment" webhook hasn't been set yet, so a v3-minted VA would mint but not settle. See
+the Payments section below and sessions 032/037/038.
 
 **Google sign-in (session-028):** "Continue with Google" on the organizer console, via better-auth
 — OAuth dance only, bridges into the same identity funnel as every other login channel (one account
@@ -154,6 +158,42 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
 `eventopia-coid.conf` on proxy.
 
 ## Open follow-ups
+
+**New (session-039):**
+- **A real bug was found and filed, not yet fixed:** the Xendit v3 fallback (session-038) mints
+  correctly on every rescued bank, but a bank dead on **both** Fixed VA and v3 (BCA on the
+  platform account today) gets misclassified — buyer sees a retryable 503 instead of the correct
+  terminal 422. Root cause + fix direction filed in the app repo's `docs/engineering/known-issues.md`
+  (commit `2dfcb741`, **local-only, not pushed** — same pattern as sessions 032/033/036). Suggested
+  fix is a one-line addition to `CHANNEL_NOT_ACTIVATED_CODES` in `packages/payments/src/errors.ts`.
+- **E-wallets (GOPAY/OVO/DANA/SHOPEEPAY) are not activated on the platform Xendit account at all**
+  — confirmed via real `POST /v1/payments` calls with correct required fields (`returnUrl`/buyer
+  phone), all 4 correctly 422 `NOT_ACTIVATED`. Not a code bug — needs Xendit dashboard activation
+  before any e-wallet checkout can work platform-wide.
+- **BRImo-on-MCF: mint proven live, settlement still unproven with real money.** The Dashboard
+  "Payment" webhook is confirmed set (platform + MCF's DIRECT account), and the mint step works
+  end-to-end via the v3 fallback, but no completed real payment has been run through it yet —
+  worth closing with one small real transaction next time this org is touched.
+
+**New (session-038):**
+- **The mandatory Xendit Dashboard "Payment" webhook step has NOT been done** — per
+  `docs/launch/xendit-va-v3-fallback-deploy.md`, a v3-minted VA **mints but never settles** until
+  the Dashboard webhook is pointed at `/webhooks/payments/xendit` (platform account) and
+  `/webhooks/payments/xendit/{organizerId}` (each DIRECT org, e.g. MCF/EPOCHSTREAM
+  `org_03f297927f184c0d`). This is a manual, out-of-band action only the account owner can do.
+  **MCF's BRImo is therefore still not fully fixed in practice** even though the code fallback is
+  live and proven against Xendit's real v3 API this session.
+- `drizzle-kit migrate`'s CLI failed outright on this deploy (spinner swallowed the real error,
+  generic `ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL`) — worked around via the direct `drizzle-orm`
+  migrator script rather than root-caused. Same family as session-009's "silent-failure gotcha".
+  If it recurs a third time, worth reading `drizzle-kit`'s own migrate-command source the way
+  sessions 032/033 read `drizzle-orm`'s migrator source. The workaround script
+  (`~/eventopia/run-migrate.mjs` on prod, untracked) is now de-facto load-bearing — consider
+  committing a proper version instead of leaving it as a stray on-host file.
+- No reconciler backstop for v3-minted VAs yet (`getPaymentStatus` doesn't poll `pr-…` ids) — a
+  dropped `payment.capture` webhook has no automatic recovery. Watch via the SQL query in
+  `docs/launch/xendit-va-v3-fallback-deploy.md` if a v3 VA order looks stuck once the dashboard
+  webhook is set.
 
 **New (session-037):**
 - **MCF ("Malang Creative Fusion" / `org_03f297927f184c0d`) BRImo still down — Xendit-side bug.**
