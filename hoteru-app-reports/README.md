@@ -77,6 +77,14 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
       against `technoparkmalang.hoteru.co.id` — that verification is still owed.
 - [ ] Drop the git stash left in central `~/hoteru` on `app` from session-004 (superseded local
       drift — safe once confirmed unneeded).
+- [ ] Push the rebuilt `management` SPA (session-005) from `app` to `proxy:/var/www/hoteru-tpm-app/`
+      once proxy SSH access is sorted — cosmetic only, doesn't block anything live.
+- [ ] Investigate the `web-proxy` SSH alias host-key mismatch found in session-005.
+- [ ] Central `~/hoteru` is 3 commits behind `origin/main` (as of session-005) — separate,
+      lower-priority redeploy.
+- [ ] Delete or mark obsolete `hoteru.nginx.conf` / `runtime.sh` / `docs/deployment-technopark.md`
+      in the repo — describe an unrelated single-VPS topology, caused confusion in both
+      session-004 and session-005.
 
 ## Sessions
 
@@ -86,3 +94,4 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 | [Session 2](session-002-2026-06-18.md) | 2026-06-18 | First per-hotel tenant `technoparkmalang.hoteru.co.id` — dedicated clone/DB/backend, technopark booking site + mgmt SPA, minimal seed | Done |
 | [Session 3](session-003-2026-07-16.md) | 2026-07-16 | `app.hoteru.uk` login fix — prod DB was never seeded, ran `db:seed`, verified in browser | Done |
 | [Session 4](session-004-2026-07-25.md) | 2026-07-25 | Deployed PR #2 (multi-tenant, affiliates, gallery CMS) to central prod + Technopark Malang tenant; found tenant DB has no migration history (db-push only) | Done |
+| [Session 5](session-005-2026-07-29.md) | 2026-07-29 | Fixed Technopark referral redirect (dinoudon.my.id → technoparkmalang.hoteru.co.id); permanently fixed recurring git fetch-refspec bug on tenant clone | Done |
