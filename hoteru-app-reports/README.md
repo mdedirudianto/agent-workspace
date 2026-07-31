@@ -75,16 +75,16 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 - [ ] Technopark tenant guest-flow fixes from PR #2 (payment wording, scroll-to-top, proxy/cert
       workaround) landed on `hoteru_tpm`'s schema/code in session-004 but weren't feature-tested
       against `technoparkmalang.hoteru.co.id` — that verification is still owed.
-- [ ] Drop the git stash left in central `~/hoteru` on `app` from session-004 (superseded local
-      drift — safe once confirmed unneeded).
-- [ ] Push the rebuilt `management` SPA (session-005) from `app` to `proxy:/var/www/hoteru-tpm-app/`
-      once proxy SSH access is sorted — cosmetic only, doesn't block anything live.
-- [ ] Investigate the `web-proxy` SSH alias host-key mismatch found in session-005.
-- [ ] Central `~/hoteru` is 3 commits behind `origin/main` (as of session-005) — separate,
-      lower-priority redeploy.
 - [ ] Delete or mark obsolete `hoteru.nginx.conf` / `runtime.sh` / `docs/deployment-technopark.md`
       in the repo — describe an unrelated single-VPS topology, caused confusion in both
       session-004 and session-005.
+- [ ] New Technopark Premium Suite photo (session-006) only shows on newly-seeded/edited rows —
+      existing seeded `room_types` row keeps the old photo until manually edited or re-seeded.
+- [ ] Clean up the stale `web-proxy` entry in local `~/.ssh/known_hosts`/`/etc/hosts` (session-006:
+      confirmed it's an unrelated host, not our `proxy` — just a confusing leftover).
+- [ ] Central `~/hoteru`'s `apps/management/.env` got `VITE_PUBLIC_SITE_URLS` for the first time in
+      session-006 — worth an interactive browser check of the affiliate referral-link display next
+      time someone's in the management UI (only curl/build-verified so far).
 
 ## Sessions
 
@@ -95,3 +95,4 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 | [Session 3](session-003-2026-07-16.md) | 2026-07-16 | `app.hoteru.uk` login fix — prod DB was never seeded, ran `db:seed`, verified in browser | Done |
 | [Session 4](session-004-2026-07-25.md) | 2026-07-25 | Deployed PR #2 (multi-tenant, affiliates, gallery CMS) to central prod + Technopark Malang tenant; found tenant DB has no migration history (db-push only) | Done |
 | [Session 5](session-005-2026-07-29.md) | 2026-07-29 | Fixed Technopark referral redirect (dinoudon.my.id → technoparkmalang.hoteru.co.id); permanently fixed recurring git fetch-refspec bug on tenant clone | Done |
+| [Session 6](session-006-2026-07-31.md) | 2026-07-31 | Redeployed central `~/hoteru` + Technopark tenant to latest main (currency Rp fix, new photo); properly fixed the fetch-refspec bug for good; resolved proxy-access blocker (unrelated host, not a real issue) | Done |
