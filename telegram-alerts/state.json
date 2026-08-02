@@ -1,0 +1,17 @@
+{
+  "kuma": "2026-08-02 18:20:34",
+  "backup": "2026-07-28 21:01",
+  "openobserve": {
+    "SSH_Brute_Force_Burst": null,
+    "Fail2ban_IP_Ban": "1779865205027589",
+    "Nginx_5xx_Spike": null,
+    "App_Stderr_Spike": null
+  },
+  "netdata": {
+    "app": 1785471601,
+    "db": 1785679480,
+    "proxy": 1785691064,
+    "erp": 1785691681,
+    "monitor": 1785691687
+  }
+}

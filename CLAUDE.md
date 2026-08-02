@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is **not a code repository**. It's a documentation workspace containing session-based reports written by Claude Code across recurring sysadmin and maintenance work. There is no build, no tests, no package manager. Work here is reading, writing, and updating markdown files.
 
+One exception: [telegram-alerts/](telegram-alerts/) is a small read-only tool (not a report series) — see below.
+
 Report series in this workspace:
 
 - [disk-cleanup-reports/](disk-cleanup-reports/) — recurring macOS disk cleanup sessions for `/Users/dedi` on a 228GB disk. Each session documents what filled the disk, what was cleaned, and cumulative recovery across sessions. Sessions track *repeat offenders* (Claude.app vm_bundles, Chrome OptGuide model, Docker.raw) that regrow between sessions.
@@ -17,6 +19,7 @@ Report series in this workspace:
 - [erp-sysadmin-reports/](erp-sysadmin-reports/) — sysadmin sessions for `root@erp` (`217.15.166.117` / `10.0.0.6`, Ubuntu 24.04.4). ERPNext v16 for `gro.biz.id`, proxied via `proxy`.
 - [backup-sysadmin-reports/](backup-sysadmin-reports/) — sysadmin sessions for `root@backup` (`194.233.81.93` / `10.0.0.4`, Ubuntu 22.04.5). Pull-based backup target for `db` + `erp`.
 - [monitor-sysadmin-reports/](monitor-sysadmin-reports/) — sysadmin sessions for `root@monitor` (`217.15.162.56` / `10.0.0.3`, Ubuntu 24.04.2). Monitoring hub: GlitchTip / OpenPanel / Uptime-Kuma / Netdata / Vaultwarden.
+- [telegram-alerts/](telegram-alerts/) — **tool, not a report series.** Read-only aggregator (`pull.sh`) that pulls everything sent to the fleet's Telegram alert chat (Uptime Kuma down/up events, OpenObserve log alerts, backup failures, Netdata health alarms across all 5 cluster hosts) into `ledger.jsonl`, so alert history can be checked without copy-pasting from Telegram. Safe to run anytime — every remote call is a read-only query/grep. See its own README.md for source details and schema. OpenObserve needs local credentials (`~/.config/telegram-alerts/.env`) to pull — skipped with a warning if absent.
 - [projects-reports/](projects-reports/) — inventory of all local projects in `~/Projects/`. Documents tech stack, deploy targets, git remotes, running PM2 processes, and quick-fix deploy commands for `devops@app` and `deploy@dev`.
 - [pasarbesar-app-reports/](pasarbesar-app-reports/) — **app-scoped** reports for the pasarbesar product family.
 - [ytgrab-app-reports/](ytgrab-app-reports/) — **app-scoped** reports for the ytgrab product (`youtubegrab.com`). Docker compose stack on `app`; proxy nginx + SSL for `youtubegrab.com` / `api.youtubegrab.com`; error tracking on GlitchTip `biji/ytgrab`.
