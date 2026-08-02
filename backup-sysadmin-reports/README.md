@@ -11,6 +11,7 @@ Dedicated **backup target** for the internal cluster. Pulls daily PostgreSQL + M
 | [Session 1](session-001-2026-05-17.md) | 2026-05-17 | Initial audit & hardening | Done |
 | [Session 2](session-002-2026-05-25.md) | 2026-05-25 | Fluent Bit install — backup jobs + syslog → OpenObserve (`backup` stream, 30d retention) | Done |
 | [Session 3](session-003-2026-06-20.md) | 2026-06-20 | Tier 2 backup coverage gap — fixed broken `miawflow` job, switched Tier 2 to **auto-discovery** (9 prod DBs were unbacked-up); verified restores; routine dumps moved to least-priv `backup_reader` | Done |
+| [Session 4](session-004-2026-08-03.md) | 2026-08-03 | `grobiz-sites.sh` coverage gap — stdin-eating `ssh` in a `while read` loop meant only 1 of 11 tenant sites was ever backed up per run; fixed with a stdin redirect, verified all 11 back up | Done |
 
 ## Open follow-ups (from session 001)
 
