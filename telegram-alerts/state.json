@@ -1,5 +1,5 @@
 {
-  "kuma": "2026-08-02 18:20:34",
+  "kuma": "2026-08-02 19:09:24",
   "backup": "2026-07-28 21:01",
   "openobserve": {
     "SSH_Brute_Force_Burst": null,
@@ -8,10 +8,10 @@
     "App_Stderr_Spike": null
   },
   "netdata": {
-    "app": 1785471601,
+    "app": 1785697652,
     "db": 1785679480,
     "proxy": 1785691064,
-    "erp": 1785691681,
-    "monitor": 1785691687
+    "erp": 1785697538,
+    "monitor": 1785697701
   }
 }

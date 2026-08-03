@@ -377,3 +377,32 @@
 {"ts":"2026-08-02T18:20:27Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
 {"ts":"2026-08-02T18:20:34Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
 {"ts":"2026-05-27T07:00:05Z","source":"openobserve","alert":"Fail2ban_IP_Ban","last_satisfied_at":"1779865205027589"}
+{"ts":"2026-08-02T18:30:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-02T18:30:27Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-02T18:35:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-02T18:35:27Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-02T18:45:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-02T18:45:13Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-02T18:45:27Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-02T18:45:29Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-02T18:55:10Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-02T18:55:10Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-02T18:55:26Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-02T19:00:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-02T19:00:14Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-02T19:00:30Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-02T19:08:55Z","source":"kuma","monitor":"api.wagrab.com","status":"down","msg":"Request failed with status code 522"}
+{"ts":"2026-08-02T19:08:55Z","source":"kuma","monitor":"admin.wagrab.com","status":"down","msg":"Request failed with status code 522"}
+{"ts":"2026-08-02T19:09:04Z","source":"kuma","monitor":"meetgrab.us","status":"down","msg":"Request failed with status code 522"}
+{"ts":"2026-08-02T19:09:05Z","source":"kuma","monitor":"MeetGrab API Health","status":"down","msg":"Request failed with status code 522"}
+{"ts":"2026-08-02T19:09:22Z","source":"kuma","monitor":"wagrab.com","status":"down","msg":"Request failed with status code 521"}
+{"ts":"2026-08-02T19:09:22Z","source":"kuma","monitor":"washop.me","status":"down","msg":"Request failed with status code 521"}
+{"ts":"2026-08-02T19:09:23Z","source":"kuma","monitor":"quranchat.me","status":"down","msg":"Request failed with status code 521"}
+{"ts":"2026-08-02T19:09:24Z","source":"kuma","monitor":"youtubegrab.com","status":"down","msg":"Request failed with status code 521"}
+{"ts":"2026-08-02T19:07:32Z","source":"netdata","host":"app","alarm":"system_reboot_detection","chart":"system.uptime","status":"CRITICAL","msg":"System has rebooted within the last 10 minutes"}
+{"ts":"2026-08-02T19:05:38Z","source":"netdata","host":"erp","alarm":"system_reboot_detection","chart":"system.uptime","status":"CRITICAL","msg":"System has rebooted within the last 10 minutes"}
+{"ts":"2026-08-02T19:02:46Z","source":"netdata","host":"monitor","alarm":"system_reboot_detection","chart":"system.uptime","status":"CRITICAL","msg":"System has rebooted within the last 10 minutes"}
+{"ts":"2026-08-02T19:03:51Z","source":"netdata","host":"monitor","alarm":"system_post_update_reboot_status","chart":"system.post_update_reboot_status","status":"CRITICAL","msg":"System requires reboot after package updates"}
+{"ts":"2026-08-02T19:03:51Z","source":"netdata","host":"monitor","alarm":"system_post_update_reboot_status","chart":"system.post_update_reboot_status","status":"CRITICAL","msg":"System requires reboot after package updates"}
+{"ts":"2026-08-02T19:06:11Z","source":"netdata","host":"monitor","alarm":"system_reboot_detection","chart":"system.uptime","status":"CRITICAL","msg":"System has rebooted within the last 10 minutes"}
+{"ts":"2026-08-02T19:08:21Z","source":"netdata","host":"monitor","alarm":"system_reboot_detection","chart":"system.uptime","status":"CRITICAL","msg":"System has rebooted within the last 10 minutes"}
