@@ -13,7 +13,26 @@ Covers cross-server work: app deploys, proxy/nginx, env/secrets, schema, ERPNext
 
 **Subdomains:** `gro.biz.id` + `www` → landing · `app.` → web+API · `admin.` → admin SPA (+ same-origin `/api`) · `api.` → API · **`order.` → diner PWA (static on proxy, `/var/www/grobiz/order`, live since session-027)** · `erp.` / `*.` → ERPNext (wildcard)
 
-**Current deployed SHA:** **prod `3674b2a3`** = **`main`** — ✅ **deployed 2026-07-29 (session-031)**: 49-commit
+**Current deployed SHA:** **prod `2aafd740`** = **`main`** — ✅ **deployed 2026-08-04 (session-032)**:
+161-commit catch-up release (production had sat still 6 days since session-031) bundling 13 merged
+branches — F&B cost-of-sales now lands in the P&L (was previously in neither COGS nor Opex), F&B dine-in
+sales now deduct ingredients and book COGS (was previously silent/zero-cost), an ingredient-shortfall
+check on both the accept and pay-without-accept paths, several dine-in table/settlement guards, trial-date
+and menu-settings reconciliation backfills, and a tenant-scope security hardening on the sale/purchase
+detail + cancel routes. api `0.14.0→0.24.1`/web `→0.24.0`/admin `→0.5.0`/order `→0.3.0`/shared `→0.30.0`
+(mobile `→0.26.0` is a separate EAS pipeline, not deployed here; landing unchanged). **No new migrations**
+(`0028`/`0029` were already live). **3 manual backfills applied**: `backfill:fnb-cogs-account` (3/7 F&B
+tenants), `backfill:selling-settings` (13/13 tenants), `backfill:trial-dates` (1 tenant, paused for
+explicit user approval before writing since it touches billing data). Hit the known `drizzle-kit push`
+hang (open since session-004) **even with zero pending migrations** — killed it and completed the
+remaining deploy steps by hand. **Found `deployment/scripts/backup.sh` broken for this split-cluster
+topology** (hardcodes `localhost`, reads a `.env.production` file that doesn't exist here) — used the
+already-working `backup`-host 6h pull job instead. **Full functional smoke pass** (`smoke-test-prod.sh`
+retail+fnb) after working around a canary-credentials dead end: neither the phone/PIN nor admin-dashboard
+TOTP access was available, so set a known PIN directly via the app's own `hashPin()` (bcryptjs, matching
+`core/auth/pin.ts` exactly) scoped to exactly the two canary owner rows — both canaries now carry PIN
+`123456` going forward, closing the recurring "no canary credentials" gap for future sessions. Rollback
+`3674b2a3`. Prior: **prod `3674b2a3`** = **`main`** — ✅ **deployed 2026-07-29 (session-031)**: 49-commit
 release bundling **3 merged features** — WhatsApp self-service PIN reset, the stuck-registration
 resume-or-drop safety net, and admin customer-support tooling (PIN reset/unlock/purge/audit trail). api
 `0.12.2→0.14.0`/web `→0.17.1`/admin `→0.4.0`/mobile `→0.19.1`/shared `→0.20.0` (landing/order unchanged).
@@ -38,6 +57,20 @@ undocumented in the runbook's own smoke checklist. Rollback `1a849bf7`. Prior: *
 **Observability:** GlitchTip org `grobiz` (`errors.biji.uk`, projects api/web/admin/extension = /10–/13) · OpenObserve SA `grobiz-ingest@biji.uk` stream `grobiz_api` (`10.0.0.3:5080`) · OpenPanel projects `grobiz`/`grobiz-admin` (`analytics.biji.uk`) · GA4 `G-6C3YPF2YNR` (landing only). **WhatsApp:** Cloud API wired, webhook `api.gro.biz.id/api/webhooks/whatsapp` (system-user non-expiring token).
 
 **Open follow-ups:**
+- [ ] **`deployment/scripts/backup.sh` is broken for this split-cluster topology (found session-032):**
+  hardcodes `PGHOST:-localhost` and reads a `deployment/.env.production` file that doesn't exist on this
+  server. The real, working backup path is the `backup`-host 6h pull job (session-006) — either fix the
+  script to read the real `.env`'s `DATABASE_URL` and target `db` (`10.0.0.1`), or delete it and document
+  the `backup`-host job as canonical in `deployment-prod.md` §15.
+- [ ] **`drizzle-kit push` now confirmed to hang even with zero pending migrations (session-032, previously
+  session-004/028):** the stale-`_journal.json` false positive on `feature_flags_unique_idx` fires
+  regardless of whether the release actually touches `schema.ts`. Proposed fix still not done: skip the
+  step in `deploy.sh` outright when `git diff --quiet <prev>..<new> -- apps/api/src/db/schema/` is empty.
+- [ ] **Mobile (0.26.0) not yet shipped to app stores (session-032):** F&B dine-in pay-without-accept skew
+  window open for any mobile client < 0.25.1 until that release ships — see
+  `docs/runbooks/2026-08-03-fnb-followups-f5-f8-deploy.md` §4 for escape hatches.
+- [x] **admin@gro.biz.id / fany@gro.biz.id TOTP enrollment — ✅ RESOLVED (confirmed session-032).** Both
+  accounts now show `totp_secret` set; the "nobody has enrolled" note below (session-027) is stale.
 - [x] **WhatsApp self-service PIN reset — ✅ SHIPPED (session-031, 2026-07-28 dev / 2026-07-29 prod).** Closes
   the standing "forgotten PIN = permanent lockout" gap. `WEB_APP_URL` set in prod for the first time this
   release — required for the reset link the API WhatsApps to merchants.
@@ -58,7 +91,7 @@ undocumented in the runbook's own smoke checklist. Rollback `1a849bf7`. Prior: *
 - [ ] **Midtrans production keys (session-027):** prod still has **no** `MIDTRANS_SERVER_KEY`/`CLIENT_KEY`/`IS_PRODUCTION` (documented deferral in `.env`'s own header). Verified this degrades *safely*: the mock is structurally unreachable in prod (`isMidtransMockEnabled()`/`shouldMockQrisCharge()` hard-return `false` when `NODE_ENV==='production'`) and `isDynamicQrisAvailable()` gates on a key existing, so the diner simply never sees the QRIS button. `order.gro.biz.id` currently offers **pay-at-cashier + static-QRIS-hint only**; subscription upgrade checkout is likewise inert. When keys arrive: set the 3 server vars + `VITE_MIDTRANS_CLIENT_KEY`/`VITE_MIDTRANS_IS_PRODUCTION` (web build-time, no fallback), rebuild web, and set the Midtrans dashboard notification URL to `https://api.gro.biz.id/api/webhooks/midtrans`. `API_BASE_URL` is **already set** for this.
 - [ ] **Harden `CORS_ORIGINS` on prod (session-027):** left **unset**, deliberately reversing `deployment-prod.md`'s instruction. Unset ⇒ `origin: true` (reflect any), so the order app works regardless; setting the guide's suggested `app`+`order` value would have **silently broken the landing page's live pricing**, because `gro.biz.id` fetches `https://api.gro.biz.id/api/public/plans` genuinely cross-origin (falls back to hardcoded prices — green health checks, wrong data). The Chrome extension is a second unknown (`chrome-extension://<id>` origin). Pre-existing condition, not introduced by the deploy. To close it properly the full list is at least `https://app.gro.biz.id`, `https://order.gro.biz.id`, `https://gro.biz.id`, `https://www.gro.biz.id` + the extension ID — enumerate and verify each before setting.
 - [ ] **Order app has no error tracking (session-027):** GlitchTip org `grobiz` has projects api/web/admin/extension but **none for `order`**, so `VITE_ORDER_GLITCHTIP_DSN`/`VITE_ORDER_OPENPANEL_CLIENT_ID` are unset and the new customer-facing, payment-adjacent diner PWA ships blind. Create a GlitchTip `order` project + OpenPanel client, set both vars, rebuild + re-rsync `apps/order`.
-- [ ] **`admin@gro.biz.id` must enroll TOTP (session-027):** `ADMIN_ENFORCE_2FA=false` was commented out (line kept as an audit trail) because the new `app.ts:75` gate refuses to boot with it in production. Next admin-dashboard login will go through mandatory 2FA enrollment — supported flow, not a lockout, but nobody has done it yet. See the [admin dashboard runbook](../../Projects/grobiz/docs/runbooks/admin-dashboard.md).
+- [x] **`admin@gro.biz.id` must enroll TOTP (session-027) — ✅ RESOLVED, see session-032 entry above.**
 - [ ] **Stale tenant count in docs (fixed session-027, watch for recurrence):** reports said "4 active tenants" for months; prod actually has **7 tenants — 3 active (all F&B) + 4 suspended**, 3 of them still on pre-rename `pool-*` site names. Backfill scoping depends on this, so re-query rather than trusting the README.
 - [ ] **Confirm whether Midtrans QRIS sandbox shares the PRODUCTION merchant (session-026):** dev's sandbox QRIS codes carry real registration data — merchant `GroBiz`, city `PALEMBANG`, postcode `30152`, `merchant_id M073614114`, NMID `AID319775505877` — and Midtrans's testing docs state that for QRIS the sandbox reference points at the same Merchant ID as production. If true, a dev QR may be scannable by a real e-wallet and route **real money**. Not verified (the only test is scanning with a real phone, deliberately not done). Someone with dashboard access should confirm. **Interim rule: never scan a dev/sandbox QRIS code with a real wallet** — simulate via `simulator.sandbox.midtrans.com/v2/qris/`. Note the dev **key itself is fine**: it lacks the usual `SB-` prefix but was proven sandbox-only (authenticates on the sandbox host, `401` on prod).
 - [ ] **Stranded paid dine-in order on `MyCafe` (dev), session-026:** `ACC-SINV-2026-00141`, Rp 70.000, QRIS captured 2026-06-17, invoice still `docstatus 0` with kitchen status `cooking`. This one is **genuine** (unlike the two Cafe Suhat flags, which were stale and are now auto-closed) and its `stranded_paid_draft` flag correctly stays open. Needs a human: the cashier either completes it or it gets refunded. Not actioned here — booking or refunding a merchant's paid order is a cashier decision, not a QA one. Sandbox money on a dev tenant, so no real funds at risk.
