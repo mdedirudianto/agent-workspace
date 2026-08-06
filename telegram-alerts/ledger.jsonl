@@ -2036,3 +2036,202 @@
 {"ts":"2026-08-05T12:17:42Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
 {"ts":"2026-08-05T13:17:13Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
 {"ts":"2026-08-05T13:17:43Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T14:00:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T14:00:29Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T14:05:13Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T14:05:30Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T14:05:31Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T14:15:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T14:15:27Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T14:20:30Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T14:25:13Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T14:30:13Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: IP_LOCK_FAILED ranged fetch returned 403"}
+{"ts":"2026-08-05T14:30:14Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T14:35:14Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T14:35:30Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T14:35:31Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T14:45:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T14:45:27Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T14:45:27Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T14:50:10Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T14:50:28Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T14:55:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T14:55:16Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T15:00:30Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T15:10:13Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T15:10:29Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T15:10:30Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T15:15:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T15:20:19Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T15:20:31Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T15:25:30Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T15:40:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T15:40:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T15:40:28Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T15:45:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T15:45:27Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T15:50:10Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T16:55:14Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T17:00:15Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T17:25:33Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T17:30:31Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T17:50:28Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T17:55:29Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T19:40:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T19:45:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T20:10:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T20:15:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T20:45:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: IP_LOCK_FAILED ranged fetch returned 403"}
+{"ts":"2026-08-05T20:50:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T21:20:14Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: IP_LOCK_FAILED ranged fetch returned 403"}
+{"ts":"2026-08-05T21:20:29Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: IP_LOCK_FAILED ranged fetch returned 403"}
+{"ts":"2026-08-05T21:25:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T21:25:26Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T21:55:25Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T22:00:31Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T23:10:27Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T23:15:13Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T23:15:24Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T23:20:13Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-05T23:50:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-05T23:55:09Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-06T00:31:26Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-06T00:35:25Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-06T00:41:39Z","source":"kuma","monitor":"dev.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-08-06T00:41:41Z","source":"kuma","monitor":"dev.pasarbesar.id","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-08-06T00:41:42Z","source":"kuma","monitor":"dev.rkrt.me","status":"down","msg":"timeout by AbortSignal (48s)"}
+{"ts":"2026-08-06T00:42:41Z","source":"kuma","monitor":"dev.pasarbesar.id","status":"up","msg":"200 - OK"}
+{"ts":"2026-08-06T00:42:42Z","source":"kuma","monitor":"dev.rkrt.me","status":"up","msg":"200 - OK"}
+{"ts":"2026-08-06T00:43:39Z","source":"kuma","monitor":"dev.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-08-06T01:05:19Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-06T01:10:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-06T01:50:30Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-06T01:55:23Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-06T02:25:29Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-06T02:30:26Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-06T03:30:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-06T03:35:09Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-06T03:46:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-06T03:50:13Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-06T03:53:44Z","source":"kuma","monitor":"ytgrab Download Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-06T06:05:15Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-06T06:10:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-06T08:30:26Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: IP_LOCK_FAILED ranged fetch returned 403"}
+{"ts":"2026-08-06T08:35:26Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-06T10:55:26Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-06T11:00:32Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-05T21:29:23Z","source":"netdata","host":"app","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-08-06T04:34:59Z","source":"netdata","host":"app","alarm":"system_post_update_reboot_status","chart":"system.post_update_reboot_status","status":"CRITICAL","msg":"System requires reboot after package updates"}
+{"ts":"2026-08-06T10:01:23Z","source":"netdata","host":"app","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CRITICAL","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T15:17:18Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T15:17:38Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:00:11Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:00:41Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:10:11Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:10:41Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:17:31Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:17:41Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:50:16Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:50:36Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T17:17:27Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T17:17:37Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T18:17:27Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T18:17:37Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T19:17:09Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T19:17:39Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T20:00:10Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T20:00:40Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T21:31:22Z","source":"netdata","host":"proxy","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"CRITICAL","msg":"ML node anomaly rate"}
+{"ts":"2026-08-05T21:32:22Z","source":"netdata","host":"proxy","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"CLEAR","msg":"ML node anomaly rate"}
+{"ts":"2026-08-05T23:10:32Z","source":"netdata","host":"proxy","alarm":"system_post_update_reboot_status","chart":"system.post_update_reboot_status","status":"CRITICAL","msg":"System requires reboot after package updates"}
+{"ts":"2026-08-05T23:11:22Z","source":"netdata","host":"proxy","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"CRITICAL","msg":"ML node anomaly rate"}
+{"ts":"2026-08-05T23:15:22Z","source":"netdata","host":"proxy","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"CLEAR","msg":"ML node anomaly rate"}
+{"ts":"2026-08-06T02:17:15Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T02:17:45Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T04:17:16Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T04:17:46Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T05:17:17Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T05:17:37Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T06:17:17Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T06:17:37Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T07:00:18Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T07:00:38Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T07:09:08Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T07:09:38Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T07:17:19Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T07:17:39Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T08:17:21Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T08:17:41Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T09:17:12Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T09:17:42Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T10:00:14Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T10:00:44Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T15:42:09Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T17:00:39Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CRITICAL","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T17:42:09Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T21:01:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CRITICAL","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T21:32:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T22:01:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CRITICAL","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T22:46:01Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-08-06T09:22:05Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CRITICAL","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T15:17:26Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T15:17:36Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T15:42:08Z","source":"netdata","host":"monitor","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T16:00:16Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:00:36Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:10:08Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:10:38Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:17:28Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:17:38Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:50:18Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T16:50:38Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T17:00:38Z","source":"netdata","host":"monitor","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CRITICAL","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T17:17:28Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T17:17:38Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T17:42:08Z","source":"netdata","host":"monitor","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T18:17:28Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T18:17:38Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T19:17:08Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T19:17:38Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T20:00:18Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T20:00:38Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-05T21:29:28Z","source":"netdata","host":"monitor","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T21:31:21Z","source":"netdata","host":"monitor","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"CRITICAL","msg":"ML node anomaly rate"}
+{"ts":"2026-08-05T21:32:21Z","source":"netdata","host":"monitor","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"CLEAR","msg":"ML node anomaly rate"}
+{"ts":"2026-08-05T23:01:00Z","source":"netdata","host":"monitor","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CRITICAL","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T23:08:00Z","source":"netdata","host":"monitor","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-08-05T23:10:34Z","source":"netdata","host":"monitor","alarm":"system_post_update_reboot_status","chart":"system.post_update_reboot_status","status":"CRITICAL","msg":"System requires reboot after package updates"}
+{"ts":"2026-08-05T23:11:21Z","source":"netdata","host":"monitor","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"CRITICAL","msg":"ML node anomaly rate"}
+{"ts":"2026-08-05T23:15:21Z","source":"netdata","host":"monitor","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"CLEAR","msg":"ML node anomaly rate"}
+{"ts":"2026-08-06T02:17:24Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T02:17:44Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T04:11:14Z","source":"netdata","host":"monitor","alarm":"system_post_update_reboot_status","chart":"system.post_update_reboot_status","status":"CRITICAL","msg":"System requires reboot after package updates"}
+{"ts":"2026-08-06T04:17:14Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T04:17:44Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T04:34:53Z","source":"netdata","host":"monitor","alarm":"system_post_update_reboot_status","chart":"system.post_update_reboot_status","status":"CRITICAL","msg":"System requires reboot after package updates"}
+{"ts":"2026-08-06T05:17:15Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T05:17:45Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T06:17:15Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T06:17:45Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T07:00:15Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T07:00:45Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T07:09:15Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T07:09:45Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T07:17:15Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T07:17:45Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T08:17:25Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T08:17:45Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T09:17:16Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T09:17:36Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T09:22:03Z","source":"netdata","host":"monitor","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CRITICAL","msg":"System netdev budget run outs"}
+{"ts":"2026-08-06T10:00:16Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T10:00:46Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T10:01:28Z","source":"netdata","host":"monitor","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CRITICAL","msg":"System netdev budget run outs"}
+{"ts":"2026-08-06T11:57:46Z","source":"netdata","host":"db","alarm":"postgres_acquired_locks_utilization","chart":"postgres_local.locks_utilization","status":"CRITICAL","msg":"PostgreSQL acquired locks utilization"}
+{"ts":"2026-08-06T11:59:46Z","source":"netdata","host":"db","alarm":"postgres_acquired_locks_utilization","chart":"postgres_local.locks_utilization","status":"CLEAR","msg":"PostgreSQL acquired locks utilization"}
+{"ts":"2026-08-06T11:17:27Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T11:17:37Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T11:17:26Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T11:17:36Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T11:57:07Z","source":"netdata","host":"monitor","alarm":"postgres_acquired_locks_utilization","chart":"postgres_local.locks_utilization","status":"CRITICAL","msg":"PostgreSQL acquired locks utilization"}
+{"ts":"2026-08-06T12:00:07Z","source":"netdata","host":"monitor","alarm":"postgres_acquired_locks_utilization","chart":"postgres_local.locks_utilization","status":"CLEAR","msg":"PostgreSQL acquired locks utilization"}
