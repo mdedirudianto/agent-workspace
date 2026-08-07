@@ -2237,3 +2237,11 @@
 {"ts":"2026-08-06T12:00:07Z","source":"netdata","host":"monitor","alarm":"postgres_acquired_locks_utilization","chart":"postgres_local.locks_utilization","status":"CLEAR","msg":"PostgreSQL acquired locks utilization"}
 {"ts":"2026-08-06T13:15:31Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
 {"ts":"2026-08-06T13:30:31Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-06T14:15:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: IP_LOCK_FAILED ranged fetch returned 403"}
+{"ts":"2026-08-06T14:30:21Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-08-06T14:30:31Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"No heartbeat in the time window"}
+{"ts":"2026-08-06T14:30:43Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-08-06T14:17:29Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T14:17:39Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T14:17:30Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-06T14:17:40Z","source":"netdata","host":"monitor","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
