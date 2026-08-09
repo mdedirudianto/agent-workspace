@@ -90,6 +90,7 @@ environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on t
 | [049](session-049-2026-08-04.md) | 2026-08-04 | Catch-up deploy: **8 feature sets, 7 migrations** (multi-workspace identity, admin events directory, promo visibility, order history, GA4 dual-property, 4 UI fixes) — full event-to-payment smoke test | `985523bb`→`5620320f` (118 commits, largest since session-047); **+7 migrations** (118→125: `staff_membership`/`org_member` email invites, 4-table RLS platform-context gap fix, `checkin_record`/`orders`/`ledger_entry` indexes, new `order_event` append-only lifecycle table). Read all 9 `docs/launch/*.md` deploy notes + every migration SQL before touching anything; confirmed no backfill needed (additive/RLS-only throughout). Riskiest item: `0118` breaks the OLD api's crew-invite `ON CONFLICT` the instant it lands — migrated 0118→0124 as one batch, restarted api+workers immediately after, zero lingering window. All six apps rebuilt (api 0.65.0, workers 0.14.0, console 0.49.0, admin 0.13.0, web-public 0.32.0, checkin 0.8.3). Investigated and ruled out a scary-looking `operator_audit_log CHAIN BREAK` alert on restart — confirmed via `git log` the verifier code was unchanged in this range, and the README already carried it as a known break since session-017 (2026-07-10), unrelated. Full smoke test via a disposable organizer against **real production Xendit**: both crew-invite paths (email, phone) returned 201 — the migration's one risk, proven live; admin events directory returned correct stats/crew/promo data (the RLS-gap fix, proven live, previously would've silently 0-rowed); real QRIS payment created against Xendit (genuine EMV payload); promo math verified (`50000→45000`, `promo_code_id` persisted); `order_event` lifecycle rows confirmed written; GA4's two property ids + marketing-host string confirmed compiled into the live-served bundle (no browser extension available this session, so verified via build artifacts rather than a live network request). All smoke-test data cleaned in FK order, single transaction, independently re-verified zero-residue including the Redis `membership:` home key. |
 
 | [050](session-050-2026-08-08.md) | 2026-08-08 | Support diagnosis (read-only): buyer never got an e-ticket, Malang Creative Fusion "many emails missing" report | No code/infra change. Traced a specific buyer to a self-inflicted email typo on their paid retry order (`mlninarhamadhani@gmail.com` vs. the real `mlaninarhamadhani@gmail.com`) — confirmed **`bounced`** via Resend's own `GET /emails` API log (our own DB only shows `SENT`, since no bounce webhook is wired up). Their first order was never paid at all (VA stuck `PENDING`, expired unpaid) so no email was ever due there. Widened the check to the whole organizer: 167 e-ticket emails cross-checked against Resend → **164 delivered, 3 bounced** (all buyer typos, email itself is healthy). The real driver of "many emails missing" is **WhatsApp, not email** — only 4 of 343 tickets for this organizer ever show a successful WA delivery (275 `FAILED` on the known unapproved-template gap, 64 stuck `ENQUEUED` from before order-history shipped). Also surfaced two near-duplicate live listings for the same concert, and 281 expired-unpaid vs. 180 paid orders org-wide. Fix path (`POST /events-orders/{orderId}/resend` with a corrected `to`) identified but not run — user is actioning it on the deployment side. |
+| [051](session-051-2026-08-08.md) | 2026-08-08 | Catch-up deploy: **4 feature sets** (event report charts, ticket resend, vendor booth lead capture, short ticket links), 80 commits, 2 migrations — full live smoke test of every feature | `5620320f`→`b3224a44`; **+2 migrations** (125→127: `0125` vendor booth tables + hand-written RLS, `0126` ticket `short_code`). New apex nginx carve-outs `/f/`+`/t/` added to `proxy` and gate-verified before any app code shipped; new env var `TICKET_SHORT_BASE_URL`; one-time ticket-short-code backfill (357 rows). Deploy order: web-public before api+workers (short-link doc's load-bearing requirement), console **rebuilt** not restarted (Tailwind theme change). Full smoke test via one disposable organizer against real prod Xendit/DB/Redis: short links resolve for both a pre-existing and a freshly-minted ticket; `TIKET <code>` on an unpaid order now replies with payment status instead of "no tickets found"; resend enqueues + records a neutral `delivery.email.resent` timeline entry; a vendor invited to **two** events signs in via one WA-verify challenge and `/my-booths`-equivalent lists both (proves the multi-workspace fix); booth visitor form + `/f/<code>` page + WhatsApp `STAN-<code>` check-in all live, same-day dedup confirmed (2 sends → 1 lead), organizer sees a count only while the vendor sees full detail (RLS-backed privacy split proven); **real Playwright session** (hydrated via the organizer's own refresh token) rendered the Reports page with a genuine chart and real CSV export — closes session-049's "no browser available" gap. Introduced a reusable technique: one ephemeral stub script direct-calling `handleVerifyTurn`/`ticketRequestTurn`/`boothVisitTurn` (the same factories the real wa-inbound worker uses) to prove three WhatsApp-gated flows without a real phone. Caught + fixed a session-numbering collision (drafted as "050", found the number already taken by a same-day committed session, restored the original from git, renumbered to 051 — see the session's own Findings #5). Full 91-table `organizer_id` scan confirmed zero cleanup residue. |
 
 ## Production footprint (`app` / eventopia.my + eventopia.co.id)
 
@@ -97,11 +98,19 @@ CF (orange, **`eventopia.my` zone now Full, not strict** — flipped session-024
 domains) → `proxy` nginx → `app` `10.0.0.5:380xx` (PM2 under `devops`, Next bound
 `10.0.0.5`). DB+Redis on `db` `10.0.0.1` (PG16, role `eventopia` w/ `BYPASSRLS`, **Redis db6**). Bun +
 pgvector installed as prereqs. No seed. checkin static served from proxy — **fixed and live as of
-session-029** (was white-screening since ≥2026-06-24, see session-027). **118 migrations applied
-(session-047, `0114`-`0117` — WA inbox classification + delivery-status columns, new
-`wa_inbox_thread` table, new `org_member` table + hand-written RLS, all additive). Code at
-`985523bb` (session-048, fix `6899e8b8`, api **0.60.0** / payments **0.15.0**)** — **Xendit
-VA/BRImo settlement is now correct**: the `fva_paid`
+session-029** (was white-screening since ≥2026-06-24, see session-027). **127 migrations applied
+(session-051, `0125`-`0126` — vendor booth-lead tables + hand-written RLS, ticket `short_code`
+column + unique index). Code at `b3224a44` (session-051, api **0.69.0** / workers **0.15.0** /
+console **0.52.0** / web-public **0.35.0**)** — new `/f/` and `/t/` apex nginx carve-outs
+(booth visitor form, short e-ticket links), new env var `TICKET_SHORT_BASE_URL`. On top of, from
+session-049 (`985523bb`→`5620320f`, +7 migrations 118→125): multi-workspace identity, an admin
+events directory (closed an RLS gap that silently 0-rowed), promo-code visibility on orders, an
+append-only `order_event` order-lifecycle log, GA4 dual-property analytics, plus 4 smaller UI
+fixes (iOS 15 baseline, custom-HTML canvas, PIN centering, WhatsApp button-only verification).
+On top of, from session-047, `0114`-`0117` — WA inbox classification + delivery-status columns, new
+`wa_inbox_thread` table, new `org_member` table + hand-written RLS, all additive)** — **Xendit
+VA/BRImo settlement is now correct** (session-048 fix `6899e8b8`, api **0.60.0** / payments
+**0.15.0**): the `fva_paid`
 callback carries no `status` field, and reading that absence as failure had meant BRImo never
 settled once in production (0 of 42, since 2026-07-24). A VA payment is now recognised by its
 identity, unknown statuses map to `payment.pending` (matching doku/midtrans) instead of a terminal
@@ -134,11 +143,13 @@ defaults now consistently say `eventopia.my` is the tenant root, `eventopia.co.i
 collect-early hardening (unverified-collection cap, payout encryption at rest, identity KYC), web
 embed, the partner/panitia invite gate, AI page style kits, the Xendit v3 422 fix (session-043, 96
 commits since session-040's `9d06e015`), and a capability-paths routing consolidation (session-044,
-6 commits, `web-public` only).** The apex `eventopia.my` nginx server (`proxy`) now carries **all 7**
+6 commits, `web-public` only).** The apex `eventopia.my` nginx server (`proxy`) now carries **9**
 capability-path carve-outs from the app repo's own canonical source
 (`infra/nginx/eventopia-apex-capability-paths.conf`) instead of its blanket `→eventopia.co.id`
 redirect: `/e/` (session-041), `/i/` + `/_next/` (session-043 — `/i/` is a real rendered page,
-not a pure redirect like `/e/`, so it needs its static-asset chunks routed same-origin too), and
+not a pure redirect like `/e/`, so it needs its static-asset chunks routed same-origin too),
+`/f/` + `/t/` (session-051 — booth visitor form + short e-ticket links, both apex-reachable from
+day one since they mint against the bare apex, unlike the block below), and
 `/tiket/`/`/pesanan/`/`/konfirmasi-tiket`/`/verifikasi-email` (session-044, pre-emptive — not yet
 apex-reachable given `PUBLIC_WEB_BASE_URL` still points at `www.eventopia.my`, but safe to carve
 out now). **Adapted, not pasted verbatim** from the app repo's snippet — every block there sets
@@ -222,6 +233,12 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
 `eventopia-coid.conf` on proxy.
 
 ## Open follow-ups
+
+**New (session-051):**
+- **No local QR decoder available on the sysadmin workstation** to pixel-verify the booth
+  check-in card's WhatsApp payload — verified via source (`route.tsx`'s `useWa` condition)
+  + live env instead, which is unambiguous but one step short of a real decode. Worth adding
+  `zbar`/`pyzbar` for the next booth-QR-touching session.
 
 **New (session-050):**
 - **No Resend bounce/complaint webhook wired up.** The order drawer's "Email: Sent" and
