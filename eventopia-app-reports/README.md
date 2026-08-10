@@ -91,6 +91,7 @@ environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on t
 
 | [050](session-050-2026-08-08.md) | 2026-08-08 | Support diagnosis (read-only): buyer never got an e-ticket, Malang Creative Fusion "many emails missing" report | No code/infra change. Traced a specific buyer to a self-inflicted email typo on their paid retry order (`mlninarhamadhani@gmail.com` vs. the real `mlaninarhamadhani@gmail.com`) — confirmed **`bounced`** via Resend's own `GET /emails` API log (our own DB only shows `SENT`, since no bounce webhook is wired up). Their first order was never paid at all (VA stuck `PENDING`, expired unpaid) so no email was ever due there. Widened the check to the whole organizer: 167 e-ticket emails cross-checked against Resend → **164 delivered, 3 bounced** (all buyer typos, email itself is healthy). The real driver of "many emails missing" is **WhatsApp, not email** — only 4 of 343 tickets for this organizer ever show a successful WA delivery (275 `FAILED` on the known unapproved-template gap, 64 stuck `ENQUEUED` from before order-history shipped). Also surfaced two near-duplicate live listings for the same concert, and 281 expired-unpaid vs. 180 paid orders org-wide. Fix path (`POST /events-orders/{orderId}/resend` with a corrected `to`) identified but not run — user is actioning it on the deployment side. |
 | [051](session-051-2026-08-08.md) | 2026-08-08 | Catch-up deploy: **4 feature sets** (event report charts, ticket resend, vendor booth lead capture, short ticket links), 80 commits, 2 migrations — full live smoke test of every feature | `5620320f`→`b3224a44`; **+2 migrations** (125→127: `0125` vendor booth tables + hand-written RLS, `0126` ticket `short_code`). New apex nginx carve-outs `/f/`+`/t/` added to `proxy` and gate-verified before any app code shipped; new env var `TICKET_SHORT_BASE_URL`; one-time ticket-short-code backfill (357 rows). Deploy order: web-public before api+workers (short-link doc's load-bearing requirement), console **rebuilt** not restarted (Tailwind theme change). Full smoke test via one disposable organizer against real prod Xendit/DB/Redis: short links resolve for both a pre-existing and a freshly-minted ticket; `TIKET <code>` on an unpaid order now replies with payment status instead of "no tickets found"; resend enqueues + records a neutral `delivery.email.resent` timeline entry; a vendor invited to **two** events signs in via one WA-verify challenge and `/my-booths`-equivalent lists both (proves the multi-workspace fix); booth visitor form + `/f/<code>` page + WhatsApp `STAN-<code>` check-in all live, same-day dedup confirmed (2 sends → 1 lead), organizer sees a count only while the vendor sees full detail (RLS-backed privacy split proven); **real Playwright session** (hydrated via the organizer's own refresh token) rendered the Reports page with a genuine chart and real CSV export — closes session-049's "no browser available" gap. Introduced a reusable technique: one ephemeral stub script direct-calling `handleVerifyTurn`/`ticketRequestTurn`/`boothVisitTurn` (the same factories the real wa-inbound worker uses) to prove three WhatsApp-gated flows without a real phone. Caught + fixed a session-numbering collision (drafted as "050", found the number already taken by a same-day committed session, restored the original from git, renumbered to 051 — see the session's own Findings #5). Full 91-table `organizer_id` scan confirmed zero cleanup residue. |
+| [052](session-052-2026-08-09.md) | 2026-08-09 | Deploy: **late-payment seat reclaim, checkout lead capture, operator invite/removal** (47 commits, 3 migrations) — highest-stakes session since session-049; full live smoke test of every feature + standing payment health check | `b3224a44`→`663854c6`; **+3 migrations** (127→130: `0127` payment_intent index, `0128` `checkout_lead` + hand-written RLS, `0129` `operator_user` invite columns). **Caught a live money-safety bug before it bit**: the reclaim deploy note's own pre-flight query checked the wrong column (`orders.status` instead of `payment_intent.status`) and always read "safe" regardless of reality — ran the devs' own same-day corrected query first and found **3 real stranded orders** (Rp350,000 total, `org_03f297927f184c0d`), flagged to the user before deploying, user approved letting the sweep handle them. New env `ADMIN_BASE_URL` set to prod's real console domain (`admin.eventopia.co.id`), correcting the deploy note's placeholder. Deploy order: migrate→api+workers together→console/web-public/admin rebuilt; `checkin` untouched. All 3 stranded orders **auto-recovered on the sweep's first pass** (`RECOVERED 3 (of 3 checked)`), tickets issued, recon incidents closed, ledger correctly skipped `buyer_refundable` (all 3 were DIRECT-collection). Checkout-lead capture verified live (tenant-isolated, identity-free step write). Operator invite verified through delivery (`RESEND_422` on a throwaway `@example.com`, delivery status correctly `FAILED` — the release's headline "delivery is now truthful" feature proven), the `includeRemoved` boolean-coercion fix, and remove/purge — the accept-link→sign-in leg was **not** verified (raw token has no after-the-fact read path, `removeOnComplete:true` on the BullMQ job, no test inbox available), flagged as an open gap. Standing platform health check re-run (disposable org→paid event→real Xendit QRIS+BRImo, both confirmed genuine). Full 104-table `organizer_id` scan confirmed zero cleanup residue (one gotcha caught: `organizer_account`'s PK isn't the organizer id, it's a separate `organizer_id` column). One self-caught process error: a disposable-operator bootstrap script run without loading the full `.env` degraded to an insecure PII-encryption fallback, caught via the script's own warning and redone correctly. |
 
 ## Production footprint (`app` / eventopia.my + eventopia.co.id)
 
@@ -98,12 +99,16 @@ CF (orange, **`eventopia.my` zone now Full, not strict** — flipped session-024
 domains) → `proxy` nginx → `app` `10.0.0.5:380xx` (PM2 under `devops`, Next bound
 `10.0.0.5`). DB+Redis on `db` `10.0.0.1` (PG16, role `eventopia` w/ `BYPASSRLS`, **Redis db6**). Bun +
 pgvector installed as prereqs. No seed. checkin static served from proxy — **fixed and live as of
-session-029** (was white-screening since ≥2026-06-24, see session-027). **127 migrations applied
-(session-051, `0125`-`0126` — vendor booth-lead tables + hand-written RLS, ticket `short_code`
-column + unique index). Code at `b3224a44` (session-051, api **0.69.0** / workers **0.15.0** /
-console **0.52.0** / web-public **0.35.0**)** — new `/f/` and `/t/` apex nginx carve-outs
-(booth visitor form, short e-ticket links), new env var `TICKET_SHORT_BASE_URL`. On top of, from
-session-049 (`985523bb`→`5620320f`, +7 migrations 118→125): multi-workspace identity, an admin
+session-029** (was white-screening since ≥2026-06-24, see session-027). **130 migrations applied
+(session-052, `0127`-`0129` — payment_intent index, `checkout_lead` table + hand-written RLS,
+`operator_user` invite columns). Code at `663854c6` (session-052, api **0.73.0** / workers
+**0.18.0** / console **0.54.1** / web-public **0.36.1** / admin **0.16.1**)** — late-payment
+seat reclaim (auto-retry sweep + `buyer_refundable` ledger account + `/v1/payments/{id}/recheck`),
+checkout lead capture (the platform's first hard-delete retention sweep), and operator
+invite/removal (invitations finally work; `ADMIN_BASE_URL=https://admin.eventopia.co.id` set).
+No nginx changes. On top of, from session-051, `0125`-`0126` — vendor booth-lead tables +
+hand-written RLS, ticket `short_code` column + unique index, new `/f/` and `/t/` apex nginx
+carve-outs, new env var `TICKET_SHORT_BASE_URL`. On top of, from session-049 (`985523bb`→`5620320f`, +7 migrations 118→125): multi-workspace identity, an admin
 events directory (closed an RLS gap that silently 0-rowed), promo-code visibility on orders, an
 append-only `order_event` order-lifecycle log, GA4 dual-property analytics, plus 4 smaller UI
 fixes (iOS 15 baseline, custom-HTML canvas, PIN centering, WhatsApp button-only verification).
@@ -234,6 +239,19 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
 
 ## Open follow-ups
 
+**New (session-052):**
+- **Operator-invite accept→sign-in leg not verified end-to-end.** The raw invite token only ever
+  exists in the BullMQ `emails` job payload (`removeOnComplete:true` — no after-the-fact read
+  path) and no test inbox was available this session. Delivery, audit trail, remove, and purge
+  were all proven live; only "click the link, set a password, sign in as the new operator"
+  wasn't. Low urgency (source code path is unambiguous), but worth having a disposable-but-real
+  inbox on hand for a future session touching this surface.
+- **Operator console has no `ADMIN_IP_ALLOWLIST`/MFA** (standing choice since session-006,
+  reaffirmed sessions 013/014). Now more consequential: operator invite links are real and
+  functional for the first time as of this session (previously a no-op), so the internet-reachable
+  password-only console is no longer a moot risk. Not acted on (explicit user choice, unchanged),
+  but worth a deliberate re-decision rather than continued default.
+
 **New (session-051):**
 - **No local QR decoder available on the sysadmin workstation** to pixel-verify the booth
   check-in card's WhatsApp payload — verified via source (`route.tsx`'s `useWa` condition)
@@ -254,11 +272,10 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
   proactive nudge to merge/unpublish one.
 
 **New (session-048):**
-- **A FAILED intent whose order already EXPIRED is not auto-recovered.** The reconcile sweep only
-  picks up `PENDING` intents with a live reservation, and settlement records such a case as
-  terminal `SETTLED_NO_INVENTORY` rather than fulfilling it (`settlement.ts:198-206`). Correct when
-  seats are genuinely gone, but any *future* money-in/no-seat case still needs the manual
-  reopen-and-replay treatment session-048 used. Worth an operator-facing tool.
+- ~~A FAILED intent whose order already EXPIRED is not auto-recovered~~ — **done (session-052)**:
+  the late-payment seat reclaim feature ships exactly this as an automated worker sweep
+  (`paid-no-inventory-retry`, 10-min cadence, 7-day bound) instead of the manual reopen-and-replay
+  treatment session-048 used by hand.
 - **A flat VA lifecycle callback with no `callback_virtual_account_id` classifies as a
   disbursement** (it carries `bank_code` and no collect marker), so it is *ignored* rather than
   failed. Benign and pre-existing — surfaced by session-048's new tests, not introduced by them.
