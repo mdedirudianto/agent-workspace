@@ -54,6 +54,9 @@ are not deployed.
 | `technoparkmalang.hoteru.co.id` | proxy | **LIVE tenant** — Technopark Malang booking site | dedicated clone `:3121` (session-002) |
 | `app.technoparkmalang.hoteru.co.id` | static | tenant management SPA | `/var/www/hoteru-tpm-app` |
 | `api.technoparkmalang.hoteru.co.id` | proxy | tenant backend API | dedicated clone `:3120` |
+| `bwalk.hoteru.co.id` | proxy | **LIVE tenant** — Bwalk Hotel Malang booking site | dedicated clone `:3131` (session-008) |
+| `app.bwalk.hoteru.co.id` | static | tenant management SPA | `/var/www/hoteru-bwalk-app` |
+| `api.bwalk.hoteru.co.id` | proxy | tenant backend API | dedicated clone `:3130` |
 
 ## ⚠️ Per-hotel tenancy (`<hotel>.hoteru.co.id`) — convention to honor
 
@@ -77,6 +80,17 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 
 ## Open follow-ups
 
+- [ ] Technopark's documented admin credential (`admin@technopark.com` / `tnpadmin123`, from
+      session-002) no longer authenticates against prod (`401 Invalid email or password`,
+      discovered session-008) — investigate whether it was rotated or `hoteru_tpm`'s seed diverged
+      from the README, then correct whichever is stale.
+- [ ] No per-tenant DB backup for `hoteru_bwalk` yet (same gap `hoteru_tpm` and the shared uploads
+      dir already carry) — fold into the `db`→`backup` pull schedule.
+- [ ] Bwalk: confirm real room rates / 126-room type split with the hotel before live bookings —
+      current seed interpolates rates from OTA listings (no rate card in the brochure), same
+      caveat Technopark launched with. Payment gateway also unconfigured (pay-at-hotel for now).
+- [ ] Bwalk: set real room photos via the management app — seed used placeholder image paths that
+      don't exist on this deployment.
 - [ ] App-side multi-tenancy for `<hotel>.hoteru.co.id` (above) — next milestone.
 - [ ] Confirm CF SSL/TLS mode = **Full (strict)** on both zones (manual; token can't read it).
 - [ ] Marketing locale on `.co.id`: next-intl auto-detects (curl with no `Accept-Language` → `/en`).
@@ -95,9 +109,8 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 - [ ] Central `~/hoteru`'s `apps/management/.env` got `VITE_PUBLIC_SITE_URLS` for the first time in
       session-006 — worth an interactive browser check of the affiliate referral-link display next
       time someone's in the management UI (only curl/build-verified so far).
-- [ ] Bwalk Hotel Malang tenant landed on `main` in session-007 but is staging-only (`dev`) — not
-      yet onboarded to production. Treat as a separate task, same shape as session-002's Technopark
-      onboarding (new DB, nginx vhosts, DNS/certs, seed).
+- [x] Bwalk Hotel Malang tenant landed on `main` in session-007, staging-only — onboarded to
+      production in session-008 (new DB, dedicated clone, nginx vhosts, DNS/certs, seed).
 - [ ] `/var/lib/hoteru/uploads` on `app` (new in session-007) has no backup coverage and no
       orphan-cleanup job — add to the regular backup routine before real photography accumulates.
 - [ ] `docs/agents/deploying-to-prod.md` (merged into `main` in session-007) describes the same
@@ -115,3 +128,4 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 | [Session 5](session-005-2026-07-29.md) | 2026-07-29 | Fixed Technopark referral redirect (dinoudon.my.id → technoparkmalang.hoteru.co.id); permanently fixed recurring git fetch-refspec bug on tenant clone | Done |
 | [Session 6](session-006-2026-07-31.md) | 2026-07-31 | Redeployed central `~/hoteru` + Technopark tenant to latest main (currency Rp fix, new photo); properly fixed the fetch-refspec bug for good; resolved proxy-access blocker (unrelated host, not a real issue) | Done |
 | [Session 7](session-007-2026-08-12.md) | 2026-08-12 | Redeployed central + Technopark to latest main (25 commits); shipped real image uploads end-to-end, incl. new private nginx static server on `app` + `/uploads/` reverse-proxy on `proxy` to bridge the two-host topology | Done |
+| [Session 8](session-008-2026-08-12.md) | 2026-08-12 | Second per-hotel tenant `bwalk.hoteru.co.id` — dedicated clone/DB/backend (same model as session-002), 9 room types/128 rooms seed, DNS+TLS+nginx, full smoke test incl. cross-tenant isolation and image upload | Done |
