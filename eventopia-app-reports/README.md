@@ -92,6 +92,7 @@ environment runs **bare-metal** (system nginx + PM2 + local Postgres/Redis) on t
 | [050](session-050-2026-08-08.md) | 2026-08-08 | Support diagnosis (read-only): buyer never got an e-ticket, Malang Creative Fusion "many emails missing" report | No code/infra change. Traced a specific buyer to a self-inflicted email typo on their paid retry order (`mlninarhamadhani@gmail.com` vs. the real `mlaninarhamadhani@gmail.com`) — confirmed **`bounced`** via Resend's own `GET /emails` API log (our own DB only shows `SENT`, since no bounce webhook is wired up). Their first order was never paid at all (VA stuck `PENDING`, expired unpaid) so no email was ever due there. Widened the check to the whole organizer: 167 e-ticket emails cross-checked against Resend → **164 delivered, 3 bounced** (all buyer typos, email itself is healthy). The real driver of "many emails missing" is **WhatsApp, not email** — only 4 of 343 tickets for this organizer ever show a successful WA delivery (275 `FAILED` on the known unapproved-template gap, 64 stuck `ENQUEUED` from before order-history shipped). Also surfaced two near-duplicate live listings for the same concert, and 281 expired-unpaid vs. 180 paid orders org-wide. Fix path (`POST /events-orders/{orderId}/resend` with a corrected `to`) identified but not run — user is actioning it on the deployment side. |
 | [051](session-051-2026-08-08.md) | 2026-08-08 | Catch-up deploy: **4 feature sets** (event report charts, ticket resend, vendor booth lead capture, short ticket links), 80 commits, 2 migrations — full live smoke test of every feature | `5620320f`→`b3224a44`; **+2 migrations** (125→127: `0125` vendor booth tables + hand-written RLS, `0126` ticket `short_code`). New apex nginx carve-outs `/f/`+`/t/` added to `proxy` and gate-verified before any app code shipped; new env var `TICKET_SHORT_BASE_URL`; one-time ticket-short-code backfill (357 rows). Deploy order: web-public before api+workers (short-link doc's load-bearing requirement), console **rebuilt** not restarted (Tailwind theme change). Full smoke test via one disposable organizer against real prod Xendit/DB/Redis: short links resolve for both a pre-existing and a freshly-minted ticket; `TIKET <code>` on an unpaid order now replies with payment status instead of "no tickets found"; resend enqueues + records a neutral `delivery.email.resent` timeline entry; a vendor invited to **two** events signs in via one WA-verify challenge and `/my-booths`-equivalent lists both (proves the multi-workspace fix); booth visitor form + `/f/<code>` page + WhatsApp `STAN-<code>` check-in all live, same-day dedup confirmed (2 sends → 1 lead), organizer sees a count only while the vendor sees full detail (RLS-backed privacy split proven); **real Playwright session** (hydrated via the organizer's own refresh token) rendered the Reports page with a genuine chart and real CSV export — closes session-049's "no browser available" gap. Introduced a reusable technique: one ephemeral stub script direct-calling `handleVerifyTurn`/`ticketRequestTurn`/`boothVisitTurn` (the same factories the real wa-inbound worker uses) to prove three WhatsApp-gated flows without a real phone. Caught + fixed a session-numbering collision (drafted as "050", found the number already taken by a same-day committed session, restored the original from git, renumbered to 051 — see the session's own Findings #5). Full 91-table `organizer_id` scan confirmed zero cleanup residue. |
 | [052](session-052-2026-08-09.md) | 2026-08-09 | Deploy: **late-payment seat reclaim, checkout lead capture, operator invite/removal** (47 commits, 3 migrations) — highest-stakes session since session-049; full live smoke test of every feature + standing payment health check | `b3224a44`→`663854c6`; **+3 migrations** (127→130: `0127` payment_intent index, `0128` `checkout_lead` + hand-written RLS, `0129` `operator_user` invite columns). **Caught a live money-safety bug before it bit**: the reclaim deploy note's own pre-flight query checked the wrong column (`orders.status` instead of `payment_intent.status`) and always read "safe" regardless of reality — ran the devs' own same-day corrected query first and found **3 real stranded orders** (Rp350,000 total, `org_03f297927f184c0d`), flagged to the user before deploying, user approved letting the sweep handle them. New env `ADMIN_BASE_URL` set to prod's real console domain (`admin.eventopia.co.id`), correcting the deploy note's placeholder. Deploy order: migrate→api+workers together→console/web-public/admin rebuilt; `checkin` untouched. All 3 stranded orders **auto-recovered on the sweep's first pass** (`RECOVERED 3 (of 3 checked)`), tickets issued, recon incidents closed, ledger correctly skipped `buyer_refundable` (all 3 were DIRECT-collection). Checkout-lead capture verified live (tenant-isolated, identity-free step write). Operator invite verified through delivery (`RESEND_422` on a throwaway `@example.com`, delivery status correctly `FAILED` — the release's headline "delivery is now truthful" feature proven), the `includeRemoved` boolean-coercion fix, and remove/purge — the accept-link→sign-in leg was **not** verified (raw token has no after-the-fact read path, `removeOnComplete:true` on the BullMQ job, no test inbox available), flagged as an open gap. Standing platform health check re-run (disposable org→paid event→real Xendit QRIS+BRImo, both confirmed genuine). Full 104-table `organizer_id` scan confirmed zero cleanup residue (one gotcha caught: `organizer_account`'s PK isn't the organizer id, it's a separate `organizer_id` column). One self-caught process error: a disposable-operator bootstrap script run without loading the full `.env` degraded to an insecure PII-encryption fallback, caught via the script's own warning and redone correctly. |
+| [053](session-053-2026-08-11.md) | 2026-08-11 | Deploy: **WhatsApp template registration (closes #132001), operator Checkout Leads lane, Insights GMV split, operator self-service account (MFA), WA auto-reply fix, page-editor drag-reorder, AI page-gen fetch fix** (84 commits, 2 migrations) — full live smoke test of every feature | `663854c6`→`0ba94710`; **+2 migrations** (130→132: `0130` `checkout_lead` operator-read RLS policy — deliberately reverses 0128's exclusion, `0131` `wa_template` gains Meta-mirror columns + unique index). Self-caught a deploy-ordering mistake (migrated before `git pull`, migration files didn't exist yet — clean no-op, corrected). Submitted the platform's **first-ever real WhatsApp template batch** to Meta (24 submitted, 0 failed) — **5 rejected `INCORRECT_CATEGORY`, including both e-ticket delivery templates that are the actual fix for #132001**, root-cause + remediation plan deferred to a follow-up. Insights take rate correctly corrected live (7bps→74bps, DIRECT no longer dilutes it). Operator MFA enrolled end-to-end with a **real computed TOTP code** (no authenticator app needed — closes the kind of gap session-052 couldn't for operator-invite). WA auto-reply reclassification proven with a real signed synthetic webhook to the user's own phone (received a real acknowledgment). AI page-gen fix confirmed on the exact bug-report URL — but only after discovering and fixing an **unrelated, pre-existing outage**: `ANTHROPIC_AUTH_TOKEN` had been silently revoked since 2026-08-03; user supplied a fresh token live. Two accidental partial secret exposures in tool output (`META_GRAPH_API_ACCESS_TOKEN`, `META_APP_SECRET`) flagged, left unrotated per user's call. All disposable test data (4 operators, 1 organizer, 2 WA inbox rows) independently re-verified at zero residue; hit the exact session-052 `organizer_account` PK gotcha again. |
 
 ## Production footprint (`app` / eventopia.my + eventopia.co.id)
 
@@ -99,14 +100,25 @@ CF (orange, **`eventopia.my` zone now Full, not strict** — flipped session-024
 domains) → `proxy` nginx → `app` `10.0.0.5:380xx` (PM2 under `devops`, Next bound
 `10.0.0.5`). DB+Redis on `db` `10.0.0.1` (PG16, role `eventopia` w/ `BYPASSRLS`, **Redis db6**). Bun +
 pgvector installed as prereqs. No seed. checkin static served from proxy — **fixed and live as of
-session-029** (was white-screening since ≥2026-06-24, see session-027). **130 migrations applied
-(session-052, `0127`-`0129` — payment_intent index, `checkout_lead` table + hand-written RLS,
-`operator_user` invite columns). Code at `663854c6` (session-052, api **0.73.0** / workers
-**0.18.0** / console **0.54.1** / web-public **0.36.1** / admin **0.16.1**)** — late-payment
-seat reclaim (auto-retry sweep + `buyer_refundable` ledger account + `/v1/payments/{id}/recheck`),
+session-029** (was white-screening since ≥2026-06-24, see session-027). **132 migrations applied
+(session-053, `0130`-`0131` — `checkout_lead` operator-read RLS policy (deliberately reverses
+0128's exclusion), `wa_template` Meta-mirror columns + unique index). Code at `0ba94710`
+(session-053, api **0.79.0** / workers **0.20.0** / console **0.56.4** / web-public **0.36.2** /
+admin **0.20.0**)** — WhatsApp template registration (closes `#132001`; `META_WABA_ID` set, 24
+templates submitted to Meta, 19 approved/pending, **5 rejected pending a copy/category fix — see
+Open follow-ups**), operator Checkout Leads lane (`/admin/leads`, cross-org abandoned-checkout
+visibility for Support/Trust&Safety/Compliance, not Finance), Insights GMV split (PLATFORM/DIRECT/
+OFF_GATEWAY, take rate corrected 7bps→74bps), operator self-service account (MFA enrolment/
+password/sessions, `OPERATOR_MFA_ENABLED` still `false`), WA auto-reply keyword-classification fix,
+page-editor drag-reorder (`apps/console` only), and an AI page-gen fetch fix (fetches page/image
+bytes itself instead of handing the provider a URL, closing a live Cloudflare-AI-crawler-block
+bug). `ANTHROPIC_AUTH_TOKEN` (OAuth, no refresh loop) found revoked since 2026-08-03 and replaced
+live this session. No nginx changes. On top of, from session-052, `0127`-`0129` — payment_intent
+index, `checkout_lead` table + hand-written RLS, `operator_user` invite columns; late-payment seat
+reclaim (auto-retry sweep + `buyer_refundable` ledger account + `/v1/payments/{id}/recheck`),
 checkout lead capture (the platform's first hard-delete retention sweep), and operator
-invite/removal (invitations finally work; `ADMIN_BASE_URL=https://admin.eventopia.co.id` set).
-No nginx changes. On top of, from session-051, `0125`-`0126` — vendor booth-lead tables +
+invite/removal (`ADMIN_BASE_URL=https://admin.eventopia.co.id` set). On top of, from session-051,
+`0125`-`0126` — vendor booth-lead tables +
 hand-written RLS, ticket `short_code` column + unique index, new `/f/` and `/t/` apex nginx
 carve-outs, new env var `TICKET_SHORT_BASE_URL`. On top of, from session-049 (`985523bb`→`5620320f`, +7 migrations 118→125): multi-workspace identity, an admin
 events directory (closed an RLS gap that silently 0-rowed), promo-code visibility on orders, an
@@ -239,6 +251,20 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
 
 ## Open follow-ups
 
+**New (session-053):**
+- **5 WhatsApp templates rejected by Meta (`INCORRECT_CATEGORY`)** —
+  `eticket_delivery_id`, `eticket_delivery_link_id`, `pin_security_notice_id`, `refund_confirm_id`,
+  `ticket_transfer_in_id`. The two e-ticket templates are the actual fix for `#132001` and are
+  **still blocked** as of this session. Remediation is either a copy edit or a category change,
+  registry lives in `packages/whatsapp/src/templates.ts`; needs a PR + resubmit, not a live hotfix.
+- **`ANTHROPIC_AUTH_TOKEN` has no refresh loop** (standing gap since session-024) — found dead this
+  session (revoked since 2026-08-03, unnoticed until now) and manually replaced. Will revoke again
+  on its own schedule; worth deciding whether to invest in a refresh mechanism or accept periodic
+  manual re-extraction.
+- **Two secret exposures this session** (`META_GRAPH_API_ACCESS_TOKEN`, `META_APP_SECRET`, both
+  from `.env` greps with an inadequate redaction pattern) — left unrotated per the user's explicit
+  low-urgency call, same handling as the session-022/024 precedent for this category of incident.
+
 **New (session-052):**
 - **Operator-invite accept→sign-in leg not verified end-to-end.** The raw invite token only ever
   exists in the BullMQ `emails` job payload (`removeOnComplete:true` — no after-the-fact read
@@ -247,10 +273,10 @@ eventopia.co.id**. Separate LE cert `eventopia.co.id` (DNS-01, same `.my` CF tok
   wasn't. Low urgency (source code path is unambiguous), but worth having a disposable-but-real
   inbox on hand for a future session touching this surface.
 - **Operator console has no `ADMIN_IP_ALLOWLIST`/MFA** (standing choice since session-006,
-  reaffirmed sessions 013/014). Now more consequential: operator invite links are real and
-  functional for the first time as of this session (previously a no-op), so the internet-reachable
-  password-only console is no longer a moot risk. Not acted on (explicit user choice, unchanged),
-  but worth a deliberate re-decision rather than continued default.
+  reaffirmed sessions 013/014). Self-service MFA enrolment now actually works end-to-end
+  (session-053 proved it with a real TOTP), so flipping `OPERATOR_MFA_ENABLED` is a live option
+  rather than a hypothetical one — still not acted on (explicit user choice, unchanged), worth a
+  deliberate re-decision rather than continued default.
 
 **New (session-051):**
 - **No local QR decoder available on the sysadmin workstation** to pixel-verify the booth
