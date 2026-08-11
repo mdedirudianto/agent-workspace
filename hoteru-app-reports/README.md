@@ -20,10 +20,20 @@ are not deployed.
   - `hoteru-public` — `public` Next standalone, `:3111` (`HOSTNAME=10.0.0.5 PORT=3111`).
   - `hoteru-marketing` — `marketing` Next standalone, `:3112` (`HOSTNAME=10.0.0.5 PORT=3112`).
   - `management` SPA is **not** a process — built to static and served from `proxy`.
+  - **nginx** (session-007): private static file server for uploaded media, bound only to
+    `10.0.0.5:8931`, serving `/var/lib/hoteru/uploads` (site `hoteru-uploads.conf`). The
+    pre-existing `default` nginx site (public port 80) is disabled — this host has never served
+    public HTTP directly and stays that way.
 - **DB host:** `db` (`10.0.0.1`). Postgres 16 database `hoteru`, owner role `hoteru`.
-  **Redis logical db 8** (`redis://10.0.0.1:6379/8`). 3 Prisma migrations applied.
+  **Redis logical db 8** (`redis://10.0.0.1:6379/8`). 4 Prisma migrations applied (added
+  `media_assets` in session-007).
 - **Proxy:** `proxy` (`46.250.234.153` / `10.0.0.2`). nginx vhosts `hoteru.uk.conf` +
-  `hoteru.co.id.conf`. Management SPA static at `/var/www/hoteru-app/`.
+  `hoteru.co.id.conf`, each with a `/uploads/` location reverse-proxying to `10.0.0.5:8931`
+  (session-007). Management SPA static at `/var/www/hoteru-app/`.
+- **Uploads:** `/var/lib/hoteru/uploads/<hotelId>/<uuid>.<ext>` on `app`, shared across central and
+  every tenant clone (isolated by `hotelId` subfolder, not by directory). Backend env needs
+  `UPLOAD_ROOT=/var/lib/hoteru/uploads` + `UPLOAD_BASE_URL=https://api.<domain>/uploads` per
+  instance. No backup coverage or orphan-cleanup job yet — see Open follow-ups.
 - **DNS:** Cloudflare, **orange-cloud (proxied)**. `hoteru.uk` + `www` + `*.hoteru.uk` and
   `hoteru.co.id` + `www` + `*.hoteru.co.id` already point at origin `46.250.234.153`.
   CF SSL/TLS mode must be **Full (strict)** (set in dashboard; the API token is DNS-scoped only).
@@ -85,6 +95,14 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 - [ ] Central `~/hoteru`'s `apps/management/.env` got `VITE_PUBLIC_SITE_URLS` for the first time in
       session-006 — worth an interactive browser check of the affiliate referral-link display next
       time someone's in the management UI (only curl/build-verified so far).
+- [ ] Bwalk Hotel Malang tenant landed on `main` in session-007 but is staging-only (`dev`) — not
+      yet onboarded to production. Treat as a separate task, same shape as session-002's Technopark
+      onboarding (new DB, nginx vhosts, DNS/certs, seed).
+- [ ] `/var/lib/hoteru/uploads` on `app` (new in session-007) has no backup coverage and no
+      orphan-cleanup job — add to the regular backup routine before real photography accumulates.
+- [ ] `docs/agents/deploying-to-prod.md` (merged into `main` in session-007) describes the same
+      unrelated single-VPS production target as `docs/deployment-technopark.md` above — now two
+      docs in the repo pointing at infrastructure that isn't ours.
 
 ## Sessions
 
@@ -96,3 +114,4 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 | [Session 4](session-004-2026-07-25.md) | 2026-07-25 | Deployed PR #2 (multi-tenant, affiliates, gallery CMS) to central prod + Technopark Malang tenant; found tenant DB has no migration history (db-push only) | Done |
 | [Session 5](session-005-2026-07-29.md) | 2026-07-29 | Fixed Technopark referral redirect (dinoudon.my.id → technoparkmalang.hoteru.co.id); permanently fixed recurring git fetch-refspec bug on tenant clone | Done |
 | [Session 6](session-006-2026-07-31.md) | 2026-07-31 | Redeployed central `~/hoteru` + Technopark tenant to latest main (currency Rp fix, new photo); properly fixed the fetch-refspec bug for good; resolved proxy-access blocker (unrelated host, not a real issue) | Done |
+| [Session 7](session-007-2026-08-12.md) | 2026-08-12 | Redeployed central + Technopark to latest main (25 commits); shipped real image uploads end-to-end, incl. new private nginx static server on `app` + `/uploads/` reverse-proxy on `proxy` to bridge the two-host topology | Done |
