@@ -80,6 +80,15 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 
 ## Open follow-ups
 
+- [ ] `apps/public` (central `demo.hoteru.uk`) has no same-origin booking-proxy route, unlike both
+      tenant sites (session-009) — it uses its own `lib/api.ts`, not the shared `hotel-ui` client,
+      so referral/commission attribution there is unverified and likely still broken if central
+      ever runs its own affiliate program.
+- [ ] No pg_dump-over-SSH path to `db` from this workstation (`db.biji.uk:22` unreachable, no
+      authorized key for an `app`→`10.0.0.1:22` hop) — worked around in session-009 by running
+      `pg_dump` directly from `app` against `10.0.0.1:5432` using each instance's own
+      `DATABASE_URL`. Fine for one-off pre-deploy backups; doesn't help build a real backup
+      schedule (see the per-tenant backup gap below).
 - [ ] Technopark's documented admin credential (`admin@technopark.com` / `tnpadmin123`, from
       session-002) no longer authenticates against prod (`401 Invalid email or password`,
       discovered session-008) — investigate whether it was rotated or `hoteru_tpm`'s seed diverged
@@ -116,6 +125,9 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 - [ ] `docs/agents/deploying-to-prod.md` (merged into `main` in session-007) describes the same
       unrelated single-VPS production target as `docs/deployment-technopark.md` above — now two
       docs in the repo pointing at infrastructure that isn't ours.
+- [x] 24-commit `main` (referral/commission-attribution fix for both live tenants, Guest-record
+      backfill, management UX batch) deployed to central + Technopark + Bwalk and verified with
+      real referred-booking round-trips in session-009.
 
 ## Sessions
 
@@ -129,3 +141,4 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 | [Session 6](session-006-2026-07-31.md) | 2026-07-31 | Redeployed central `~/hoteru` + Technopark tenant to latest main (currency Rp fix, new photo); properly fixed the fetch-refspec bug for good; resolved proxy-access blocker (unrelated host, not a real issue) | Done |
 | [Session 7](session-007-2026-08-12.md) | 2026-08-12 | Redeployed central + Technopark to latest main (25 commits); shipped real image uploads end-to-end, incl. new private nginx static server on `app` + `/uploads/` reverse-proxy on `proxy` to bridge the two-host topology | Done |
 | [Session 8](session-008-2026-08-12.md) | 2026-08-12 | Second per-hotel tenant `bwalk.hoteru.co.id` — dedicated clone/DB/backend (same model as session-002), 9 room types/128 rooms seed, DNS+TLS+nginx, full smoke test incl. cross-tenant isolation and image upload | Done |
+| [Session 9](session-009-2026-08-14.md) | 2026-08-14 | Redeployed all 3 instances (central+Technopark+Bwalk) to latest main (24 commits) — fixed live referral/commission attribution bug on both tenants, ran Guest-record backfill, verified attribution fix with real booking round-trips | Done |
