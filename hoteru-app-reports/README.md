@@ -80,6 +80,11 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 
 ## Open follow-ups
 
+- [ ] Four docs in the repo now describe an unrelated single-VPS deployment target (box
+      `103.253.244.195`, `/opt/hoteru`, tar-pipe, no git remote) — not our infra (`app`/`db`
+      cluster): `hoteru.nginx.conf`, `runtime.sh`, `docs/deployment-technopark.md`, and (new in
+      session-010) `docs/agents/baseline-prod-tenant-dbs.md`. Recurring source of confusion across
+      sessions 004, 005, and 010 — worth flagging upstream or deleting.
 - [ ] `apps/public` (central `demo.hoteru.uk`) has no same-origin booking-proxy route, unlike both
       tenant sites (session-009) — it uses its own `lib/api.ts`, not the shared `hotel-ui` client,
       so referral/commission attribution there is unverified and likely still broken if central
@@ -128,6 +133,10 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 - [x] 24-commit `main` (referral/commission-attribution fix for both live tenants, Guest-record
       backfill, management UX batch) deployed to central + Technopark + Bwalk and verified with
       real referred-booking round-trips in session-009.
+- [x] 15-commit `main` (day-of-week seasonal pricing, server-authoritative booking totals, room
+      CRUD) deployed to central + Technopark + Bwalk in session-010, including baselining both
+      tenant DBs' Prisma migration ledger (neither had one — db-push managed) before the new
+      migration could apply safely.
 
 ## Sessions
 
@@ -142,3 +151,4 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 | [Session 7](session-007-2026-08-12.md) | 2026-08-12 | Redeployed central + Technopark to latest main (25 commits); shipped real image uploads end-to-end, incl. new private nginx static server on `app` + `/uploads/` reverse-proxy on `proxy` to bridge the two-host topology | Done |
 | [Session 8](session-008-2026-08-12.md) | 2026-08-12 | Second per-hotel tenant `bwalk.hoteru.co.id` — dedicated clone/DB/backend (same model as session-002), 9 room types/128 rooms seed, DNS+TLS+nginx, full smoke test incl. cross-tenant isolation and image upload | Done |
 | [Session 9](session-009-2026-08-14.md) | 2026-08-14 | Redeployed all 3 instances (central+Technopark+Bwalk) to latest main (24 commits) — fixed live referral/commission attribution bug on both tenants, ran Guest-record backfill, verified attribution fix with real booking round-trips | Done |
+| [Session 10](session-010-2026-08-17.md) | 2026-08-17 | Redeployed all 3 instances to latest main (15 commits) — day-of-week seasonal pricing, server-authoritative booking totals, room CRUD; baselined both tenant DBs' Prisma migration ledger first (neither had one); verified totals/day-of-week/room-CRUD live | Done |
