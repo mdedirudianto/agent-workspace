@@ -137,6 +137,19 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
       CRUD) deployed to central + Technopark + Bwalk in session-010, including baselining both
       tenant DBs' Prisma migration ledger (neither had one — db-push managed) before the new
       migration could apply safely.
+- [x] 4-commit `main` (SUPERADMIN role + permanent purge/Trash, mobile room-list fix) deployed to
+      central + Technopark + Bwalk in session-011, incl. the additive `UserRole` enum migration;
+      purge route gate confirmed live (401 unauthenticated) on all 3.
+- [x] `SUPERADMIN` account created + verified on all 3 hotels (session-011) — real login +
+      `GET /api/purge/bookings` 200 confirmed on each. Default password (`superadmin123`, shared
+      with the handoff doc/seed.ts) should be rotated once someone logs in for real — tracked below.
+- [ ] Rotate the shared `superadmin123` bootstrap password on all 3 SUPERADMIN accounts.
+- [ ] Mobile room-list fix (session-011, `threshold=0` on `useScrollAnimation`) not visually
+      verified — browser tooling wasn't connected that session. Confirm on a real narrow viewport
+      for Bwalk and Technopark guest sites.
+- [ ] `docs/handoff-superadmin-purge.md` (new in session-011) is a fifth doc describing the
+      unrelated `103.253.244.195` single-VPS deployment target — same recurring confusion tracked
+      below.
 
 ## Sessions
 
@@ -152,3 +165,4 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 | [Session 8](session-008-2026-08-12.md) | 2026-08-12 | Second per-hotel tenant `bwalk.hoteru.co.id` — dedicated clone/DB/backend (same model as session-002), 9 room types/128 rooms seed, DNS+TLS+nginx, full smoke test incl. cross-tenant isolation and image upload | Done |
 | [Session 9](session-009-2026-08-14.md) | 2026-08-14 | Redeployed all 3 instances (central+Technopark+Bwalk) to latest main (24 commits) — fixed live referral/commission attribution bug on both tenants, ran Guest-record backfill, verified attribution fix with real booking round-trips | Done |
 | [Session 10](session-010-2026-08-17.md) | 2026-08-17 | Redeployed all 3 instances to latest main (15 commits) — day-of-week seasonal pricing, server-authoritative booking totals, room CRUD; baselined both tenant DBs' Prisma migration ledger first (neither had one); verified totals/day-of-week/room-CRUD live | Done |
+| [Session 11](session-011-2026-08-20.md) | 2026-08-20 | Redeployed all 3 instances to latest main (4 commits) — SUPERADMIN role + permanent purge/Trash (additive enum migration), mobile room-list fix; SUPERADMIN accounts created and verified end-to-end on all 3 | Done |
