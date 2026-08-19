@@ -10,3 +10,4 @@ Public-facing nginx reverse proxy for the internal cluster (`10.0.0.0/22`). Term
 | [Session 2](session-002-2026-05-12.md) | 2026-05-12 | Hardening & cleanup + asiaweek.uk coming-soon page | Done |
 | [Session 3](session-003-2026-05-24.md) | 2026-05-24 | Fluent Bit install — nginx logs → OpenObserve | Done |
 | [Session 4](session-004-2026-07-14.md) | 2026-07-14 | Fail2ban lockout diagnosis & fix — unbanned user IP + app internal IP, added `10.0.0.0/24` to `ignoreip` | Done |
+| [Session 5](session-005-2026-08-20.md) | 2026-08-20 | Netdata `web_log` alarm flapping — bot-scanner bursts tripping 1-min ratio alarms; widened to 5-min window + raised volume guard | Done |

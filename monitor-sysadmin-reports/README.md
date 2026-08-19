@@ -15,6 +15,12 @@ Internal cluster **monitoring & analytics hub**. Hosts the Docker stacks behind 
 | [Session 7](session-007-2026-05-25.md) | 2026-05-25 | Fleet Overview dashboard — syslog panels 15–17 (SSH/UFW/Fail2ban by server) | Done |
 | [Session 8](session-008-2026-05-25.md) | 2026-05-25 | OO alerts via Telegram — SSH brute-force, fail2ban, nginx 5xx, app stderr | Done |
 | [Session 9](session-009-2026-06-22.md) | 2026-06-22 | Uptime Kuma update 2.1.3 → 2.4.0 (Docker `:2` tag, volume preserved) | Done |
+| [Session 10](session-010-2026-08-20.md) | 2026-08-20 | Disabled duplicate netdata health eval for streamed `proxy` child — was double-firing `web_log` alarms to Telegram | Done |
+
+## Open follow-ups (from session 010)
+
+- Re-run `telegram-alerts/pull.sh` in ~1-2 days; confirm `monitor`-labeled `web_log_1m_*` entries stop appearing entirely.
+- Check whether other cluster hosts streaming to `monitor` share the same `health enabled by default = auto` duplicate-alarm exposure for other alarm types (not just web_log) — not checked this session.
 
 ## Open follow-ups (from session 008)
 
