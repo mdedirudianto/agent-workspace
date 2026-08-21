@@ -9055,3 +9055,94 @@
 {"ts":"2026-08-19T21:24:50Z","source":"netdata","host":"monitor","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log bad requests"}
 {"ts":"2026-08-19T21:26:20Z","source":"netdata","host":"monitor","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
 {"ts":"2026-08-19T21:26:20Z","source":"netdata","host":"monitor","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-08-19T21:27:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:29:20Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-08-19T21:29:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-08-19T21:32:20Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:32:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:32:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-08-19T21:33:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:34:20Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:36:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:39:20Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:45:20Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:46:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:47:20Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-08-19T21:48:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log redirects"}
+{"ts":"2026-08-19T21:51:07Z","source":"netdata","host":"proxy","alarm":"system_post_update_reboot_status","chart":"system.post_update_reboot_status","status":"CRITICAL","msg":"System requires reboot after package updates"}
+{"ts":"2026-08-19T21:51:12Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log redirects"}
+{"ts":"2026-08-19T21:52:42Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CRITICAL","msg":"Web log unparsed"}
+{"ts":"2026-08-19T21:53:12Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-08-19T21:57:17Z","source":"netdata","host":"proxy","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"CRITICAL","msg":"ML node anomaly rate"}
+{"ts":"2026-08-19T21:57:42Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-08-19T21:58:12Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CRITICAL","msg":"Web log unparsed"}
+{"ts":"2026-08-19T21:58:17Z","source":"netdata","host":"proxy","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"CLEAR","msg":"ML node anomaly rate"}
+{"ts":"2026-08-19T21:59:12Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-08-19T22:00:42Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CRITICAL","msg":"Web log unparsed"}
+{"ts":"2026-08-19T22:05:43Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-08-19T22:09:43Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CRITICAL","msg":"Web log unparsed"}
+{"ts":"2026-08-19T22:10:43Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-08-19T22:11:43Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CRITICAL","msg":"Web log unparsed"}
+{"ts":"2026-08-19T22:22:44Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-08-19T22:24:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CRITICAL","msg":"Web log unparsed"}
+{"ts":"2026-08-19T22:34:44Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-08-19T22:35:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CRITICAL","msg":"Web log unparsed"}
+{"ts":"2026-08-19T22:37:44Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-08-19T22:38:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CRITICAL","msg":"Web log unparsed"}
+{"ts":"2026-08-19T22:57:44Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log bad requests"}
+{"ts":"2026-08-19T22:57:44Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log redirects"}
+{"ts":"2026-08-19T22:58:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-08-19T22:58:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-08-19T23:01:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log bad requests"}
+{"ts":"2026-08-19T23:01:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log redirects"}
+{"ts":"2026-08-19T23:01:44Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-08-19T23:01:44Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-08-19T23:23:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log bad requests"}
+{"ts":"2026-08-19T23:23:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log redirects"}
+{"ts":"2026-08-19T23:27:44Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-08-19T23:28:44Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CRITICAL","msg":"Web log unparsed"}
+{"ts":"2026-08-19T23:29:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-08-19T23:29:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-08-19T23:30:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-08-19T23:31:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CRITICAL","msg":"Web log unparsed"}
+{"ts":"2026-08-19T23:40:44Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-08-19T23:41:14Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CRITICAL","msg":"Web log unparsed"}
+{"ts":"2026-08-19T23:56:35Z","source":"netdata","host":"proxy","alarm":"system_post_update_reboot_status","chart":"system.post_update_reboot_status","status":"CRITICAL","msg":"System requires reboot after package updates"}
+{"ts":"2026-08-20T00:00:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-08-20T00:12:35Z","source":"netdata","host":"proxy","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CRITICAL","msg":"System netdev budget run outs"}
+{"ts":"2026-08-20T00:23:20Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-08-20T00:33:20Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-08-20T00:37:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-08-20T00:58:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-08-20T01:20:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-08-20T01:47:20Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log bad requests"}
+{"ts":"2026-08-20T01:52:20Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-08-20T01:52:20Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-08-20T02:11:20Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-08-20T02:18:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-08-20T02:55:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-08-20T02:56:20Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log redirects"}
+{"ts":"2026-08-20T03:05:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-08-20T03:09:50Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-08-20T03:17:30Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CRITICAL","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-20T03:17:50Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-08-19T21:27:50Z","source":"netdata","host":"monitor","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:29:20Z","source":"netdata","host":"monitor","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-08-19T21:29:50Z","source":"netdata","host":"monitor","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-08-19T21:32:20Z","source":"netdata","host":"monitor","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:32:50Z","source":"netdata","host":"monitor","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-08-19T21:32:50Z","source":"netdata","host":"monitor","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:33:50Z","source":"netdata","host":"monitor","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:34:20Z","source":"netdata","host":"monitor","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:34:30Z","source":"netdata","host":"monitor","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-08-19T21:36:50Z","source":"netdata","host":"monitor","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:39:20Z","source":"netdata","host":"monitor","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:45:20Z","source":"netdata","host":"monitor","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:46:50Z","source":"netdata","host":"monitor","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-08-19T21:47:20Z","source":"netdata","host":"monitor","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-08-19T21:49:16Z","source":"netdata","host":"monitor","alarm":"system_post_update_reboot_status","chart":"system.post_update_reboot_status","status":"CRITICAL","msg":"System requires reboot after package updates"}
+{"ts":"2026-08-19T21:49:36Z","source":"netdata","host":"monitor","alarm":"system_post_update_reboot_status","chart":"system.post_update_reboot_status","status":"CRITICAL","msg":"System requires reboot after package updates"}
+{"ts":"2026-08-19T22:00:56Z","source":"netdata","host":"monitor","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CRITICAL","msg":"System netdev budget run outs"}
+{"ts":"2026-08-19T22:19:16Z","source":"netdata","host":"monitor","alarm":"streaming_never_connected","chart":"netdata.netdata.streaming_inbound_permanent","status":"CRITICAL","msg":"Permanent streaming nodes never connected"}
+{"ts":"2026-08-19T23:55:27Z","source":"netdata","host":"monitor","alarm":"streaming_disconnected","chart":"netdata.netdata.streaming_inbound_permanent","status":"CRITICAL","msg":"Permanent streaming nodes disconnected"}
+{"ts":"2026-08-19T23:55:57Z","source":"netdata","host":"monitor","alarm":"streaming_disconnected","chart":"netdata.netdata.streaming_inbound_permanent","status":"CLEAR","msg":"Permanent streaming nodes disconnected"}
