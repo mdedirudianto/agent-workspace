@@ -13,12 +13,23 @@ Covers cross-server work: app deploys, proxy/nginx, env/secrets, schema, ERPNext
 
 **Subdomains:** `gro.biz.id` + `www` → landing · `app.` → web+API · `admin.` → admin SPA (+ same-origin `/api`) · `api.` → API · **`order.` → diner PWA (static on proxy, `/var/www/grobiz/order`, live since session-027)** · `erp.` / `*.` → ERPNext (wildcard)
 
-**Current deployed SHA:** **prod `b277abb6`** — api `0.26.2`, **deployed 2026-08-11, NO session filed**.
-Found on 2026-08-25 (session-033) by reading the host directly; this line had recorded `2aafd740` and
-was wrong by 127 commits. **Always verify with `ssh devops@app 'cd ~/grobiz && git log -1'` before planning
-a deploy — do not trust this file.** The catch-up to `main` (`46a644c5`, 409 commits) is sequenced in the
-repo at [`docs/runbooks/2026-08-25-prod-catchup-deploy.md`](https://github.com/biji-dev/grobiz/blob/main/docs/runbooks/2026-08-25-prod-catchup-deploy.md).
-Prior recorded: **prod `2aafd740`** = **`main`** — ✅ **deployed 2026-08-04 (session-032)**:
+**Current deployed SHA:** **prod `b03bca96`** = **`main`** — ✅ **deployed 2026-08-28 (session-034)**:
+619-commit catch-up (closing both session-033's 409-commit gap and ~210 more commits merged while that
+runbook waited to be executed), api/web `0.26.2→0.41.0`, admin `→0.5.2`, order `→0.9.0`, shared `→0.50.0`.
+Ships CR-004 Online Shop (backend live, **public routing deliberately deferred** — see session-034 §1, a real
+nginx wildcard conflict with the per-tenant ERPNext routing), CR-005 WhatsApp Customer Channel (new
+`grobiz-wa-gateway` process, live, 0 merchants paired yet), CR-006 order-queue redesign, CR-007 promotions,
+CR-008 customer tiering, loyalty-redemption-at-checkout (**fixes a real money defect** — phantom cash change
+on a redeemed sale, independently proven fixed against live production math this session), kitchen
+board/tables-floor/dashboard-cockpit redesigns, and a 14-fix POS-till review. **14 new DDL-only migrations**
+(`0031`, `0033`–`0045`) applied by hand after the standing `drizzle-kit push` hang. **One ERPNext backfill**
+(`backfill:shop-fields`, 18/18 tenants, independently verified via an 11-field sweep). **Ten new env vars**
+set (WhatsApp gateway secrets + session path, MapTiler tiles). Full functional smoke pass (retail + fnb) plus
+a direct API-level proof of the loyalty-redemption fix. Rollback `b277abb6`. Prior: **prod `b277abb6`** — api
+`0.26.2`, **deployed 2026-08-11, NO session filed**. Found on 2026-08-25 (session-033) by reading the host
+directly; the README had recorded `2aafd740` and was wrong by 127 commits — a reminder that **verifying with
+`ssh devops@app 'cd ~/grobiz && git log -1'` before planning a deploy** (not trusting this file) remains the
+standing rule. Prior recorded: **prod `2aafd740`** = **`main`** — ✅ **deployed 2026-08-04 (session-032)**:
 161-commit catch-up release (production had sat still 6 days since session-031) bundling 13 merged
 branches — F&B cost-of-sales now lands in the P&L (was previously in neither COGS nor Opex), F&B dine-in
 sales now deduct ingredients and book COGS (was previously silent/zero-cost), an ingredient-shortfall
@@ -62,27 +73,29 @@ undocumented in the runbook's own smoke checklist. Rollback `1a849bf7`. Prior: *
 **Observability:** GlitchTip org `grobiz` (`errors.biji.uk`, projects api/web/admin/extension = /10–/13) · OpenObserve SA `grobiz-ingest@biji.uk` stream `grobiz_api` (`10.0.0.3:5080`) · OpenPanel projects `grobiz`/`grobiz-admin` (`analytics.biji.uk`) · GA4 `G-6C3YPF2YNR` (landing only). **WhatsApp:** Cloud API wired, webhook `api.gro.biz.id/api/webhooks/whatsapp` (system-user non-expiring token).
 
 **Open follow-ups:**
-- [ ] **Production is 14 days / 409 commits behind `main` (session-033):** prod is `b277abb6`
-  (2026-08-11, no session filed — first recorded here as `2aafd740`, 127 commits out, corrected the same
-  session). `main` is `46a644c5`. The gap includes CR-007 merchant promotions (shipped and
-  live-verified), the CR-006 order-queue + storefront work, the kitchen-board and tables redesigns, and
-  the loyalty-redemption-at-checkout branch — which carries a **money defect fix** where redeeming against
-  a prepaid order produced cash change that was never handed over. Largest outstanding item on this app.
-  **Ordered plan now written**: [`docs/runbooks/2026-08-25-prod-catchup-deploy.md`](https://github.com/biji-dev/grobiz/blob/main/docs/runbooks/2026-08-25-prod-catchup-deploy.md).
-  Three things it flags before anything else — `pnpm backfill:shop-fields` is **not** in `deploy.sh` and
-  must run from the new build BEFORE the API reload (an un-backfilled tenant's Pesanan queue and kitchen
-  board 400 on v16's unknown-field hard-fail); ten env vars are absent, two of which stop the new
-  `grobiz-wa-gateway` process booting on purpose while `SHOP_BASE_DOMAIN` fails closed and **silently**;
-  and `WA_SESSION_PATH` must be a persistent, backed-up volume before the first merchant pairs, because
-  Baileys credentials have no re-issue path. Nine new migrations (`0031`, `0033`–`0040`) are all DDL-only
-  and belong in none of `DATA_MIGRATIONS`; `0032`'s absence is a deliberate renumber (`9747e079`), not a
-  lost file.
+- [ ] **Online-shop storefront routing is blocked (found session-034):** `SHOP_BASE_DOMAIN` must stay unset
+  and `shop.conf` must not be deployed until this is resolved. `*.gro.biz.id` is already a true nginx
+  wildcard `server_name` routing every unmatched subdomain to ERPNext for per-tenant site resolution — a
+  wildcard always beats a regex `server_name` (what `shop.conf` uses) regardless of file order, so merchant
+  storefronts would silently fall into ERPNext instead of the shop app. Needs a real design: either a
+  `map`-driven lookup inside the existing wildcard block, or a second-level zone (`*.shop.gro.biz.id`) with
+  its own DNS + cert. The backend/DB/ERPNext side of CR-004 is fully live on `b03bca96`; only the public
+  routing is blocked.
+- [ ] **`MAP_GEOCODE_URL` still on public Nominatim (session-034):** rate-limited ~1 req/s, ToS-noncompliant
+  under commercial load. The user's MapTiler key fixed `MAP_TILE_URL` (the var that actually matters under
+  load) but MapTiler's geocoding response shape (`features[].place_name`) isn't one this codebase's parser
+  reads (`display_name` or `formatted` only) — pointing at it would add no value. Needs a Geoapify-shaped
+  key to close for real.
+- [x] **Production catch-up (409→619 commits, sessions 033→034) — ✅ SHIPPED 2026-08-28.** CR-007 merchant
+  promotions, CR-006 order-queue + storefront work (backend), kitchen-board/tables/dashboard redesigns, and
+  the loyalty-redemption-at-checkout **money defect fix** (phantom cash change on a redeemed sale) all live
+  on `b03bca96`, independently verified. See session-034 for the full range.
 - [ ] **Enrol `Cafe Bahagia`'s 3 existing customers (found session-033):** the ONE production merchant with
   both loyalty switches on (`loyaltyEnabled: true` + `auto_opt_in: 1`) has three customers and zero
   enrolled, because all three predate the setting — ERPNext enrols inside `Customer.validate()`, which only
   fires on save. `pnpm backfill:loyalty-enrolment -- --tenant 86ac32f1` closes it. **A production write that
-  starts real point accrual — needs explicit approval**, and needs the branch merged + deployed first since
-  the script does not exist on `b277abb6`.
+  starts real point accrual — needs explicit approval.** The script now exists on prod (`b03bca96`, deployed
+  session-034) — no longer blocked on a merge, only on approval.
 - [ ] **CR-008 loyalty tiering is PARKED, not cancelled (session-033):** designed, costed and measured; the
   gate fired because production has 161 lifetime invoices and no real merchant with an enrolled customer.
   Revisit when a single production merchant passes roughly a few hundred sales and ~50 named customers —
@@ -147,6 +160,7 @@ undocumented in the runbook's own smoke checklist. Rollback `1a849bf7`. Prior: *
 
 | # | Date | Topic | Key outcomes |
 | --- | --- | --- | --- |
+| [034](./session-034-2026-08-28.md) | 2026-08-28 | **PRODUCTION** catch-up redeploy `b277abb6→b03bca96` (619 commits): online shop, WhatsApp customer channel, loyalty tiering, promo caps, kitchen/tables/dashboard redesigns, loyalty-redemption money fix | api/web `0.26.2→0.41.0`, admin `→0.5.2`, order `→0.9.0`, shared `→0.50.0`. New process `grobiz-wa-gateway 0.2.0` (live, 0 merchants paired). **Found a real nginx routing conflict**: `*.gro.biz.id` is already a true wildcard to ERPNext, which always beats the online-shop's regex `server_name` regardless of file order — shipped the shop code but left `SHOP_BASE_DOMAIN` unset, deferring the public storefront launch until the routing is redesigned. 14 new DDL-only migrations (`0031`,`0033`–`0045`) applied by hand after the standing `drizzle-kit push` hang; `db:check-drift` clean (48 tables/557 cols/96 indexes). `backfill:shop-fields` 18/18 tenants, 0 errors, independently verified via an 11-field sweep. Ten new env vars (WhatsApp gateway secrets + session path with a new dedicated backup job wired in before first use, MapTiler tiles from a user-supplied key — `MAP_GEOCODE_URL` deliberately left on Nominatim, MapTiler's response shape isn't compatible). Full smoke pass (retail+fnb) plus a direct API-level proof of the loyalty-redemption fix: real sale, Rp5000 item, 1 point redeemed (Rp1000), **`amount_paid: 4000`, `change: 0`** — the actual tender, not a phantom-change value. Rollback `b277abb6` |
 | [033](./session-033-2026-08-25.md) | 2026-08-25 | **Loyalty-tiering feasibility — measured production, parked the feature.** Read-only, no deploy | CR-008 proposed a spend-based tier ladder; its own gating measurement killed it. **Production has 161 submitted invoices in its entire history** (43 of them two smoke-test canaries, 5 the base site) — 113 real-merchant sales across five merchants, largest `Dipra Pastry` at 55. **33 named customers, 7 enrolled, all 7 on a canary — no real merchant has a single enrolled customer.** 11 of 18 tenants have never submitted an invoice. Dev suggested 10–15 enrolled per tenant; production is ~20× thinner. CR-008 **parked after M0**. Two keepers regardless: (1) ERPNext's own tier metric is unusable — it sums `Loyalty Point Entry.purchase_amount`, is lifetime, never falls, and `apply_loyalty_points` writes each redemption row with a POSITIVE `purchase_amount = grand_total`, so **redeeming advances your tier** (measured: 250 000 reported against 200 000 of real sales); (2) `auto_opt_in` is off on every tenant and is a one-switch fix — ERPNext enrols inside `Customer.validate()`, so it reaches only customers saved after it, and `Cafe Bahagia` is that gap live (both switches on, 3 customers, 0 enrolled). Shipped M0 in-repo (not deployed): read-only `measure:loyalty-base`, a two-gated `backfill:loyalty-enrolment` proven on dev, and honest copy on the enrolment switch. **Side finding: prod is 14 days / 409 commits behind `main`** (`b277abb6`, not the `2aafd740` this file recorded — a 2026-08-11 deploy was never filed), including a money-path fix; the ordered catch-up is now written as `docs/runbooks/2026-08-25-prod-catchup-deploy.md` |
 | [032](./session-032-2026-08-04.md) | 2026-08-04 | **PRODUCTION** catch-up redeploy `3674b2a3→2aafd740` (161 commits): F&B COGS/dine-in accuracy, table guards, tenant-scope security fix, full smoke suite | api `0.14.0→0.24.1`, web `→0.24.0`, admin `→0.5.0`, order `→0.3.0`, shared `→0.30.0`. No new migrations. 3 manual backfills (`fnb-cogs-account` 3 tenants, `selling-settings` 13, `trial-dates` 1). Hit the known `drizzle-kit push` hang even with zero pending migrations. Found `deployment/scripts/backup.sh` broken for this split-cluster topology. Full smoke pass after setting a known PIN on both canaries via the app's own `hashPin()` — both canaries now carry PIN `123456`, closing the recurring missing-canary-credentials gap. Rollback `3674b2a3` |
 | [031](./session-031-2026-07-29.md) | 2026-07-29 | **PRODUCTION** redeploy `1a849bf7→3674b2a3`: PIN reset + stuck-registration safety net + admin CS tooling, full smoke suite | 49 commits, 3 merged features. api `0.12.2→0.14.0`, web `→0.17.1`, admin `→0.4.0`, mobile `→0.19.1`, shared `→0.20.0` (landing/order unchanged). Migrations `0028` (data-carrying, applied **after** the code reload — the runbook's one deliberate reversal of schema-before-code) + `0029` (schema-only). `WEB_APP_URL` set (was unset — the one required new var). **Zero new defects.** Full functional smoke: `smoke-test-prod.sh` retail+fnb both pass; a live throwaway registration proved the resume fix (abandon → `register/start` again returns 200 not 409 → `set-pin` → exactly one `provision_new` job, no duplicate) and rode the job to real completion; the actual hourly sweep tick fired mid-session and correctly **nudged** the `8731f6bc` ES TELER incident tenant rather than purging it. Admin CS tooling verified via Playwright + a temporary `ops_admin` account created and 2FA-enrolled entirely over the API (setup endpoint returns the raw TOTP secret; computed valid codes locally, no external device) — RBAC narrowing on tenant/provisioning purge confirmed **403 at the API layer** and **Danger Zone absent from the UI** for `ops_admin`, present for `super_admin`. Purge tool then exercised for real against the throwaway tenant: first attempt correctly 409'd (`PURGE_STATUS_FORBIDDEN` — active tenants must go through Actions → Mark for Deletion first), then succeeded — `tenants`/`provisioning_jobs` rows gone, `audit_log` has both `tenant.purge_requested` and `tenant.purged`. One non-bug ops note filed in the grobiz repo for the dev team (purge-status-guard undocumented in the runbook's own smoke checklist); temp admin account deactivated after |
