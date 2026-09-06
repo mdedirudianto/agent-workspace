@@ -13,7 +13,31 @@ Covers cross-server work: app deploys, proxy/nginx, env/secrets, schema, ERPNext
 
 **Subdomains:** `gro.biz.id` + `www` → landing · `app.` → web+API · `admin.` → admin SPA (+ same-origin `/api`) · `api.` → API · **`order.` → diner PWA (static on proxy, `/var/www/grobiz/order`, live since session-027)** · `erp.` / `*.` → ERPNext (wildcard)
 
-**Current deployed SHA:** **prod `375598d2`** = **`main`** — ✅ **deployed 2026-08-28 (session-036)**:
+**Current deployed SHA:** **prod `e83ada31`** = **`main`** — ✅ **deployed 2026-09-06 (session-038)**:
+1,075-commit / 96-merge catch-up after nine days of drift. api `0.41.0→0.63.1`, web `→0.70.0`,
+admin `→0.12.0`, order `→0.11.0`, landing `→0.10.0`, shared `→0.91.0`, wa-gateway `→0.3.0`.
+Ships the **platform inbox** (CR-011), **Gro** + the AI console (CR-012), **Xendit deliberately
+DORMANT** (CR-013), a real **subscription billing cycle**, working **dark mode**, the web
+shell/nav rebuild and the admin chassis. **11 additive migrations `0046`–`0056`**; drift gate clean
+at 53 tables / 633 columns / 109 indexes. **The property that made a release this size survivable
+is that its riskiest subsystem is switched off by the ABSENCE of a variable** — `PAYMENT_GATEWAY`,
+`CHECKOUT_GATEWAY` and `PAYOUT_GATEWAY` are all unset, so every Xendit path ships inert and all 15
+existing anchors + 13 invoices were correctly attributed `midtrans` by the migrations' own
+defaults. **The billing cron was the headline risk and reading it inverted the conclusion**: its
+pre-flight block 5 named `2caaaf0a` **Salon Fany** — a comp'd tenant owing nothing — but the
+ALREADY-RUNNING code suspends `past_due` with no `plan <> 'free'` guard at all, so it was doomed
+either way, while the new code HEALS three free tenants the old one would have locked out.
+Salon Fany was repaired first (and `current_period_end` moved past the comp's expiry, because
+`lapse` runs BEFORE `plan-override-expiry` in the same tick). `repair-free-suspensions` then
+restored **five real merchants**. **One backfill the aggregate runbook does NOT name**:
+`backfill:shop-fields` now also creates the `Address` delivery-pin fields — 23/23, verified
+independently on four sites. Both canary smokes PASSED (retail invoice + stock decrement; full
+F&B dine-in QR journey). **Gro is LIVE** on an Anthropic OAuth subscription and answered real
+production data correctly; its first turn **measured prompt caching at 47%**, which CONTRADICTS
+the repo's own `engineering-notes/57` "measured not firing" — filed as a follow-up. Xendit's money
+path was proven locally against the real sandbox via `xendit:local-circuit`, which registers
+nothing, so dev's shared callback URLs were untouched. `MAP_SEARCH_URL` set on Geoapify, closing a
+standing follow-up. Rollback `cfe5745a`. Prior: **prod `375598d2`** = **`main`** — ✅ **deployed 2026-08-28 (session-036)**:
 **ERPNext tenant sites moved to `*.erp.gro.biz.id`**, executing CR-009 option C and closing the last
 open item from session-034. 21 sites renamed (18 tenants + 3 idle pool), **0 failures**, in a
 no-traffic window; both canary money paths re-verified end to end (real retail Sales Invoice with
@@ -99,7 +123,30 @@ undocumented in the runbook's own smoke checklist. Rollback `1a849bf7`. Prior: *
 **Observability:** GlitchTip org `grobiz` (`errors.biji.uk`, projects api/web/admin/extension = /10–/13) · OpenObserve SA `grobiz-ingest@biji.uk` stream `grobiz_api` (`10.0.0.3:5080`) · OpenPanel projects `grobiz`/`grobiz-admin` (`analytics.biji.uk`) · GA4 `G-6C3YPF2YNR` (landing only). **WhatsApp:** Cloud API wired, webhook `api.gro.biz.id/api/webhooks/whatsapp` (system-user non-expiring token).
 
 **Open follow-ups:**
-- [ ] **Online-shop storefront routing is blocked (found session-034):** `SHOP_BASE_DOMAIN` must stay unset
+- [ ] **Correct the prompt-caching claim in the grobiz repo (found session-038).** `CLAUDE.md` and
+  `docs/engineering-notes/57-prompt-caching-captured-wired-and-measured-not-firing.md` state, from a
+  2026-09-05 measurement, that Anthropic answers **zero** on both cache figures on an OAuth
+  subscription session, and explicitly ask for a re-measurement. Production's very first Gro turn
+  reported `cache_read_tokens 7195` / `cache_write_tokens 7195` against `prompt_tokens 15381` —
+  **47% of the prompt served from cache**, on that same auth mode, confirmed independently by the
+  admin console's own readout. The docs are now wrong and should be updated.
+- [ ] **Split the shared Anthropic OAuth session (session-038).** Production and the operator laptop
+  currently hold the SAME Claude Code credential, and the refresh token rotates — whichever side
+  refreshes first invalidates the other. Running `/login` locally mints an independent session and
+  removes the race. Until then, expect one of the two to break.
+- [ ] **Re-suspend the two canaries, or record the decision not to (session-038).** `d6f28680` and
+  `f4c91773` were both left `active` (the FnB one by `repair-free-suspensions`, the Retail one by
+  hand for the smoke test). Session-027's standing note says they are parked `suspended` so they do
+  not pollute active-tenant counts — "21 active" currently includes both.
+- [ ] **The 2026-09-06 aggregate runbook says "no backfill is required" and that is wrong for
+  ERPNext (session-038).** `docs/runbooks/2026-09-06-prod-gap-release-deploy.md` §1 is true of the
+  DATABASE only; the release also adds `Address.custom_latitude`/`custom_longitude`, which ride
+  `pnpm backfill:shop-fields` and are read by `routes/customers.ts`. A v16 `getList` naming an
+  unknown field is a 417 that takes the reading page down. Worth a line in that runbook.
+- [ ] **`ai_fx_rate` has never been fetched on prod (session-038).** The admin AI console says so
+  honestly and uses the shipped ~16.500 IDR/USD fallback; the daily 09:05 WIB job should close it.
+- [x] **Online-shop storefront routing — ✅ UNBLOCKED (session-036, confirmed live session-038).** CR-009 moved every tenant ERPNext site to `*.erp.gro.biz.id`, freeing the `*.gro.biz.id` wildcard; prod now carries `SHOP_BASE_DOMAIN=gro.biz.id` and the CORS matcher admits exactly one label under it. Original note follows.
+- [ ] ~~**Online-shop storefront routing is blocked (found session-034):**~~ `SHOP_BASE_DOMAIN` must stay unset
   and `shop.conf` must not be deployed until this is resolved. `*.gro.biz.id` is already a true nginx
   wildcard `server_name` routing every unmatched subdomain to ERPNext for per-tenant site resolution — a
   wildcard always beats a regex `server_name` (what `shop.conf` uses) regardless of file order, so merchant
@@ -107,7 +154,8 @@ undocumented in the runbook's own smoke checklist. Rollback `1a849bf7`. Prior: *
   `map`-driven lookup inside the existing wildcard block, or a second-level zone (`*.shop.gro.biz.id`) with
   its own DNS + cert. The backend/DB/ERPNext side of CR-004 is fully live on `b03bca96`; only the public
   routing is blocked.
-- [ ] **`MAP_GEOCODE_URL` still on public Nominatim (session-034):** rate-limited ~1 req/s, ToS-noncompliant
+- [x] **Map geocoding is OFF public Nominatim — ✅ CLOSED (session-038).** `MAP_GEOCODE_URL` moved to Geoapify in session-035; `MAP_SEARCH_URL` (new in the 2026-09-06 release, and unset = Nominatim) was set to Geoapify autocomplete on the same key before the API restart, verified live: `?q=Cikarang` → 200, 5 Indonesian results, coordinates the right way round. Original note follows.
+- [ ] ~~**`MAP_GEOCODE_URL` still on public Nominatim (session-034):**~~ rate-limited ~1 req/s, ToS-noncompliant
   under commercial load. The user's MapTiler key fixed `MAP_TILE_URL` (the var that actually matters under
   load) but MapTiler's geocoding response shape (`features[].place_name`) isn't one this codebase's parser
   reads (`display_name` or `formatted` only) — pointing at it would add no value. Needs a Geoapify-shaped
@@ -186,6 +234,7 @@ undocumented in the runbook's own smoke checklist. Rollback `1a849bf7`. Prior: *
 
 | # | Date | Topic | Key outcomes |
 | --- | --- | --- | --- |
+| [038](./session-038-2026-09-06.md) | 2026-09-06 | **PRODUCTION** catch-up `cfe5745a→e83ada31` (1,075 commits): platform inbox, Gro assistant + AI console, Xendit (dormant), subscription billing cycle, dark mode, admin chassis | 11 additive migrations `0046`–`0056`, drift clean (53 tables/633 cols/109 idx). **Xendit ships switched off by the absence of a variable** — all 6 gateway vars unset, 15 anchors + 13 invoices correctly attributed `midtrans`. Caught the billing cron's block-5 row (**Salon Fany**, a comp'd tenant the *already-running* code would have suspended) and repaired it; `repair-free-suspensions` restored **5 real merchants** locked out for owing nothing. Ran `backfill:shop-fields` 23/23 — **an ERPNext backfill the aggregate runbook does not name**. Both canary smokes PASSED. **Gro live** on OAuth and answering real data; its first turn **measured prompt caching at 47%**, contradicting the repo's own "measured not firing" note. Xendit money path proven locally against the real sandbox without stealing dev's callbacks |
 | [037](./session-037-2026-09-02.md) | 2026-09-02 | **DEV** catch-up redeploy `2bc46d9f→a4cbcc03` (1,271 commits): online shop, WhatsApp customer channel, promos, tiering, 5 weeks of POS work | dev had been behind since 2026-07-26 while prod was caught up twice — the normal order inverted. shared `0.18.0→0.63.0`, api `0.12.0→0.50.0`, web `→0.54.0`, admin `→0.6.0`, order `→0.9.1`, landing `→0.10.0`; `wa-gateway` built but **deliberately not deployed**. 19 migrations (`0028`–`0046` pre-reload, data-carrying `0027` post-reload), drift clean (50 tables/588 cols/103 indexes). **Measurement made a 2× bigger deploy than session-034 far safer than its size**: `NODE_ENV=development` confirmed from `/proc` (the 2FA boot gate that cost prod 7.5 min structurally cannot arm), **zero** newly-required env vars, all 11 new tables absent (so inline UNIQUE/FK clauses actually land), `0027` collision pre-check **0 collisions**. **Caught the order-bundle landmine a third time before it shipped** — `VITE_API_URL` was empty in dev's `.env` while `apps/order/.env.production` supplies the PROD host; built with an explicit override and asserted against the bytes served over HTTPS. **Built the frontends AFTER the API restart** (the API serves `apps/web/dist` in-tree, so a pre-restart build goes live instantly against old API code and wipes product descriptions). **3 findings:** (1) `db:backfill` was **unusable on dev** — dev runs **PostgreSQL 14**, `0007` uses PG15+ `NULLS NOT DISTINCT`, and the script has no `--from`, so it aborted on file one; routed around at deploy time, then **fixed properly the same session** (grobiz `a1046557`: `0007` version-guarded with a COALESCE expression-index emulation under the same object name, PG15+ path byte-identical so prod is unchanged, plus `--from` on `db-backfill.ts`). Dev had been carrying the very defect 0007 prevents — 3 global flags × 3 copies; now 11 rows → 5, duplicate inserts **rejected**, re-run a true no-op, drift clean. Postgres upgrade deliberately **rejected as the fix**: dev's PG14 is shared by 20 databases across ~15 products; (2) `backfill:fnb-cogs-account` fails 4/6 on the shared site and **falsified this session's own pre-flight claim** that company-keyed accounts made the tenant loop safe; (3) ⚠️ **loyalty tier evaluation crashed on any fractional spend** (`bigint` column, unrounded value) — latent since session-034; **fixed same session** (grobiz `2b61155d`: round + `isFinite` guard at the one conversion point feeding both the nightly job and the on-sale path; both new tests mutation-checked; 92 loyalty tests green). Dev went `ran=9/failed=1` → **`ran=10/failed=0`**, the crashing `1107090.91` now stored as `1107091`, 8 tier rows recovered for that tenant. ⚠️ **still to deploy to PRODUCTION**, which is running the buggy nightly job. Health check all-pass, 0 error-log lines. Dev ended the session at **`2b61155d`** (both fixes shipped). ⚠️ **`dev` now runs grobiz ONLY** — 15 processes stopped for the build, then all remaining non-grobiz processes stopped at the user's request (`pm2-logrotate` deliberately kept); `pm2 save` not run, snapshots on the host. Rollback `2bc46d9f` |
 | [036](./session-036-2026-08-28.md) | 2026-08-28 | **PRODUCTION** ERPNext zone migration — all tenant sites → `*.erp.gro.biz.id`, freeing the wildcard for the online shop | prod `8edea7c3→375598d2`. **21 sites renamed, 0 failures** (18 tenants + 3 idle pool) in a no-traffic window, executing CR-009 option C. Both canary smokes PASSED (retail invoice + stock decrement; full F&B dine-in QR journey). 0 stragglers on disk or in Postgres, `cleanup-orphans` reports 0 orphans, legacy `<id>.gro.biz.id` 301s via a static 8-hex map, first-party hosts untouched, 0 errors/warnings after. **Corrected two of CR-009's own premises**: the cert was free (both hosts already had certbot dns-cloudflare + zone creds) and nginx wildcards match MULTIPLE labels — so routing already worked and only the cert was missing; the explicit block still matters because longest-wildcard-wins is what keeps ERPNext at the shop cutover. Fixed the named landmine test-first (`erp.${baseDomain}` → `erp.erp.gro.biz.id` would have silently unprotected the master; the same bug had a second hand-maintained copy). **Repaired the `pool-` prefix invariant** — 3 tenants, one active. Traps found: Cloudflare cached my own pre-redirect 404s, and `deploy.sh`'s health check races the reload. |
 | [035](./session-035-2026-08-28.md) | 2026-08-28 | **PRODUCTION** catch-up follow-ups: `drizzle-kit push` diagnosed + removed from the deploy path, `--update-env`, the health gate, CORS closed, Geoapify geocoding | prod `b03bca96→8edea7c3`, no version bumps. **Closed the push hang open since session-004** — not the `feature_flags` drift three reports blamed, but drizzle-kit failing to round-trip `unique().nullsNotDistinct()`; reproduced against a copy of prod's schema, and only visible on a table with ROWS. Rehearsed the replacement against a restored copy of the LIVE database: 42 files in 2.7s, twice, row counts identical, drift clean. **Caught a would-be outage in the obvious next step** — 28 of 47 live tables have no numbered migration, so push stays the constructor and a new CI gate (`db:check-migration-coverage`) guards the seam. `--update-env` on API + gateway (verified by both config-guard boot warnings ceasing). Health gate meaningful again (14/16; was 4 false FAILs every deploy). **CORS_ORIGINS set** — session-027's follow-up — enumerated from code, verified per origin, extension excluded because its manifest has no `key`. **Geoapify needed a code fix**: no provider returns the top-level `formatted` the parser read, so the documented swap would have silently produced no labels forever. Shop routing → CR-009 with a collision hazard nobody had spotted (`shopSlugSchema` accepts another tenant's 8-hex site label). |
