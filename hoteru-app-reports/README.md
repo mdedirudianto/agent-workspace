@@ -150,6 +150,14 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 - [ ] `docs/handoff-superadmin-purge.md` (new in session-011) is a fifth doc describing the
       unrelated `103.253.244.195` single-VPS deployment target — same recurring confusion tracked
       below.
+- [ ] Avilia affiliate-webhook integration (session-015) is live in code but unconfigured on all 3
+      instances — needs each hotel provisioned in Avilia (`ServiceAgreement` + secret + per-offer
+      `AffiliateRate` + affiliate slug) before `AVILIA_ENABLED=true` + the 3 `AVILIA_*` vars can be
+      set per instance.
+- [ ] Add-on quantity + PER_UNIT/PER_UNIT_NIGHT pricing (session-015) has never been exercised
+      against real booking data — no hotel has any add-on configured at all yet (add-ons feature
+      itself shipped session-013, still unused). Verify the quantity stepper + PER_UNIT math
+      end-to-end in a browser once a real add-on exists.
 
 ## Sessions
 
@@ -169,3 +177,4 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 | [Session 12](session-012-2026-08-24.md) | 2026-08-24 | Redeployed all 3 instances to latest main (2 commits) — SUPERADMIN can now hard-delete a booking of any status (backend-only, no migration); verified via 13 passing unit tests + unchanged 401 auth gate | Done |
 | [Session 13](session-013-2026-09-03.md) | 2026-09-03 | Redeployed all 3 instances to latest main (62 commits) — booking add-ons + add-on options (2 additive migrations), SUPERADMIN superset of ADMIN; full-stack rollout (backend + all 3 guest sites + management); verified 308 backend tests + unchanged 401 auth gate on all 3 | Done |
 | [Session 14](session-014-2026-09-06.md) | 2026-09-06 | Redeployed all 3 instances to latest main (4 commits) — room cards now show active seasonal/day-of-week rate instead of base price; frontend-only, no migration/backend/mgmt rebuild needed; smallest-footprint deploy in the series | Done |
+| [Session 15](session-015-2026-09-11.md) | 2026-09-11 | Redeployed all 3 instances to latest main (54 commits) — add-on quantity stepper + PER_UNIT/PER_UNIT_NIGHT pricing (additive migration, full-stack), new Avilia affiliate-webhook integration shipped but left disabled (unprovisioned); 358 backend tests passing | Done |
