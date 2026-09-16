@@ -150,10 +150,10 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 - [ ] `docs/handoff-superadmin-purge.md` (new in session-011) is a fifth doc describing the
       unrelated `103.253.244.195` single-VPS deployment target — same recurring confusion tracked
       below.
-- [ ] Avilia affiliate-webhook integration (session-015) is live in code but unconfigured on all 3
-      instances — needs each hotel provisioned in Avilia (`ServiceAgreement` + secret + per-offer
-      `AffiliateRate` + affiliate slug) before `AVILIA_ENABLED=true` + the 3 `AVILIA_*` vars can be
-      set per instance.
+- [ ] Avilia integration (booking webhook from session-015 + affiliate-sync webhook from
+      session-017) is live in code but unconfigured on all 3 instances — needs each hotel
+      provisioned in Avilia (`ServiceAgreement` + secret + per-offer `AffiliateRate` + affiliate
+      slug) before `AVILIA_ENABLED=true` + the 3 `AVILIA_*` vars can be set per instance.
 - [ ] Add-on quantity + PER_UNIT/PER_UNIT_NIGHT pricing (session-015) has never been exercised
       against real booking data — no hotel has any add-on configured at all yet (add-ons feature
       itself shipped session-013, still unused). Verify the quantity stepper + PER_UNIT math
@@ -179,3 +179,4 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 | [Session 14](session-014-2026-09-06.md) | 2026-09-06 | Redeployed all 3 instances to latest main (4 commits) — room cards now show active seasonal/day-of-week rate instead of base price; frontend-only, no migration/backend/mgmt rebuild needed; smallest-footprint deploy in the series | Done |
 | [Session 15](session-015-2026-09-11.md) | 2026-09-11 | Redeployed all 3 instances to latest main (54 commits) — add-on quantity stepper + PER_UNIT/PER_UNIT_NIGHT pricing (additive migration, full-stack), new Avilia affiliate-webhook integration shipped but left disabled (unprovisioned); 358 backend tests passing | Done |
 | [Session 16](session-016-2026-09-15.md) | 2026-09-15 | Redeployed all 3 instances to latest main (2 commits) — room cards now show `todayPrice` (server-resolved effective rate) instead of static `basePrice`; backend + guest sites only, no migration/deps; 368 backend tests passing, browser-verified | Done |
+| [Session 17](session-017-2026-09-16.md) | 2026-09-16 | Redeployed all 3 instances to latest main (1 commit) — Avilia affiliate-sync webhook hook on affiliate creation, dormant (still `AVILIA_ENABLED` unset everywhere); backend-only, no migration/deps/frontend; 370 backend tests passing, smallest-footprint deploy in the series | Done |
