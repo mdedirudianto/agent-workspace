@@ -11,6 +11,7 @@ This server hosts all primary databases for the platform: PostgreSQL 16, MariaDB
 | [001](session-001-2026-05-05.md) | 2026-05-05 → 2026-05-06 | Initial audit & hardening | Renewed SSL (DNS-01/Cloudflare), locked origin to Cloudflare IPs only, restricted Netdata to LAN, moved Mongo Express off root, added 4 GB swap, documented MariaDB credentials, disabled unused PgBouncer, replaced default Apache homepage, bound PostgreSQL to private interfaces only, rotated shared MariaDB password, dropped orphan MariaDB user |
 | [002](session-002-2026-05-24.md) | 2026-05-24 | Fluent Bit install — DB logs → OpenObserve | PostgreSQL, MongoDB, ClickHouse, Redis, MariaDB all shipping to stream `db` on OpenObserve |
 | [003](session-003-2026-06-20.md) | 2026-06-20 | PostgreSQL fd-utilization alert (96.6%) | Benign false alarm — soft `LimitNOFILE` 1024 vs `max_files_per_process` 1000; raised to 65536 via systemd drop-in + restart, verified healthy |
+| [004](session-004-2026-09-20.md) | 2026-09-20 | Silenced flapping PostgreSQL Netdata alarms (`rollback_ratio`, `locks_utilization`) via local override | Done |
 
 ## Open follow-ups (carried from session 001)
 

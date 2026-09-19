@@ -13,9 +13,19 @@ All sources below post to the **same Telegram chat ID `293832479`** — this too
 | **Backup notify.sh** | `backup` | Any backup job failure (wagrab, tier2/3, erp-bench, grobiz) | `/opt/backup/notify.sh`'s `notify()` writes `[ALERT] <YYYY-MM-DD HH:MM WIB> <msg>` to `/var/log/backup.log` *before* calling Telegram | Full — the log already has history back to whenever the file started. |
 | **Netdata health alarms** | `app`, `db`, `proxy`, `erp`, `monitor` | swap/OOM/disk/CPU/load thresholds (see `app-sysadmin-reports/session-004-2026-06-17.md`) | `health_alarm_notify.sh` → Telegram | Full — Netdata's HTTP API only exposes current alarm state, not history, but each host keeps its own history in a local SQLite DB (`/var/cache/netdata/netdata-meta.db`, tables `health_log`/`health_log_detail`), queried read-only per host via `python3`'s built-in `sqlite3` module (no `sqlite3` CLI binary on these hosts). |
 
+## Where it runs
+
+**On `monitor`, `/opt/telegram-alerts/`, from cron** (moved off the Mac on 2026-09-20 so it no longer depends on a laptop being on). `monitor` already had root SSH (`id_rsa`) to every cluster host, holds the Kuma DB locally, and holds the Telegram bot token. `pull.sh` runs commands locally for `monitor` and over SSH to private IPs (`10.0.0.x`) for the others; `rsh`/`epoch_iso` in `pull.sh` keep it portable between Linux and macOS.
+
+- The **ledger and checkpoints on `monitor` are authoritative.** Running `pull.sh` on the Mac is refused (it would fork the checkpoints); use `./sync.sh` to fetch the current ledger, or `PULL_LOCAL=1 ./pull.sh` to force.
+- Deploy a change: edit here, then `rsync -a pull.sh digest.sh digest.py root@monitor:/opt/telegram-alerts/ && ssh root@monitor 'chown -R root:root /opt/telegram-alerts'`. (Don't overwrite `ledger.jsonl`/`state.json` on `monitor`.)
+- OpenObserve creds: a copy of `~/.config/telegram-alerts/.env` (mode 600) lives on `monitor` at `/root/.config/telegram-alerts/.env`.
+
 ## Files
 
 - `pull.sh` — the aggregator. Safe to re-run: each source has its own checkpoint in `state.json`, so a run only fetches events newer than the last pull. Every remote call is read-only.
+- `digest.sh` / `digest.py` — daily summary sender (see **Daily digest** below). `digest.sh` runs `pull.sh` first, then `digest.py` builds and sends one message.
+- `sync.sh` — copies the authoritative `ledger.jsonl` + `state.json` from `monitor` down to this checkout (one-way).
 - `ledger.jsonl` — append-only, one JSON object per line, newest appended at the bottom:
   ```json
   {"ts": "2026-08-02T17:10:30Z", "source": "kuma", "monitor": "ytgrab Datacenter Tier Canary", "status": "down", "msg": "IP_LOCK_FAILED ranged fetch returned 403"}
@@ -28,7 +38,7 @@ All sources below post to the **same Telegram chat ID `293832479`** — this too
 
 ## Netdata status codes
 
-`status` in netdata ledger rows is one of `WARNING`, `CRITICAL`, `CLEAR` — mapped from netdata's internal `RRDCALC_STATUS` codes (`-2` REMOVED, `-1` UNDEFINED, `0` UNINITIALIZED, `1` CLEAR, `2` WARNING, `3` CRITICAL). The pull query only selects transitions *into* WARNING/CRITICAL, or *into* CLEAR from WARNING/CRITICAL (a recovery) — this matches what actually reaches Telegram and excludes the high-volume UNINITIALIZED/REMOVED churn that happens on every netdata restart or chart re-init.
+`status` in netdata ledger rows is one of `WARNING`, `CRITICAL`, `CLEAR` — mapped from netdata's internal `RRDCALC_STATUS` codes (`-2` REMOVED, `-1` UNDEFINED, `0` UNINITIALIZED, `1` CLEAR, `3` WARNING, `4` CRITICAL on Netdata v2.x). **Fixed 2026-09-20:** earlier versions mapped `3` to CRITICAL and never pulled `4`, so netdata rows pulled before that date labelled `CRITICAL` are really WARNINGs and real CRITICALs are missing. The ledger also records **every** transition, including alarms routed `to: silent` (e.g. `ml_*`, `tcp_resets`, `netdev_*`, `plugin_data_collection_status`) — those never reached Telegram. The pull query only selects transitions *into* WARNING/CRITICAL, or *into* CLEAR from WARNING/CRITICAL (a recovery) — this matches what actually reaches Telegram and excludes the high-volume UNINITIALIZED/REMOVED churn that happens on every netdata restart or chart re-init.
 
 ## Credentials
 
@@ -47,7 +57,27 @@ If that file is missing, `pull.sh` skips the OpenObserve source with a warning r
 ./pull.sh
 ```
 
-Run this, then read the newly appended tail of `ledger.jsonl` for a summary of what fired since the last check. Any actual remediation (restart a service, raise a threshold, patch a canary script) still goes through the normal per-step approval process — this tool only closes the "what happened" visibility gap.
+On the Mac use `./sync.sh` instead (see **Where it runs**); on `monitor` run this, then read the newly appended tail of `ledger.jsonl` for a summary of what fired since the last check. Any actual remediation (restart a service, raise a threshold, patch a canary script) still goes through the normal per-step approval process — this tool only closes the "what happened" visibility gap.
+
+## Daily digest
+
+One Telegram message a day, 08:00 WIB, summarising everything since the previous digest (default 24h, capped at 48h so a sleeping Mac catches up). Exists because noisy WARNING-class alarms were moved out of live paging on 2026-09-20 (see `monitor-sysadmin-reports/session-011-2026-09-20.md`) — the digest is where they still show up.
+
+| Section | Content |
+|---|---|
+| 🔎 Needs a look | Alarms/monitors still open, CRITICAL episodes, Kuma downs, backup failures, OpenObserve triggers |
+| 📉 Digest-only | Alarms no longer paged live: proxy `web_log_1m_{bad_requests,redirects,unmatched}`, db `postgres_db_transactions_rollback_ratio` / `postgres_acquired_locks_utilization`, the 3 ytgrab tier canaries — episode counts + longest duration |
+| 📨 Already paged live | Compact counts of what was sent individually |
+| 🔇 Never paged | Transition count for stock-`silent` alarms (`ml_*`, `tcp_resets`, `netdev_*`, `plugin_data_collection_status`) |
+
+- **Sending:** `digest.py` posts with the Netdata bot token in `/etc/netdata/health_alarm_notify.conf` — directly on `monitor`; if run elsewhere it SSHes to `monitor`. No bot token is stored on the Mac.
+- **Scheduling:** `/etc/cron.d/telegram-digest` on `monitor` runs `digest.sh --scheduled` at minute 7 of **every hour**. The script exits silently unless it is ≥ 08:00 WIB and no digest has gone out yet that WIB day, so the digest lands ~08:07 WIB. This is DST-proof (the host is on Europe/Berlin and this cron has no `CRON_TZ`) and self-healing: if `monitor` was down or Telegram failed at 08:07, the window doesn't advance and the next hourly run retries. Log: `/var/log/telegram-digest.log` (one line per real run). **No digest by ~09:00 = check that log.** The old Mac launchd agent was removed.
+- **Window state:** `state.json` key `digest.last_end`; advanced only after Telegram confirms delivery.
+- **Data-gap warning:** anything `pull.sh` prints other than `pulled N events` / `no new events` is surfaced at the top of the message.
+- On `monitor`: `./digest.sh --dry-run` refreshes the ledger and prints the message without sending or moving the window (`DIGEST_TEST_HOUR=8 ./digest.sh --scheduled --dry-run` on a scratch copy exercises the cron gate). On the Mac: `./sync.sh && python3 digest.py --dry-run --hours N` previews any window.
+- **Keep the alarm lists in `digest.py` in sync** (`SILENT_STOCK`, `DIGEST_ONLY_NETDATA`, `DIGEST_ONLY_KUMA`) whenever an alarm is silenced or re-enabled in Netdata/Kuma.
+- Ledger rows with `"backfill": true` were added on 2026-09-20 to recover Netdata status-4 (CRITICAL) events the old `pull.sh` never pulled (last 72h only).
+- Disable: delete `/etc/cron.d/telegram-digest` on `monitor`.
 
 ## Known noise
 

@@ -10,6 +10,40 @@ LEDGER="$DIR/ledger.jsonl"
 STATE="$DIR/state.json"
 ENV_FILE="$HOME/.config/telegram-alerts/.env"
 
+# --- portability: runs from the Mac (ssh to every host by name) or on `monitor`
+# (cron; local for itself, private IPs for the rest). See README "Where it runs".
+SELF_HOST="$(hostname -s 2>/dev/null || true)"
+host_addr() {
+  if [[ "$SELF_HOST" == "monitor" ]]; then
+    case "$1" in
+      db) echo 10.0.0.1 ;; proxy) echo 10.0.0.2 ;; monitor) echo 10.0.0.3 ;;
+      backup) echo 10.0.0.4 ;; app) echo 10.0.0.5 ;; erp) echo 10.0.0.6 ;;
+      *) echo "$1" ;;
+    esac
+  else
+    echo "$1"
+  fi
+}
+# The ledger and checkpoints live on `monitor` (cron). Pulling from anywhere else would
+# fork them, so refuse unless explicitly forced. Use ./sync.sh to copy them down.
+if [[ "$SELF_HOST" != "monitor" && -z "${PULL_LOCAL:-}" ]]; then
+  echo "ledger is managed on monitor (cron). Run ./sync.sh to fetch it, or PULL_LOCAL=1 to force a local pull." >&2
+  exit 2
+fi
+# usage: rsh <host> '<shell command>' — runs locally when <host> is this machine.
+rsh() {
+  local h="$1"; shift
+  if [[ "$h" == "$SELF_HOST" ]]; then
+    bash -c "$1"
+  else
+    ssh -o BatchMode=yes -o ConnectTimeout=15 "root@$(host_addr "$h")" "$1"
+  fi
+}
+# usage: epoch_iso <epoch-seconds> — GNU date on Linux, BSD date on macOS.
+epoch_iso() {
+  date -u -d "@$1" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -r "$1" +%Y-%m-%dT%H:%M:%SZ
+}
+
 append() { printf '%s\n' "$1" >> "$LEDGER"; }
 
 # usage: state_get '<jq filter using $n etc>' [--arg n "value" ...]
@@ -37,7 +71,7 @@ pull_kuma() {
   local checkpoint rows count=0 new_checkpoint=""
   checkpoint="$(state_get '.kuma')"
 
-  rows="$(ssh root@monitor "docker exec uptime-kuma mariadb -N -u root -S /app/data/run/mariadb.sock kuma -e \"SELECT h.time, m.name, h.status, h.msg FROM heartbeat h JOIN monitor m ON h.monitor_id=m.id WHERE h.important=1 AND h.time > '$checkpoint' ORDER BY h.time\"" 2>/dev/null)"
+  rows="$(rsh monitor "docker exec uptime-kuma mariadb -N -u root -S /app/data/run/mariadb.sock kuma -e \"SELECT h.time, m.name, h.status, h.msg FROM heartbeat h JOIN monitor m ON h.monitor_id=m.id WHERE h.important=1 AND h.time > '$checkpoint' ORDER BY h.time\"" 2>/dev/null)"
   if [[ $? -ne 0 ]]; then
     echo "[kuma] SSH/query failed — skipped"
     return
@@ -72,7 +106,7 @@ pull_backup() {
   checkpoint="$(state_get '.backup')"
   new_checkpoint="$checkpoint"
 
-  lines="$(ssh root@backup "grep '\[ALERT\]' /var/log/backup.log" 2>/dev/null)"
+  lines="$(rsh backup "grep '\[ALERT\]' /var/log/backup.log" 2>/dev/null)"
   if [[ $? -gt 1 ]]; then
     echo "[backup] SSH failed — skipped"
     return
@@ -147,7 +181,7 @@ pull_openobserve() {
     checkpoint="$(state_get '.openobserve[$n]' --arg n "$name")"
     [[ "$last_satisfied_us" == "$checkpoint" ]] && continue
 
-    ts="$(date -u -r "$((last_satisfied_us / 1000000))" +%Y-%m-%dT%H:%M:%SZ)"
+    ts="$(epoch_iso "$((last_satisfied_us / 1000000))")"
     append "$(jq -nc --arg ts "$ts" --arg alert "$name" --arg lt "$last_satisfied_us" \
       '{ts:$ts, source:"openobserve", alert:$alert, last_satisfied_at:$lt}')"
     state_set '.openobserve[$n] = $v' --arg n "$name" --arg v "$last_satisfied_us"
@@ -165,13 +199,16 @@ NETDATA_HOSTS=(app db proxy erp monitor)
 NETDATA_DB="/var/cache/netdata/netdata-meta.db"
 
 # Status codes (netdata RRDCALC_STATUS): -2 REMOVED, -1 UNDEFINED, 0 UNINITIALIZED,
-# 1 CLEAR, 2 WARNING, 3 CRITICAL. Only WARNING/CRITICAL and CLEAR-after-WARNING/
+# 1 CLEAR, 3 WARNING, 4 CRITICAL on Netdata v2.x (verified 2026-09-20 on all 5 hosts;
+# 2 is never emitted but kept as WARNING for older agents). Rows written before that
+# date mapped 3 -> "CRITICAL" and never pulled 4, so old "CRITICAL" ledger rows are
+# really WARNINGs. Only WARNING/CRITICAL and CLEAR-after-WARNING/
 # CRITICAL (recovery) are notification-worthy; UNINITIALIZED/REMOVED churn is
 # excluded in the SQL itself so it never hits the ledger.
 netdata_status_word() {
   case "$1" in
-    2) echo "WARNING" ;;
-    3) echo "CRITICAL" ;;
+    2|3) echo "WARNING" ;;
+    4) echo "CRITICAL" ;;
     *) echo "CLEAR" ;;
   esac
 }
@@ -181,11 +218,11 @@ pull_netdata() {
   for host in "${NETDATA_HOSTS[@]}"; do
     checkpoint="$(state_get '(.netdata // {})[$h] // 0' --arg h "$host")"
 
-    rows="$(ssh "root@$host" "python3 -c \"
+    rows="$(rsh "$host" "python3 -c \"
 import sqlite3
 con = sqlite3.connect('file:$NETDATA_DB?mode=ro', uri=True)
 cur = con.cursor()
-cur.execute('SELECT d.when_key, l.name, l.chart, d.old_status, d.new_status, d.summary FROM health_log_detail d JOIN health_log l ON d.health_log_id = l.health_log_id WHERE d.when_key > $checkpoint AND (d.new_status IN (2,3) OR (d.new_status = 1 AND d.old_status IN (2,3))) ORDER BY d.when_key')
+cur.execute('SELECT d.when_key, l.name, l.chart, d.old_status, d.new_status, d.summary FROM health_log_detail d JOIN health_log l ON d.health_log_id = l.health_log_id WHERE d.when_key > $checkpoint AND (d.new_status IN (2,3,4) OR (d.new_status = 1 AND d.old_status IN (2,3,4))) ORDER BY d.when_key')
 for r in cur.fetchall():
     print('\t'.join(str(x) for x in r))
 \"" 2>/dev/null)"
@@ -203,7 +240,7 @@ for r in cur.fetchall():
     while IFS=$'\t' read -r when name chart old new summary; do
       [[ -z "$when" ]] && continue
       local ts status_word
-      ts="$(date -u -r "${when%.*}" +%Y-%m-%dT%H:%M:%SZ)"
+      ts="$(epoch_iso "${when%.*}")"
       status_word="$(netdata_status_word "${new%.*}")"
       append "$(jq -nc --arg ts "$ts" --arg host "$host" --arg alarm "$name" --arg chart "$chart" --arg status "$status_word" --arg msg "$summary" \
         '{ts:$ts, source:"netdata", host:$host, alarm:$alarm, chart:$chart, status:$status, msg:$msg}')"
