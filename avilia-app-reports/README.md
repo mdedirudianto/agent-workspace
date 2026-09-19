@@ -79,8 +79,9 @@ propagate — re-run the (idempotent) backfill after rate changes.
 - [x] Backfilled all 117 existing hoteru affiliates via `affiliate-sync` with their real rates.
 - [ ] **`aff123`**: 117 affiliate accounts share this default password. Needs a real invite/reset
       flow before affiliates are pointed at the portal — biggest remaining risk in the integration.
-- [ ] Confirm the **15% master rate** with each hotel (Technopark's 1% affiliates imply a 14%
-      platform margin; 15% was the pilot default, not a signed number).
+- [x] **15% master rate confirmed** by the user on 2026-09-20 — "for now", i.e. a standing pilot
+      figure rather than a per-hotel signed agreement. Technopark's 1% affiliates still imply a 14%
+      platform margin; revisit per hotel if a real agreement lands.
 - [ ] Watch for the **first real attributed booking** (expect 1 transaction + 2 ledger entries,
       `pending` → `payable` on check-out). Avilia held 0 transactions at end of session-002.
 - [ ] No **rate-change propagation**: Hoteru syncs only on affiliate creation. Re-run the backfill
