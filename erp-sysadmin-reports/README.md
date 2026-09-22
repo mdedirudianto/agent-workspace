@@ -8,3 +8,4 @@ Hosts **ERPNext v16 for `gro.biz.id`**, reverse-proxied from the `proxy` server.
 |----------------------------------------|------------|--------------------------------------|--------|
 | [Session 1](session-001-2026-05-17.md) | 2026-05-17 | Initial audit + same-day hardening   | Done   |
 | [Session 2](session-002-2026-05-24.md) | 2026-05-24 | Fluent Bit install — Frappe logs → OpenObserve | Done   |
+| [Session 3](session-003-2026-09-22.md) | 2026-09-22 | Enable Server Scripts bench-wide (ops-only, verified not exposed to tenants) | Done   |
