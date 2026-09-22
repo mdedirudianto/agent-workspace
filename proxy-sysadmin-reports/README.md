@@ -12,3 +12,4 @@ Public-facing nginx reverse proxy for the internal cluster (`10.0.0.0/22`). Term
 | [Session 4](session-004-2026-07-14.md) | 2026-07-14 | Fail2ban lockout diagnosis & fix — unbanned user IP + app internal IP, added `10.0.0.0/24` to `ignoreip` | Done |
 | [Session 5](session-005-2026-08-20.md) | 2026-08-20 | Netdata `web_log` alarm flapping — bot-scanner bursts tripping 1-min ratio alarms; widened to 5-min window + raised volume guard | Done |
 | [Session 6](session-006-2026-09-20.md) | 2026-09-20 | Netdata `web_log` alarm noise round 2 — silenced `bad_requests`/`redirects`/`unmatched`, `successful` now CRITICAL-only `<40 %` for 10 min | Done |
+| [Session 7](session-007-2026-09-22.md) | 2026-09-22 | Multi-domain flapping investigation (youtubegrab/qute.my/foucher.co) — traced to transient Cloudflare-to-origin connectivity, self-recovered, no server-side fault; 2nd occurrence in 2 days | Analysis only |

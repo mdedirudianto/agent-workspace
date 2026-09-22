@@ -11899,3 +11899,818 @@
 {"ts":"2026-09-19T10:59:18Z","source":"netdata","host":"erp","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful","backfill":true}
 {"ts":"2026-09-19T10:59:48Z","source":"netdata","host":"erp","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful","backfill":true}
 {"ts":"2026-09-19T22:45:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-19T23:00:14Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-19T23:45:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T00:00:18Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T00:15:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T01:00:17Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T01:30:17Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T02:00:15Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T02:45:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T03:00:16Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T03:45:13Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T04:00:18Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T05:45:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T06:00:14Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T06:15:34Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T06:30:50Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-20T06:45:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T07:00:16Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T07:00:36Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T07:15:36Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-20T08:15:36Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T08:30:17Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T08:30:38Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-20T09:00:21Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T09:00:42Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T09:15:40Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-20T10:45:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T11:00:18Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T11:00:38Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T11:15:32Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-20T11:30:16Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T11:45:20Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T12:15:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T13:00:18Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T13:45:11Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T14:00:18Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T14:16:14Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"down","msg":"residential: RESOLVE_FAILED android: No stream URL found for itag 18 on video dQw4w9WgXcQ"}
+{"ts":"2026-09-20T14:31:18Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"up","msg":"residential: OK 131072 bytes"}
+{"ts":"2026-09-20T14:45:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T15:00:20Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T15:00:44Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T15:15:38Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-20T15:45:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T15:45:32Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T16:00:18Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T16:00:41Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-20T16:15:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T16:30:24Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T17:00:46Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T17:15:37Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-20T18:15:16Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: SLOW 131072 bytes in 4922ms (budget 3811ms)"}
+{"ts":"2026-09-20T18:30:26Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-20T19:45:38Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-20T20:00:37Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-19T23:05:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-19T23:57:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T00:11:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T01:22:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T01:26:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T01:31:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T01:43:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T02:14:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T02:20:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T02:47:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T02:51:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T03:01:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T03:05:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T03:26:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T03:41:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T04:10:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T04:13:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T04:28:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T04:32:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T04:34:17Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-20T04:34:27Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-20T04:48:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T04:55:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T05:17:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T05:20:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T05:49:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T06:05:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T06:37:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T07:01:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T07:06:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T07:23:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T07:34:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T07:48:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T07:57:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T08:09:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T08:27:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T08:42:40Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-20T08:42:50Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-20T08:48:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T09:00:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T09:31:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T09:42:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T09:57:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T10:02:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T10:16:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T11:48:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T12:00:45Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T12:05:45Z","source":"netdata","host":"db","alarm":"postgres_acquired_locks_utilization","chart":"postgres_local.locks_utilization","status":"WARNING","msg":"PostgreSQL acquired locks utilization"}
+{"ts":"2026-09-20T12:10:45Z","source":"netdata","host":"db","alarm":"postgres_acquired_locks_utilization","chart":"postgres_local.locks_utilization","status":"CLEAR","msg":"PostgreSQL acquired locks utilization"}
+{"ts":"2026-09-20T13:01:00Z","source":"netdata","host":"db","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T16:05:24Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-20T16:05:34Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-20T16:07:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T16:14:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T16:16:46Z","source":"netdata","host":"db","alarm":"postgres_db_cache_io_ratio","chart":"postgres_local.db_wagrab_cache_io_ratio","status":"WARNING","msg":"PostgreSQL DB wagrab cache hit ratio"}
+{"ts":"2026-09-20T16:17:46Z","source":"netdata","host":"db","alarm":"postgres_db_cache_io_ratio","chart":"postgres_local.db_wagrab_cache_io_ratio","status":"CLEAR","msg":"PostgreSQL DB wagrab cache hit ratio"}
+{"ts":"2026-09-20T16:35:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T17:14:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T17:32:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T18:21:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T18:42:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T19:58:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_wagrab_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB wagrab aborted transactions"}
+{"ts":"2026-09-20T20:03:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_wagrab_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB wagrab aborted transactions"}
+{"ts":"2026-09-20T20:04:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T20:36:16Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-20T20:36:26Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-20T20:52:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T21:40:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T21:45:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T22:10:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T22:33:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T23:07:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T23:20:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T23:31:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T00:25:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T00:31:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T00:36:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T00:57:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-20T01:46:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T01:51:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T02:55:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T03:00:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T03:26:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T03:27:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T03:32:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T03:32:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T03:38:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T03:41:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T03:45:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T03:46:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T04:22:05Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T04:27:05Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T06:53:58Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"WARNING","msg":"Web log unparsed"}
+{"ts":"2026-09-20T06:54:58Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-09-20T07:30:28Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log redirects"}
+{"ts":"2026-09-20T07:35:28Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T07:38:58Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T07:38:58Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-09-20T07:45:28Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T07:50:28Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T07:58:58Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T08:03:58Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T08:31:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T08:36:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T09:04:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T09:07:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T09:12:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T09:17:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T09:29:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T09:34:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T09:36:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log server errors"}
+{"ts":"2026-09-20T09:39:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log redirects"}
+{"ts":"2026-09-20T09:40:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-09-20T09:42:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T09:43:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T09:47:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T09:48:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T09:48:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-09-20T09:56:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T09:57:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T10:01:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T10:02:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T10:18:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T10:20:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T10:26:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T10:31:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T10:38:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T10:43:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T11:23:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log server errors"}
+{"ts":"2026-09-20T11:23:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log redirects"}
+{"ts":"2026-09-20T11:28:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-09-20T11:30:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-09-20T11:53:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T11:58:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"WARNING","msg":"Web log unparsed"}
+{"ts":"2026-09-20T11:59:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T11:59:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-09-20T12:13:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T12:17:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T12:18:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T12:29:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T13:02:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T13:11:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T13:20:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T13:28:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T13:34:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T13:39:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T13:56:31Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T14:03:31Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T14:30:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log redirects"}
+{"ts":"2026-09-20T14:32:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"WARNING","msg":"Web log unparsed"}
+{"ts":"2026-09-20T14:34:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-09-20T14:45:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T14:53:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T15:00:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-09-20T15:16:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T15:25:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T15:35:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T15:39:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T16:12:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T16:17:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T16:30:07Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T16:34:37Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T16:37:07Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T16:42:37Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T16:56:07Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T17:09:38Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T17:12:08Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T17:14:38Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T17:18:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T17:23:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T17:31:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T17:33:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T17:47:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T17:50:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T18:01:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T18:05:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T18:10:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T18:15:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T18:23:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T18:24:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T18:29:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T18:30:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T18:36:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T18:42:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T18:43:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T18:48:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T19:10:01Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T19:16:01Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T19:24:02Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T19:24:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T19:26:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T19:31:02Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T19:34:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T19:39:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T19:40:02Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T19:45:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log redirects"}
+{"ts":"2026-09-20T19:45:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T19:55:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T19:55:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-09-20T19:55:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T20:15:02Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T20:17:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T20:23:02Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T20:26:02Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T20:30:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T20:35:02Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T20:36:02Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log redirects"}
+{"ts":"2026-09-20T20:40:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T20:44:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T20:44:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-09-20T20:46:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T21:01:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T21:02:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"WARNING","msg":"Web log unparsed"}
+{"ts":"2026-09-20T21:03:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-09-20T21:05:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"WARNING","msg":"Web log unparsed"}
+{"ts":"2026-09-20T21:06:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-09-20T21:07:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T21:11:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T21:18:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T21:21:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T21:24:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T21:26:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T21:44:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T21:47:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T21:49:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T21:49:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T21:54:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T21:59:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T22:01:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T22:07:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T22:24:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T22:25:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T22:33:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T22:33:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T22:55:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log redirects"}
+{"ts":"2026-09-20T23:02:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T23:02:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-20T23:07:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-20T23:07:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T23:07:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-09-20T23:12:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T23:17:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T23:27:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-20T23:31:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T23:55:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T00:00:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T00:15:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T00:27:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T00:47:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T00:52:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-20T03:00:39Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T04:04:09Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T08:01:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T08:31:30Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T09:01:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T09:08:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T10:01:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T10:12:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T11:01:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T11:30:30Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T12:01:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T12:19:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T13:01:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T15:39:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T16:00:40Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T16:35:00Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T17:01:01Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-20T19:03:31Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-21T00:00:31Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-21T01:30:15Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T01:45:13Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-21T02:00:39Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T02:15:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T02:15:34Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-21T02:30:21Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-21T02:45:13Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T03:00:16Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-21T03:15:13Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T03:30:19Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-21T04:15:14Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T04:30:23Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-21T08:00:37Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T08:15:54Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-21T08:45:39Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T09:00:39Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-21T09:31:10Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T09:45:42Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-21T10:00:50Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: SLOW 131072 bytes in 4731ms (budget 3811ms)"}
+{"ts":"2026-09-21T10:15:12Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T10:30:26Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-21T10:31:03Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-21T10:45:14Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T10:45:49Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: SLOW 131072 bytes in 5039ms (budget 3811ms)"}
+{"ts":"2026-09-21T11:00:23Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-21T11:00:57Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-21T11:30:55Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: SLOW 131072 bytes in 4379ms (budget 3811ms)"}
+{"ts":"2026-09-21T12:32:24Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"down","msg":"residential: SLOW 131072 bytes in 6640ms (budget 3811ms)"}
+{"ts":"2026-09-21T12:47:09Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"up","msg":"residential: OK 131072 bytes"}
+{"ts":"2026-09-21T13:15:14Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T13:30:36Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-21T13:31:40Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"down","msg":"residential: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T14:03:18Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"up","msg":"residential: OK 131072 bytes"}
+{"ts":"2026-09-21T14:18:01Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"down","msg":"residential: SLOW 131072 bytes in 8494ms (budget 3811ms)"}
+{"ts":"2026-09-21T14:31:02Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"up","msg":"residential: OK 131072 bytes"}
+{"ts":"2026-09-21T14:33:20Z","source":"kuma","monitor":"app.teamy.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:33:22Z","source":"kuma","monitor":"teamy.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:33:22Z","source":"kuma","monitor":"beta.pasarbesar.id","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:33:23Z","source":"kuma","monitor":"qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:33:24Z","source":"kuma","monitor":"wa.foucher.co","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:33:24Z","source":"kuma","monitor":"team.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:33:24Z","source":"kuma","monitor":"blog.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:33:25Z","source":"kuma","monitor":"api.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:33:25Z","source":"kuma","monitor":"api.quranchat.me","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:33:26Z","source":"kuma","monitor":"admin.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:33:26Z","source":"kuma","monitor":"api.youtubegrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:33:28Z","source":"kuma","monitor":"vault.biji.uk","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:33:31Z","source":"kuma","monitor":"api.qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:40:02Z","source":"kuma","monitor":"MeetGrab API Health","status":"down","msg":"read ETIMEDOUT"}
+{"ts":"2026-09-21T14:43:31Z","source":"kuma","monitor":"api.qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T14:45:15Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-21T14:46:31Z","source":"kuma","monitor":"api.qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T14:48:03Z","source":"kuma","monitor":"OpenPanel","status":"down","msg":"read ETIMEDOUT"}
+{"ts":"2026-09-21T15:00:16Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-21T15:01:13Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-21T15:01:14Z","source":"kuma","monitor":"YouTubeGrab Health","status":"down","msg":"read ETIMEDOUT"}
+{"ts":"2026-09-21T15:01:40Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"down","msg":"residential: SLOW 131072 bytes in 4044ms (budget 3811ms)"}
+{"ts":"2026-09-21T15:02:22Z","source":"kuma","monitor":"beta.pasarbesar.id","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:02:24Z","source":"kuma","monitor":"team.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:02:24Z","source":"kuma","monitor":"blog.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:03:20Z","source":"kuma","monitor":"app.teamy.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:03:23Z","source":"kuma","monitor":"qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:03:24Z","source":"kuma","monitor":"wa.foucher.co","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:03:28Z","source":"kuma","monitor":"vault.biji.uk","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:04:41Z","source":"kuma","monitor":"wagrab.com","status":"down","msg":"read ETIMEDOUT"}
+{"ts":"2026-09-21T15:05:22Z","source":"kuma","monitor":"beta.pasarbesar.id","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:05:24Z","source":"kuma","monitor":"team.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:05:24Z","source":"kuma","monitor":"blog.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:06:20Z","source":"kuma","monitor":"app.teamy.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:06:22Z","source":"kuma","monitor":"beta.pasarbesar.id","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:06:23Z","source":"kuma","monitor":"qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:06:24Z","source":"kuma","monitor":"blog.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:06:28Z","source":"kuma","monitor":"vault.biji.uk","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:07:22Z","source":"kuma","monitor":"teamy.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:07:31Z","source":"kuma","monitor":"api.qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:08:20Z","source":"kuma","monitor":"app.teamy.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:09:23Z","source":"kuma","monitor":"qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:09:24Z","source":"kuma","monitor":"wa.foucher.co","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:09:24Z","source":"kuma","monitor":"blog.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:09:25Z","source":"kuma","monitor":"api.quranchat.me","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:10:22Z","source":"kuma","monitor":"beta.pasarbesar.id","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:10:24Z","source":"kuma","monitor":"wa.foucher.co","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:10:25Z","source":"kuma","monitor":"api.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:10:28Z","source":"kuma","monitor":"vault.biji.uk","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:12:22Z","source":"kuma","monitor":"teamy.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:12:26Z","source":"kuma","monitor":"admin.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:13:22Z","source":"kuma","monitor":"beta.pasarbesar.id","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:13:24Z","source":"kuma","monitor":"blog.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:13:25Z","source":"kuma","monitor":"api.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:13:28Z","source":"kuma","monitor":"vault.biji.uk","status":"down","msg":"Request failed with status code 522"}
+{"ts":"2026-09-21T15:14:24Z","source":"kuma","monitor":"wa.foucher.co","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:14:25Z","source":"kuma","monitor":"api.quranchat.me","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:15:23Z","source":"kuma","monitor":"qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:15:25Z","source":"kuma","monitor":"api.quranchat.me","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:15:26Z","source":"kuma","monitor":"admin.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:15:28Z","source":"kuma","monitor":"vault.biji.uk","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:15:31Z","source":"kuma","monitor":"api.qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:16:23Z","source":"kuma","monitor":"qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:16:47Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: SLOW 131072 bytes in 5000ms (budget 3811ms)"}
+{"ts":"2026-09-21T15:17:19Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"up","msg":"residential: OK 131072 bytes"}
+{"ts":"2026-09-21T15:17:22Z","source":"kuma","monitor":"beta.pasarbesar.id","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:17:24Z","source":"kuma","monitor":"team.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:18:25Z","source":"kuma","monitor":"api.quranchat.me","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:19:22Z","source":"kuma","monitor":"teamy.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:19:23Z","source":"kuma","monitor":"qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:19:24Z","source":"kuma","monitor":"blog.wagrab.com","status":"down","msg":"Request failed with status code 522"}
+{"ts":"2026-09-21T15:19:25Z","source":"kuma","monitor":"api.quranchat.me","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:19:52Z","source":"kuma","monitor":"biji.co.id","status":"down","msg":"Request failed with status code 522"}
+{"ts":"2026-09-21T15:20:13Z","source":"kuma","monitor":"washop.me","status":"down","msg":"read ECONNRESET"}
+{"ts":"2026-09-21T15:20:17Z","source":"kuma","monitor":"Uptime Kuma","status":"down","msg":"read ECONNRESET"}
+{"ts":"2026-09-21T15:20:20Z","source":"kuma","monitor":"app.teamy.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:20:28Z","source":"kuma","monitor":"vault.biji.uk","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:20:33Z","source":"kuma","monitor":"biji.uk","status":"down","msg":"read ETIMEDOUT"}
+{"ts":"2026-09-21T15:21:22Z","source":"kuma","monitor":"GlitchTip","status":"down","msg":"Request failed with status code 522"}
+{"ts":"2026-09-21T15:21:23Z","source":"kuma","monitor":"qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:21:30Z","source":"kuma","monitor":"washop.me","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:21:30Z","source":"kuma","monitor":"youtubegrab.com","status":"down","msg":"read ETIMEDOUT"}
+{"ts":"2026-09-21T15:22:24Z","source":"kuma","monitor":"wa.foucher.co","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:22:25Z","source":"kuma","monitor":"api.quranchat.me","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:23:24Z","source":"kuma","monitor":"team.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:23:28Z","source":"kuma","monitor":"vault.biji.uk","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:24:22Z","source":"kuma","monitor":"teamy.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:24:23Z","source":"kuma","monitor":"qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:25:24Z","source":"kuma","monitor":"wa.foucher.co","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:25:25Z","source":"kuma","monitor":"api.quranchat.me","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:25:31Z","source":"kuma","monitor":"api.qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:26:28Z","source":"kuma","monitor":"vault.biji.uk","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:27:23Z","source":"kuma","monitor":"qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:28:25Z","source":"kuma","monitor":"api.quranchat.me","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:28:28Z","source":"kuma","monitor":"vault.biji.uk","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:28:31Z","source":"kuma","monitor":"api.qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:30:23Z","source":"kuma","monitor":"qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:31:28Z","source":"kuma","monitor":"vault.biji.uk","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:33:23Z","source":"kuma","monitor":"qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:36:23Z","source":"kuma","monitor":"qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:39:22Z","source":"kuma","monitor":"teamy.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:40:41Z","source":"kuma","monitor":"OpenPanel","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:40:53Z","source":"kuma","monitor":"GlitchTip","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:42:08Z","source":"kuma","monitor":"washop.me","status":"down","msg":"read ECONNRESET"}
+{"ts":"2026-09-21T15:42:22Z","source":"kuma","monitor":"teamy.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:48:23Z","source":"kuma","monitor":"qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:51:23Z","source":"kuma","monitor":"qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:51:24Z","source":"kuma","monitor":"team.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T15:54:24Z","source":"kuma","monitor":"team.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T15:55:43Z","source":"kuma","monitor":"meetgrab.us","status":"down","msg":"read ETIMEDOUT"}
+{"ts":"2026-09-21T16:00:35Z","source":"kuma","monitor":"quranchat.me","status":"down","msg":"read ETIMEDOUT"}
+{"ts":"2026-09-21T16:00:47Z","source":"kuma","monitor":"OpenPanel","status":"down","msg":"read ECONNRESET"}
+{"ts":"2026-09-21T16:02:24Z","source":"kuma","monitor":"team.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:04:21Z","source":"kuma","monitor":"app.teamy.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:05:24Z","source":"kuma","monitor":"team.wagrab.com","status":"down","msg":"Request failed with status code 522"}
+{"ts":"2026-09-21T16:09:21Z","source":"kuma","monitor":"app.teamy.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:09:22Z","source":"kuma","monitor":"teamy.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:11:24Z","source":"kuma","monitor":"wa.foucher.co","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:12:22Z","source":"kuma","monitor":"teamy.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:14:21Z","source":"kuma","monitor":"app.teamy.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:14:24Z","source":"kuma","monitor":"wa.foucher.co","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:15:24Z","source":"kuma","monitor":"wa.foucher.co","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:15:50Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-21T16:17:09Z","source":"kuma","monitor":"MeetGrab API Health","status":"up","msg":"200 - OK, keyword is found"}
+{"ts":"2026-09-21T16:17:28Z","source":"kuma","monitor":"vault.biji.uk","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:18:21Z","source":"kuma","monitor":"app.teamy.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:18:24Z","source":"kuma","monitor":"wa.foucher.co","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:19:24Z","source":"kuma","monitor":"team.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:19:25Z","source":"kuma","monitor":"api.quranchat.me","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:20:28Z","source":"kuma","monitor":"vault.biji.uk","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:22:21Z","source":"kuma","monitor":"app.teamy.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:22:24Z","source":"kuma","monitor":"team.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:22:26Z","source":"kuma","monitor":"api.quranchat.me","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:24:28Z","source":"kuma","monitor":"vault.biji.uk","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:25:21Z","source":"kuma","monitor":"app.teamy.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:26:25Z","source":"kuma","monitor":"blog.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:27:28Z","source":"kuma","monitor":"vault.biji.uk","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:28:23Z","source":"kuma","monitor":"qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:28:49Z","source":"kuma","monitor":"wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:29:25Z","source":"kuma","monitor":"blog.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:30:24Z","source":"kuma","monitor":"team.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:30:28Z","source":"kuma","monitor":"vault.biji.uk","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:30:53Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: SLOW 131072 bytes in 3952ms (budget 3811ms)"}
+{"ts":"2026-09-21T16:31:23Z","source":"kuma","monitor":"qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:31:26Z","source":"kuma","monitor":"api.quranchat.me","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:32:21Z","source":"kuma","monitor":"app.teamy.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:33:24Z","source":"kuma","monitor":"team.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:33:31Z","source":"kuma","monitor":"api.qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:34:26Z","source":"kuma","monitor":"api.quranchat.me","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:35:21Z","source":"kuma","monitor":"app.teamy.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:35:28Z","source":"kuma","monitor":"vault.biji.uk","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:35:55Z","source":"kuma","monitor":"meetgrab.us","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:36:31Z","source":"kuma","monitor":"api.qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:37:23Z","source":"kuma","monitor":"qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:37:25Z","source":"kuma","monitor":"blog.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:37:38Z","source":"kuma","monitor":"biji.co.id","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:38:24Z","source":"kuma","monitor":"team.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:40:21Z","source":"kuma","monitor":"app.teamy.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:40:22Z","source":"kuma","monitor":"beta.pasarbesar.id","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:40:23Z","source":"kuma","monitor":"qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:40:25Z","source":"kuma","monitor":"blog.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:41:25Z","source":"kuma","monitor":"blog.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:41:26Z","source":"kuma","monitor":"admin.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:42:47Z","source":"kuma","monitor":"washop.me","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:43:25Z","source":"kuma","monitor":"api.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:43:26Z","source":"kuma","monitor":"api.youtubegrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:43:42Z","source":"kuma","monitor":"youtubegrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:44:21Z","source":"kuma","monitor":"app.teamy.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:44:23Z","source":"kuma","monitor":"qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:44:26Z","source":"kuma","monitor":"api.quranchat.me","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:45:21Z","source":"kuma","monitor":"app.teamy.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:45:22Z","source":"kuma","monitor":"teamy.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:45:31Z","source":"kuma","monitor":"api.qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:45:57Z","source":"kuma","monitor":"quranchat.me","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:48:24Z","source":"kuma","monitor":"wa.foucher.co","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:48:25Z","source":"kuma","monitor":"blog.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:49:25Z","source":"kuma","monitor":"blog.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:49:28Z","source":"kuma","monitor":"vault.biji.uk","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:50:03Z","source":"kuma","monitor":"Uptime Kuma","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:50:27Z","source":"kuma","monitor":"biji.uk","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:51:24Z","source":"kuma","monitor":"team.wagrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-21T16:51:29Z","source":"kuma","monitor":"OpenPanel","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:52:24Z","source":"kuma","monitor":"team.wagrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T16:52:31Z","source":"kuma","monitor":"GlitchTip","status":"down","msg":"read ECONNRESET"}
+{"ts":"2026-09-21T16:53:06Z","source":"kuma","monitor":"YouTubeGrab Health","status":"up","msg":"200 - OK, keyword is found"}
+{"ts":"2026-09-21T16:54:38Z","source":"kuma","monitor":"GlitchTip","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-21T17:00:45Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-21T17:01:19Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"down","msg":"residential: SLOW 131072 bytes in 5151ms (budget 3811ms)"}
+{"ts":"2026-09-21T17:16:17Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"up","msg":"residential: OK 131072 bytes"}
+{"ts":"2026-09-21T01:23:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T01:32:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T01:47:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T01:51:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T02:07:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T02:12:46Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T07:33:48Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-21T07:33:58Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-21T10:32:48Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T11:16:48Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T11:34:48Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T12:06:48Z","source":"netdata","host":"db","alarm":"postgres_acquired_locks_utilization","chart":"postgres_local.locks_utilization","status":"WARNING","msg":"PostgreSQL acquired locks utilization"}
+{"ts":"2026-09-21T12:11:48Z","source":"netdata","host":"db","alarm":"postgres_acquired_locks_utilization","chart":"postgres_local.locks_utilization","status":"CLEAR","msg":"PostgreSQL acquired locks utilization"}
+{"ts":"2026-09-21T12:12:48Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T12:21:48Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T12:25:48Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T12:35:48Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T12:52:48Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T14:32:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T15:26:35Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-21T15:26:45Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-21T15:45:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T16:01:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T16:09:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T16:29:47Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-21T16:29:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T16:29:57Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-21T16:57:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T17:40:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T18:20:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T18:45:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T18:56:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T19:01:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T19:40:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T19:58:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T20:01:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T20:27:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T20:37:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T20:55:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T21:03:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T21:12:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T21:55:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T22:17:47Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-21T22:17:57Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-21T22:25:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T22:49:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T22:55:27Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-21T22:55:37Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-21T23:01:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T23:25:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T23:56:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T00:12:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T00:18:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T00:32:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T00:39:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T00:44:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T00:54:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T01:00:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-21T02:25:36Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"WARNING","msg":"Web log unparsed"}
+{"ts":"2026-09-21T02:26:36Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-09-21T05:29:06Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"WARNING","msg":"Web log unparsed"}
+{"ts":"2026-09-21T05:30:06Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-09-21T05:52:37Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T05:58:08Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T08:11:31Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log server errors"}
+{"ts":"2026-09-21T08:16:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-09-21T09:59:37Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T10:03:37Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T10:38:37Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T10:43:07Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T10:52:07Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log server errors"}
+{"ts":"2026-09-21T10:57:07Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-09-21T12:30:38Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T12:31:38Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-21T12:36:38Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-21T12:37:08Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T13:35:08Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T13:40:08Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T14:23:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log redirects"}
+{"ts":"2026-09-21T14:28:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-09-21T16:09:59Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T16:10:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log server errors"}
+{"ts":"2026-09-21T16:13:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-21T16:15:29Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-09-21T16:19:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log server errors"}
+{"ts":"2026-09-21T16:21:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-21T16:22:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-09-21T16:24:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T16:35:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T16:35:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log redirects"}
+{"ts":"2026-09-21T16:35:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-21T16:39:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-21T16:40:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-09-21T16:45:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T17:03:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T17:08:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T17:11:30Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T17:20:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T17:21:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T17:21:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-21T17:26:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-21T17:31:01Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T17:35:01Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T17:46:31Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T17:53:01Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T17:58:01Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T18:12:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T18:18:02Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T18:23:02Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T18:32:02Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T19:28:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T19:33:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T19:40:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T19:42:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-21T19:47:33Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-21T19:48:03Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T20:17:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T20:22:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T20:40:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T20:45:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T21:48:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T21:57:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-21T22:02:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log redirects"}
+{"ts":"2026-09-21T22:03:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-21T22:08:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T22:08:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-09-21T22:51:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T22:56:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T23:05:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T23:10:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T23:33:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T23:47:18Z","source":"netdata","host":"proxy","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"WARNING","msg":"ML node anomaly rate"}
+{"ts":"2026-09-21T23:48:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T23:51:18Z","source":"netdata","host":"proxy","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"CLEAR","msg":"ML node anomaly rate"}
+{"ts":"2026-09-21T23:53:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-21T23:57:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-22T00:02:04Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-22T00:07:05Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-22T00:14:05Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-22T00:15:35Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-22T00:19:05Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-22T00:19:18Z","source":"netdata","host":"proxy","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"WARNING","msg":"ML node anomaly rate"}
+{"ts":"2026-09-22T00:20:18Z","source":"netdata","host":"proxy","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_986fdc1d-a6ba-4959-a0d5-d89c45336760","status":"CLEAR","msg":"ML node anomaly rate"}
+{"ts":"2026-09-22T00:21:05Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-22T00:27:05Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-22T00:32:05Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-21T05:39:02Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-21T06:01:02Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-21T12:42:04Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-21T13:00:34Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-21T13:30:04Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-21T14:00:35Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-21T14:30:05Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-21T17:01:06Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"WARNING","msg":"System netdev budget run outs"}
+{"ts":"2026-09-21T17:30:06Z","source":"netdata","host":"erp","alarm":"1min_netdev_budget_ran_outs","chart":"system.softnet_stat","status":"CLEAR","msg":"System netdev budget run outs"}
+{"ts":"2026-09-22T01:30:17Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-22T01:45:14Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-22T01:45:50Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: SLOW 131072 bytes in 7379ms (budget 3811ms)"}
+{"ts":"2026-09-22T01:46:11Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"down","msg":"residential: SLOW 131072 bytes in 4112ms (budget 3811ms)"}
+{"ts":"2026-09-22T02:00:54Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-22T02:01:17Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"up","msg":"residential: OK 131072 bytes"}
+{"ts":"2026-09-22T02:15:14Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"down","msg":"direct: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-22T02:30:20Z","source":"kuma","monitor":"ytgrab Direct Tier Canary","status":"up","msg":"direct: OK 131072 bytes"}
+{"ts":"2026-09-22T02:30:49Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: SLOW 131072 bytes in 3905ms (budget 3811ms)"}
+{"ts":"2026-09-22T02:45:41Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-22T02:46:08Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"down","msg":"residential: SLOW 131072 bytes in 5787ms (budget 3811ms)"}
+{"ts":"2026-09-22T03:01:16Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"up","msg":"residential: OK 131072 bytes"}
+{"ts":"2026-09-22T03:31:15Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: SLOW 131072 bytes in 4995ms (budget 3811ms)"}
+{"ts":"2026-09-22T03:31:43Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"down","msg":"residential: SLOW 131072 bytes in 4130ms (budget 3811ms)"}
+{"ts":"2026-09-22T03:45:42Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-22T03:46:05Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"up","msg":"residential: OK 131072 bytes"}
+{"ts":"2026-09-22T04:01:21Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: SLOW 131072 bytes in 5880ms (budget 3811ms)"}
+{"ts":"2026-09-22T04:15:49Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-22T04:46:32Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"down","msg":"residential: SLOW 131072 bytes in 4206ms (budget 3811ms)"}
+{"ts":"2026-09-22T05:01:25Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"up","msg":"residential: OK 131072 bytes"}
+{"ts":"2026-09-22T06:16:23Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: SLOW 131072 bytes in 5936ms (budget 3811ms)"}
+{"ts":"2026-09-22T06:31:17Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-22T07:04:27Z","source":"kuma","monitor":"api.youtubegrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-22T07:05:27Z","source":"kuma","monitor":"api.youtubegrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-22T07:08:24Z","source":"kuma","monitor":"qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-22T07:09:24Z","source":"kuma","monitor":"qute.my","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-22T07:22:27Z","source":"kuma","monitor":"api.youtubegrab.com","status":"down","msg":"Client network socket disconnected before secure TLS connection was established"}
+{"ts":"2026-09-22T07:23:27Z","source":"kuma","monitor":"api.youtubegrab.com","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-22T09:00:54Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-22T09:15:46Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-22T09:45:44Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: MEDIA_FETCH_403 ranged fetch returned 403"}
+{"ts":"2026-09-22T10:31:35Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-22T11:00:59Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: SLOW 131072 bytes in 4705ms (budget 3811ms)"}
+{"ts":"2026-09-22T11:31:06Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-22T12:01:39Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: SLOW 131072 bytes in 4300ms (budget 3811ms)"}
+{"ts":"2026-09-22T12:15:54Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"up","msg":"datacenter: OK 131072 bytes"}
+{"ts":"2026-09-22T12:32:57Z","source":"kuma","monitor":"ytgrab Datacenter Tier Canary","status":"down","msg":"datacenter: SLOW 131072 bytes in 3988ms (budget 3811ms)"}
+{"ts":"2026-09-22T13:31:40Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"down","msg":"residential: SLOW 131072 bytes in 4180ms (budget 3811ms)"}
+{"ts":"2026-09-22T13:47:16Z","source":"kuma","monitor":"ytgrab Residential Tier Canary","status":"up","msg":"residential: OK 131072 bytes"}
+{"ts":"2026-09-22T13:52:28Z","source":"kuma","monitor":"api.youtubegrab.com","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-22T13:52:33Z","source":"kuma","monitor":"api.qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-22T13:54:24Z","source":"kuma","monitor":"qute.my","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-22T13:57:25Z","source":"kuma","monitor":"wa.foucher.co","status":"down","msg":"timeout of 48000ms exceeded"}
+{"ts":"2026-09-22T13:58:25Z","source":"kuma","monitor":"wa.foucher.co","status":"up","msg":"200 - OK"}
+{"ts":"2026-09-22T21:02:00+07:00","source":"backup","host":"backup","msg":"Backup verify FAILED: grobiz-site:05110a77.gro.biz.id grobiz-site:2caaaf0a.gro.biz.id grobiz-site:322b1717.gro.biz.id grobiz-site:55b00350.gro.biz.id grobiz-site:59aba5d4.gro.biz.id grobiz-site:6ac54948.gro.biz.id grobiz-site:70f7a85f.gro.biz.id grobiz-site:86ac32f1.gro.biz.id grobiz-site:9be62e92.gro.biz.id grobiz-site:a4084933.gro.biz.id grobiz-site:b17cb293.gro.biz.id grobiz-site:d6f28680.gro.biz.id grobiz-site:d8155b05.gro.biz.id grobiz-site:e1488389.gro.biz.id grobiz-site:f4c91773.gro.biz.id grobiz-site:fef820ec.gro.biz.id"}
+{"ts":"2026-09-22T04:11:11Z","source":"netdata","host":"app","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_b3f17532-b591-4a41-9737-31eab93de2ab","status":"WARNING","msg":"ML node anomaly rate"}
+{"ts":"2026-09-22T04:13:11Z","source":"netdata","host":"app","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_b3f17532-b591-4a41-9737-31eab93de2ab","status":"CLEAR","msg":"ML node anomaly rate"}
+{"ts":"2026-09-22T01:10:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T01:37:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T01:59:12Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-22T01:59:22Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-22T03:10:53Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-22T03:11:03Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-22T04:05:14Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-22T04:05:24Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-22T04:28:04Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-22T04:28:14Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-22T05:12:35Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-22T05:12:45Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-22T05:26:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T05:31:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T06:16:15Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"WARNING","msg":"System TCP outbound resets"}
+{"ts":"2026-09-22T06:16:25Z","source":"netdata","host":"db","alarm":"10s_ip_tcp_resets_sent","chart":"ip.tcphandshake","status":"CLEAR","msg":"System TCP outbound resets"}
+{"ts":"2026-09-22T10:44:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T11:00:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T11:07:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T11:18:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T11:59:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T12:06:49Z","source":"netdata","host":"db","alarm":"postgres_acquired_locks_utilization","chart":"postgres_local.locks_utilization","status":"WARNING","msg":"PostgreSQL acquired locks utilization"}
+{"ts":"2026-09-22T12:07:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T12:12:49Z","source":"netdata","host":"db","alarm":"postgres_acquired_locks_utilization","chart":"postgres_local.locks_utilization","status":"CLEAR","msg":"PostgreSQL acquired locks utilization"}
+{"ts":"2026-09-22T12:16:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T12:26:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T12:44:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T12:54:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T13:40:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T13:43:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T14:00:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"CLEAR","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T14:02:49Z","source":"netdata","host":"db","alarm":"postgres_db_transactions_rollback_ratio","chart":"postgres_local.db_glitchtip_transactions_ratio","status":"WARNING","msg":"PostgreSQL DB glitchtip aborted transactions"}
+{"ts":"2026-09-22T01:09:35Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log redirects"}
+{"ts":"2026-09-22T01:18:05Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log redirects"}
+{"ts":"2026-09-22T04:46:35Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-22T04:49:05Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-22T05:23:35Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"WARNING","msg":"Web log unparsed"}
+{"ts":"2026-09-22T05:25:35Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-09-22T07:11:08Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-22T07:16:08Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-22T08:04:00Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-22T08:12:01Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-22T08:34:34Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-22T08:42:35Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"WARNING","msg":"Web log unparsed"}
+{"ts":"2026-09-22T08:43:35Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-22T08:43:35Z","source":"netdata","host":"proxy","alarm":"web_log_1m_unmatched","chart":"web_log_nginx.excluded_requests","status":"CLEAR","msg":"Web log unparsed"}
+{"ts":"2026-09-22T10:16:37Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-22T10:21:37Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-22T10:36:07Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-22T10:37:37Z","source":"netdata","host":"proxy","alarm":"web_log_1m_redirects","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log redirects"}
+{"ts":"2026-09-22T10:41:07Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-22T11:56:39Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-22T12:01:09Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-22T12:12:09Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-22T12:13:39Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CRITICAL","msg":"Web log successful"}
+{"ts":"2026-09-22T12:16:39Z","source":"netdata","host":"proxy","alarm":"web_log_1m_successful","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log successful"}
+{"ts":"2026-09-22T12:22:09Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-22T12:28:31Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-22T12:34:01Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log server errors"}
+{"ts":"2026-09-22T12:37:01Z","source":"netdata","host":"proxy","alarm":"web_log_1m_internal_errors","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log server errors"}
+{"ts":"2026-09-22T12:39:31Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-22T13:14:02Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"WARNING","msg":"Web log bad requests"}
+{"ts":"2026-09-22T13:19:32Z","source":"netdata","host":"proxy","alarm":"web_log_1m_bad_requests","chart":"web_log_nginx.requests_by_type","status":"CLEAR","msg":"Web log bad requests"}
+{"ts":"2026-09-22T14:05:04Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"WARNING","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-09-22T14:05:34Z","source":"netdata","host":"proxy","alarm":"plugin_data_collection_status","chart":"netdata.go_d_fail2ban_data_collection_status","status":"CLEAR","msg":"Data collection failure (go.d:fail2ban:fail2ban)"}
+{"ts":"2026-09-22T05:24:25Z","source":"netdata","host":"erp","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_f2d34cee-194a-4ac2-beb5-1d9256f7b7a8","status":"WARNING","msg":"ML node anomaly rate"}
+{"ts":"2026-09-22T05:28:25Z","source":"netdata","host":"erp","alarm":"ml_1min_node_ar","chart":"anomaly_detection.anomaly_rate_on_f2d34cee-194a-4ac2-beb5-1d9256f7b7a8","status":"CLEAR","msg":"ML node anomaly rate"}
