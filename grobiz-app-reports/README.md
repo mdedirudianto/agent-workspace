@@ -13,16 +13,28 @@ Covers cross-server work: app deploys, proxy/nginx, env/secrets, schema, ERPNext
 
 **Subdomains:** `gro.biz.id` + `www` → landing · `app.` → web+API · `admin.` → admin SPA (+ same-origin `/api`) · `api.` → API · **`order.` → diner PWA (static on proxy, `/var/www/grobiz/order`, live since session-027)** · `erp.` / `*.` → ERPNext (wildcard)
 
-**Current deployed SHA:** **prod `f694def45`** = **`main`** — ✅ **deployed 2026-09-19 (session-041)**:
-308-commit catch-up (api `0.68.2→0.80.1`, admin `→0.22.0`, web `→0.76.0`, landing `→0.12.0`) carrying
-**CR-015** (fee schedule + **PPN now charged** — compile-time flip, no runtime switch), **CR-014** finance
-ledger, **CR-017**, and admin route gates. 5 additive migrations `0060`–`0064`, drift clean; all 37
-tenants moved to the pass-through fee schedule (0 fee rises). **No ERPNext backfill** — all 37 tenant
-sites audited live. `finance:check-identities` OK. Rollback `041794bb0`.
-**dev is on the SAME commit** — `f694def45`, deployed 2026-09-19 (session-042), so prod and dev are in
-step for the first time in months. Dev runs PostgreSQL **14** (prod 16), a shared single ERPNext site,
-and serves admin/landing as nginx statics — see session-042 §1 for why prod's `deploy.sh` must not be
-run there.
+**Current deployed SHA:** **prod `9da7d9f96`** = **`main`** — ✅ **deployed 2026-09-21 (session-043)**:
+134-commit release (api `0.80.1→0.84.0`, admin `→0.26.0`, web `→0.78.0`, landing `→0.13.0`) carrying
+**CR-019 M1–M4**, the partner program (partner CRUD, floor-checked commission plans, `?ref=`/voucher-code
+attribution with the paid-tenant freeze, floor-checked partner vouchers, 2 new daily crons). 1 additive
+migration `0065` (4 new tables, DDL-only, 142ms), drift clean. `seed:defaults` seeded
+`partner_plan_floors`. **CR-019 write-pass 39/39** against real endpoints, 0 residue — proved the floor
+refusals, the attribution both-columns-together invariant, and the §8.3 paid-tenant freeze live (409
+`PARTNER_ATTRIBUTION_LOCKED` on the paying retail canary). Retail + F&B canary smokes PASSED. **No
+partner has been attributed to a real tenant yet** — accrual has nothing to act on. Rollback `f694def45`.
+**Also this session: Gro (AI assistant) was found dead since 2026-09-07** (OAuth refresh-token desync,
+20 `provider_error` / 1 `ok` over two weeks) — replaced with a static `claude setup-token` credential
+2026-09-23, verified end-to-end on the retail canary (real question answered correctly, real cost
+recorded, the CR-017 `source`/`source_ref` write path proven live for the first time).
+Prior: **prod `f694def45`** — deployed 2026-09-19 (session-041): 308-commit catch-up (api
+`0.68.2→0.80.1`, admin `→0.22.0`, web `→0.76.0`, landing `→0.12.0`) carrying **CR-015** (fee schedule +
+**PPN now charged** — compile-time flip, no runtime switch), **CR-014** finance ledger, **CR-017**, and
+admin route gates. 5 additive migrations `0060`–`0064`, drift clean; all 37 tenants moved to the
+pass-through fee schedule (0 fee rises). **No ERPNext backfill** — all 37 tenant sites audited live.
+`finance:check-identities` OK. Rollback `041794bb0`.
+**dev is BEHIND prod again** — dev sits on `f694def45` (session-042), prod moved on to `9da7d9f96` this
+session. Dev runs PostgreSQL **14** (prod 16), a shared single ERPNext site, and serves admin/landing as
+nginx statics — see session-042 §1 for why prod's `deploy.sh` must not be run there.
 Prior: **prod `041794bb0`** — deployed 2026-09-10 12:11 WIB, **undocumented at the time** (reconstructed
 in session-041 §0 from the server's reflog and deploy log). Prior: **prod `cd28d06e`** — deployed 2026-09-07 (session-040):
 35-commit release (api `0.63.1→0.65.0`, admin `→0.13.0`, shared `→0.92.0`; web/order/landing/
@@ -148,6 +160,16 @@ undocumented in the runbook's own smoke checklist. Rollback `1a849bf7`. Prior: *
 **Observability:** GlitchTip org `grobiz` (`errors.biji.uk`, projects api/web/admin/extension = /10–/13) · OpenObserve SA `grobiz-ingest@biji.uk` stream `grobiz_api` (`10.0.0.3:5080`) · OpenPanel projects `grobiz`/`grobiz-admin` (`analytics.biji.uk`) · GA4 `G-6C3YPF2YNR` (landing only). **WhatsApp:** Cloud API wired, webhook `api.gro.biz.id/api/webhooks/whatsapp` (system-user non-expiring token).
 
 **Open follow-ups:**
+- [ ] **Switch Gro to an API key before general launch (session-043, restating CR-012 §11.3's accepted
+  trade).** Now working again on a static OAuth token, but it is still one person's Pro/Max subscription
+  — every merchant shares one quota ceiling and exhaustion arrives as an unroutable 429. The static
+  shape also has no automatic renewal at all; if Anthropic revokes it, Gro goes dark with only a
+  boot-time log line to notice.
+- [ ] **CR-019's partner program has never processed a real partner (session-043).** M1–M4 is proven by
+  this session's write-pass smoke against real endpoints (39/39, 0 residue) — floor refusals, the
+  attribution freeze, voucher rules — but no real partner has been onboarded and no tenant is
+  attributed. First real referral is the next end-to-end proof owed, including the two still-unwired
+  crons (maturity, reconcile) actually finding something to act on.
 - [x] **09:00 WIB cron watched — ✅ CONFIRMED (session-040).** It fired at 10:00:00+08 and
   healed exactly the three predicted tenants (Bahlil, ES TELER HAPI LULU, Katalog Supplier)
   `past_due → active` with no anchor, no invoice. Salon Fany's hand repair survived untouched.
@@ -197,17 +219,23 @@ undocumented in the runbook's own smoke checklist. Rollback `1a849bf7`. Prior: *
   target, then reconcile the rules.
 - [ ] **Session-041 post-deploy items** (details in session-041 §7): the PPN identity is proven on a MINTED
   invoice, but a **paid** post-flip invoice and a real payout remain unproven — a stub cannot settle either,
-  since both webhooks re-fetch from Xendit, so the first real payment is the test. CR-017's
-  `ai_messages.source` write needs a live assistant turn. Admin gates verified at the API; the F3 **UI**
+  since both webhooks re-fetch from Xendit, so the first real payment is the test. ~~CR-017's
+  `ai_messages.source` write needs a live assistant turn.~~ **Closed session-043**: a real explain-sourced
+  turn wrote `source=explain`, `source_ref=sales` on the question row, confirmed in Postgres. Admin gates
+  verified at the API; the F3 **UI**
   items (sidebar, EN/ID dates, role switch in one tab) still want a human pass. Also: fix `health-check.sh`'s
   false FAILs on `app` (reload race + localhost Postgres/Redis probes); pin the deployed SHA in `deploy.sh`;
   the migration re-apply lock hazard (`docs/ops/2026-09-13-…`) is still open; inspect the 2 `undatedQrisFees`
   before the first month-end close; retire the disabled `zz-smoke-ops-admin@` account (session-031);
   `smoke-test-prod.sh`'s header PINs are stale (`123456` since session-032).
-- [ ] **Split the shared Anthropic OAuth session (session-038).** Production and the operator laptop
-  currently hold the SAME Claude Code credential, and the refresh token rotates — whichever side
-  refreshes first invalidates the other. Running `/login` locally mints an independent session and
-  removes the race. Until then, expect one of the two to break.
+- [x] **The shared Anthropic OAuth session DID break, exactly as predicted (session-038 → session-043).**
+  The refresh-token race fired 2026-09-07: Gro went from 1 `ok` turn to 20 straight `provider_error`s
+  over two weeks before anyone noticed (merchants saw "asisten sedang tidak tersedia"). Fixed
+  2026-09-23 by replacing the credential with a **static** `claude setup-token` — no refresh token, so
+  nothing left to desync — rather than merely splitting the session (which would still eventually
+  expire and need a human to notice). Verified end-to-end on the retail canary. **Watch item now:** a
+  static token has no automatic renewal either; if Anthropic revokes or expires it, Gro goes dark again
+  with no warning beyond the boot-time log warning `config-guard.ts` already emits.
 - [ ] **Re-suspend the two canaries, or record the decision not to (session-038).** `d6f28680` and
   `f4c91773` were both left `active` (the FnB one by `repair-free-suspensions`, the Retail one by
   hand for the smoke test). Session-027's standing note says they are parked `suspended` so they do
@@ -308,6 +336,7 @@ undocumented in the runbook's own smoke checklist. Rollback `1a849bf7`. Prior: *
 
 | # | Date | Topic | Key outcomes |
 | --- | --- | --- | --- |
+| [043](./session-043-2026-09-21.md) | 2026-09-21 | **PRODUCTION** redeploy `f694def45→9da7d9f96` (134 commits): CR-019 partner program M1–M4, and Gro's dead OAuth session replaced | Migration `0065` (4 new tables, DDL-only, 142ms), `seed:defaults` seeded `partner_plan_floors`. SHA pinned on the server before running `deploy.sh` so its own `git pull` was a no-op. Retail + F&B canary smokes **PASSED**; webhook fail-closed probes re-confirmed 401/403. **CR-019 write-pass: 39/39** against real endpoints with 3 temp TOTP admins and a temp partner + 2 vouchers, all by exact ID and 0 residue — proved the floor-refusal (`PARTNER_PLAN_BELOW_FLOOR`/`PARTNER_VOUCHER_BELOW_FLOOR`), the attribution both-columns-together invariant, and **the §8.3 paid-tenant attribution freeze live** (409 `PARTNER_ATTRIBUTION_LOCKED` on the paid retail canary). **Separately found Gro (AI assistant) dead since 2026-09-07** — an OAuth refresh-token desync, 20 `provider_error` / 1 `ok` over two weeks, merchants seeing "asisten sedang tidak tersedia". Owner replaced it with a static `claude setup-token` credential (2026-09-23); verified end-to-end on the retail canary — a typed question and an **explain-sourced** question both answered correctly (`outcome=ok`, real cost recorded), closing the CR-017 `source`/`source_ref` write-path proof session-041 had left unproven. Rollback `f694def45` |
 | [042](./session-042-2026-09-19.md) | 2026-09-19 | **DEV** redeploy `041794bb0→f694def45` (308 commits) — dev catches up to prod the same day, so **all three environments now sit on `f694def45`** | Same range prod took in session-041, and dev was already ON `041794bb0` (the undocumented 09-10 deploy hit both hosts). Pre-flight measured the three things that make dev different: **`pnpm-lock.yaml` unchanged** (install a no-op), **`0060`–`0064` carry no PG15-only syntax** (dev is PostgreSQL **14**), and **`apps/order` unchanged** — so the `VITE_API_URL` diner-app trap did not apply and order was left alone (served bundle re-verified as `app.dev.gro.biz.id`). **Prod's `deploy.sh` deliberately NOT used**: its step 5b would `pm2 startOrRestart grobiz-admin,grobiz-landing`, but on dev those are nginx statics (7016/7017 unbound) — it would have spawned 2 stray processes on a swap-bound host; used the documented dev procedure **plus the admin/landing rsync that guide omits**. Build ran sequentially under `--max-old-space-size=1536`: available memory dipped to **632 MB** and recovered, **no OOM, all 19 other products stayed online, nothing stopped**. Migrations clean, drift clean, **all 6 backfills replayed incl. `0007`** (session-037's PG14 fix holds). Fee schedule **17/17, 0 rises** (dev's legacy 1,5% = 0,7 + 0,8 — fee-neutral). ⚠️ **`seed:defaults` fails on dev**: `ON CONFLICT (key,scope,scope_value)` cannot match the PG14 **expression** index session-037 had to emulate — **pre-existing since 2026-09-02, not this release**, non-blocking (flags already exist; CR-015's config is written by the migration), but it silently skips `alert_rules` (dev **8** vs prod **14**). Also documented: the dev API takes **~50 s to bind :7006**, so a 502 right after restart is boot time, not a failure. Rollback `041794bb0` |
 | [041](./session-041-2026-09-19.md) | 2026-09-19 | **PRODUCTION** redeploy `041794bb0→f694def45` (308 commits): CR-015 fee schedule + **PPN goes live**, CR-014 finance ledger, CR-017, admin route gates | 5 additive migrations `0060`–`0064` in ~250 ms, drift clean. **Backfills checked layer by layer**: none in SQL (0063's new date columns are read through fallback indexes by design), `db:backfill` unchanged, **no ERPNext backfill** — all 19 `custom_*` fields `main` reads audited on all 37 live tenant sites (F&B fields present on all 14 F&B tenants; gaps are retail/other by design). `cr015:migrate-fee-schedule` 37/37, 0 skipped, **0 fee rises**, idempotent. `finance:check-identities` OK. PPN flip live (`chargeIncludesPpn: true`); owner confirmed no mobile users + all merchants free-plan. **Found the 2026-09-10 deploy of `041794bb0` was never documented** (reconstructed §0). `main` moved mid-deploy (+6 local-dev commits) — reviewed, inert; lesson: pin the SHA. In-deploy health check fails on a reload race + localhost Postgres/Redis probes — false alarms, `/api/health` all ok. **Full smoke pass on the canaries, third parties stubbed**: retail + F&B profiles PASSED; PPN mint proven `49.000 + 5.390 = 54.390` (minted through the cron's no-gateway path — the stub — then cancelled) and the upgrade dialog renders that same sum; M7 tax identity round-trip incl. DB; **8 webhook probes** — bad/missing tokens 401, Midtrans bad signature 403, WhatsApp 401, and a **forged `PAID` against a real canary invoice fails closed** (the handlers re-fetch from Xendit), 0 side effects; admin role matrix via 3 temp admins with real TOTP 2FA (finance/viewer/support, incl. export 403 and HEAD→404 with no audit row), all deleted after. Rollback `041794bb0` |
 | [040](./session-040-2026-09-07.md) | 2026-09-07 | **PRODUCTION** redeploy `e83ada31→cd28d06e` (35 commits, CR-013 M7-4 refund) + the **Xendit QRIS cutover goes LIVE** | 2 additive migrations. CR-013 M7-4 implements refund on Xendit's legacy QR rail (`POST /qr_codes/payments/{qrpy_id}/refunds`) — the earlier measurement had probed only Payments v3 and wrongly concluded a full migration was needed. `XENDIT_REFUND_IMPLEMENTED` flips to true, lifting the boot guard that crash-looped the API two nights earlier. **Pre-flight audited every tenant's QRIS fee against the 0.777% Xendit MDR — zero overrides, all 23 run the 0.8% global default**, closing CR-013 M5's standing precondition before the owner's explicit call to cut over. `PAYMENT_GATEWAY: midtrans→xendit`, restart clean (no FATAL, no crash loop — contrast to session-039's 92s outage on the SAME variable before the code was ready). **Proven with a REAL Rp 23.456 Xendit charge** on the retail canary: anchor captured `gateway_provider=xendit` at creation (D2 proven live), then cancelled cleanly via the Xendit-specific no-void-verb path (`markFailed('void')`, 0 flags). All 15 pre-existing midtrans anchors untouched. Payment-channels backfill dry-run only (1 row). One transient 502 during the API restart self-resolved in seconds, no trace in logs |
