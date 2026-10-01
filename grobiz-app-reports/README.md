@@ -171,6 +171,19 @@ undocumented in the runbook's own smoke checklist. Rollback `1a849bf7`. Prior: *
 **Observability:** GlitchTip org `grobiz` (`errors.biji.uk`, projects api/web/admin/extension = /10–/13) · OpenObserve SA `grobiz-ingest@biji.uk` stream `grobiz_api` (`10.0.0.3:5080`) · OpenPanel projects `grobiz`/`grobiz-admin` (`analytics.biji.uk`) · GA4 `G-6C3YPF2YNR` (landing only). **WhatsApp:** Cloud API wired, webhook `api.gro.biz.id/api/webhooks/whatsapp` (system-user non-expiring token).
 
 **Open follow-ups:**
+- [ ] **Comped tenants are invoiced and suspended by the lifecycle job (session-048).** All 12 `growth`/`max`
+  tenants are admin comps (`plan_override`); three are already `suspended` after their trial ended with the
+  override still in force. Rumah L-10's trial ended 2026-10-01 and Cafe Bahagia's ends 2026-10-03. Extend or
+  let lapse, per tenant. Same shape as Salon Fany (session-038).
+- [ ] **WhatsApp Business Account id is not resolvable with the production token (session-048).** Three
+  read-only Graph lookups fail, including the one in the repo's templates doc. Read it in Business Manager
+  and record it (or set `WHATSAPP_WABA_ID`); until then the ten templates cannot be submitted or checked
+  from the host. 17 of 17 template sends on record have failed.
+- [ ] **PM2 daemon on `app` restarted 2026-09-30 04:19 UTC, unrecorded (session-048).** All 43 processes
+  share that start time; cause unknown. Belongs in `app-sysadmin-reports` once known.
+- [ ] **No app version reaches the server (session-048).** Play production serves mobile `0.71.0`; how many
+  devices run older builds cannot be measured. CR-025 M1 needs the client to send a version before a
+  minimum-version gate is possible.
 - [ ] **Switch Gro to an API key before general launch (session-043, restating CR-012 §11.3's accepted
   trade).** Now working again on a static OAuth token, but it is still one person's Pro/Max subscription
   — every merchant shares one quota ceiling and exhaustion arrives as an unroutable 429. The static
@@ -347,6 +360,7 @@ undocumented in the runbook's own smoke checklist. Rollback `1a849bf7`. Prior: *
 
 | # | Date | Topic | Key outcomes |
 | --- | --- | --- | --- |
+| [048](./session-048-2026-10-02.md) | 2026-10-02 | **Read-only** CR-025 M0 production census (Postgres, 49 ERPNext site DBs, proxy logs, Meta + Play lookups) | No server change (prod `a3638ba58`). Migrations `0060`–`0076` applied, `0077`–`0080` not; PPN charged since 09-19. **No paying merchant**: 43 tenants = 31 `free` + 12 admin comps (`growth`/`max`), 0 `starter`, 0 paid invoices; 4 `unpaid`. Gratis tenants using QR self-order 0 / reminders 0 / loyalty 0 / KDS 4; max 22 items, max 2 users. 2 partners, nothing attributed. Android only (24 devices / 14 users), **no app version stored or logged**; **Play production = mobile `0.71.0`**. Templates: not verifiable at Meta (WABA id unresolvable with the prod token), **17/17 sends failed**. Owner decisions D13–D17 → CR-025 §21. Noticed: comps get invoiced and suspended; PM2 daemon restart 2026-09-30 unrecorded |
 | [047](./session-047-2026-09-29.md) | 2026-09-29 | **Read-only** WhatsApp notification audit: daily digests outside Meta's 24h window, every platform template failing, no delivery receipts | No server change (prod `a3638ba58`). Daily digest to ~41 merchants/night, **97% outside the 24h window**, ~90% "Belum ada penjualan"; owner piutang alert repeated daily (23 days straight for one merchant); **all 14 template sends failed `#132001` (templates don't exist)**; **0 receipts** since `0073` (status webhooks not arriving). Owner decisions D1–D4 → repo branch `feat/wa-notif-optin` (default off, window-only with Oke/Berhenti buttons, UTILITY template drafts for devops) |
 | [046](./session-046-2026-09-27.md) | 2026-09-27 | **PRODUCTION** redeploy `af7b66162→a3638ba58` (258 commits): **CR-021** staff identity / HRMS / till sessions + **CR-023** registration leads + F15 nonce | `hrms 16.4.1` put in the `erp` bench first (44/44 sites backed up; installed on no existing site). Migrations `0070`–`0076` (`0071` data-only at 5c), drift clean. ERPNext backfills: roles + till fields clean; Employees 44/46 at deploy — then fixed: `dfd25d48`'s ERPNext Company + POS Profile renamed to its business_name, `6ac54948`'s trailing space trimmed → 48/48 (root cause: settings rename writes Postgres only — repo bug filed). Smoke retail + F&B PASSED with the cashier stamp; till open→sale→counted close verified; **dummy-phone canary signup with a stubbed `DAFTAR-` webhook** proved F15 (un-nonced poll stays `pending`) and HRMS-at-claim provisioning (38 accounts, scheduler on), then purged by exact IDs. Leads backfill 52+1. `tenant:install-hrms` on existing sites deferred. Rollback `af7b66162`. |
 | [045](./session-045-2026-09-24.md) | 2026-09-24 | **PRODUCTION** redeploy `4674253b0→af7b66162` (62 commits): **WhatsApp inbox image send + library** and **CR-020 POS barcode scanning** | Tip of `origin/main`, api `0.94.0` / wa-gateway `0.4.0` / web `0.81.0`. One additive migration `0069_whatsapp_media` (drift clean after). No env/deps/ERPNext/backfill. Stale-claim outbox sweep (0 rows affected), `/api/upload` byte-sniff, `sync/pull` barcode map (`barcodes_complete: true`). Retail + F&B canary smoke **PASSED**; health/PWA ok (one transient in-deploy PWA FAIL); PG/Redis health FAIL = known false alarm. **Real WhatsApp send not tested** (channel needs pairing); Growth+ media route + till/scanner UI untested. Web can't roll back past Dexie v5 |
