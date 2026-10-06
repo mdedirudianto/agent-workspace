@@ -68,3 +68,4 @@ Session-based cleanup reports for `/Users/dedi` on macOS (228GB disk).
 | [Session 62](session-062-2026-09-24.md) | 2026-09-24 | ~8.4GB (517MB free → 8.9GB; Tier 1 caches only, Docker not compacted) | 8.9GB |
 | [Session 63](session-063-2026-09-24.md) | 2026-09-24 | ~59GB (11GB free → 70GB; all node_modules, Docker reset, AVDs, pnpm/uv caches) | 70GB |
 | [Session 64](session-064-2026-10-03.md) | 2026-10-03 | ~8GB (11GB free → 19GB; frida/npm/pnpm v3/Docker build cache; uv blocked by MCP lock; miaw-call left to dev agent) | 19GB |
+| [Session 65](session-065-2026-10-06.md) | 2026-10-06 | ~4GB by df (~9GB by du; 41GB free → 45GB; sip-lab wav/pcap, 2 idle worktree node_modules, npm cache; uv blocked by MCP lock) | 45GB |
