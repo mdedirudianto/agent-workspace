@@ -19,14 +19,17 @@ are not deployed.
   - `hoteru-api` — backend Fastify, `:3110` (cwd `apps/backend`, loads `.env` via `dotenv/config`).
   - `hoteru-public` — `public` Next standalone, `:3111` (`HOSTNAME=10.0.0.5 PORT=3111`).
   - `hoteru-marketing` — `marketing` Next standalone, `:3112` (`HOSTNAME=10.0.0.5 PORT=3112`).
+  - Tenant clones (own repo + DB + Redis db each): Technopark `~/hoteru-technopark` `:3120/:3121`
+    (db9), Bwalk `~/hoteru-bwalk` `:3130/:3131` (db10), **Radho `~/hoteru-radho` `:3150/:3151` (db11,
+    session-019)**; Avilia lives on `:3140`.
   - `management` SPA is **not** a process — built to static and served from `proxy`.
   - **nginx** (session-007): private static file server for uploaded media, bound only to
     `10.0.0.5:8931`, serving `/var/lib/hoteru/uploads` (site `hoteru-uploads.conf`). The
     pre-existing `default` nginx site (public port 80) is disabled — this host has never served
     public HTTP directly and stays that way.
 - **DB host:** `db` (`10.0.0.1`). Postgres 16 database `hoteru`, owner role `hoteru`.
-  **Redis logical db 8** (`redis://10.0.0.1:6379/8`). 4 Prisma migrations applied (added
-  `media_assets` in session-007).
+  **Redis logical db 8** (`redis://10.0.0.1:6379/8`). 18 Prisma migrations applied on every DB (latest
+  `campaignLabel`, session-019). Tenant DBs: `hoteru_tpm`, `hoteru_bwalk`, `hoteru_radho`.
 - **Proxy:** `proxy` (`46.250.234.153` / `10.0.0.2`). nginx vhosts `hoteru.uk.conf` +
   `hoteru.co.id.conf`, each with a `/uploads/` location reverse-proxying to `10.0.0.5:8931`
   (session-007). Management SPA static at `/var/www/hoteru-app/`.
@@ -34,6 +37,10 @@ are not deployed.
   every tenant clone (isolated by `hotelId` subfolder, not by directory). Backend env needs
   `UPLOAD_ROOT=/var/lib/hoteru/uploads` + `UPLOAD_BASE_URL=https://api.<domain>/uploads` per
   instance. No backup coverage or orphan-cleanup job yet — see Open follow-ups.
+- **Third domain — `roomrate.co`** (session-019): CF zone with `*.roomrate.co` + apex orange → `proxy`;
+  tenant `radhohotelsyariahmalang.roomrate.co` (orange), its `api.`/`app.` hosts grey (2-level). The
+  `/etc/letsencrypt/cloudflare/hoteru.ini` token now covers this zone too. Cert
+  `radhohotelsyariahmalang.roomrate.co` (3 SANs, DNS-01), expires 2027-01-06.
 - **DNS:** Cloudflare, **orange-cloud (proxied)**. `hoteru.uk` + `www` + `*.hoteru.uk` and
   `hoteru.co.id` + `www` + `*.hoteru.co.id` already point at origin `46.250.234.153`.
   CF SSL/TLS mode must be **Full (strict)** (set in dashboard; the API token is DNS-scoped only).
@@ -57,6 +64,9 @@ are not deployed.
 | `bwalk.hoteru.co.id` | proxy | **LIVE tenant** — Bwalk Hotel Malang booking site | dedicated clone `:3131` (session-008) |
 | `app.bwalk.hoteru.co.id` | static | tenant management SPA | `/var/www/hoteru-bwalk-app` |
 | `api.bwalk.hoteru.co.id` | proxy | tenant backend API | dedicated clone `:3130` |
+| `radhohotelsyariahmalang.roomrate.co` | proxy | **LIVE tenant** — Syariah Radho Hotel Malang booking site (**0 physical rooms until the hotel enters them**) | dedicated clone `:3151` (session-019) |
+| `app.radhohotelsyariahmalang.roomrate.co` | static | tenant management SPA | `/var/www/hoteru-radho-app` |
+| `api.radhohotelsyariahmalang.roomrate.co` | proxy | tenant backend API | dedicated clone `:3150` |
 
 ## ⚠️ Per-hotel tenancy (`<hotel>.hoteru.co.id`) — convention to honor
 
@@ -164,6 +174,14 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
       itself shipped session-013, still unused). Verify the quantity stepper + PER_UNIT math
       end-to-end in a browser once a real add-on exists.
 
+- [x] 16-commit `main` (`fb56685`: campaign-label tracking + `campaignLabel` migration, Avilia
+      retries/reconciliation, management refresh-token fix PR #26) deployed to central + Technopark +
+      Bwalk in session-019; Radho Syariah onboarded as the third tenant (55/55 smoke).
+- [ ] **Radho:** hotel must enter physical rooms before real bookings; deliver the staff credentials
+      out-of-band and delete `/home/devops/.hoteru-radho-credentials`; add `hoteru_radho` to backups.
+- [ ] **Backend accepts bookings with no inventory** (`roomId = null`) — only the guest UI enforces
+      capacity. Smoke tests must never POST bookings to prod (session-019 incident, cleaned up).
+
 ## Sessions
 
 | Session | Date | Topic | Status |
@@ -186,3 +204,4 @@ they're grey-cloud (DNS-only) over the proxy's LE cert; the `<hotel>` apex stays
 | [Session 16](session-016-2026-09-15.md) | 2026-09-15 | Redeployed all 3 instances to latest main (2 commits) — room cards now show `todayPrice` (server-resolved effective rate) instead of static `basePrice`; backend + guest sites only, no migration/deps; 368 backend tests passing, browser-verified | Done |
 | [Session 17](session-017-2026-09-16.md) | 2026-09-16 | Redeployed all 3 instances to latest main (1 commit) — Avilia affiliate-sync webhook hook on affiliate creation, dormant (still `AVILIA_ENABLED` unset everywhere); backend-only, no migration/deps/frontend; 370 backend tests passing, smallest-footprint deploy in the series | Done |
 | [Session 18](session-018-2026-09-19.md) | 2026-09-19 | Redeployed all 3 instances to latest main (1 commit) — Avilia webhook rejection logging + 0%-affiliate-rate fix; then **wired Avilia live** on Bwalk + Technopark (provisioned, 117 affiliates backfilled, env set); central stays unwired; backend-only, no migration | Done |
+| [Session 19](session-019-2026-10-09.md) | 2026-10-09 | Redeployed all 3 instances to `fb56685` (16 commits; additive `campaignLabel` migration; Avilia retries + reconciliation endpoint; management refresh-token fix PR #26) and onboarded third tenant `radhohotelsyariahmalang.roomrate.co` (new roomrate.co domain, dedicated clone/DB/Redis 11, 55/55 smoke; smoke-test booking incident cleaned up) | Done |
