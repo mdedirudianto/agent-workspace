@@ -9,3 +9,4 @@ Multi-tenant development host: 5 user workloads (root, deploy, sabbi, hopis, max
 | [Session 1](session-001-2026-05-17.md) | 2026-05-17 | Initial server audit           | Done   |
 | [Session 2](session-002-2026-05-25.md) | 2026-05-25 | Fluent Bit install — PM2 logs → OpenObserve (`dev` stream, 7d retention) | Done   |
 | [Session 3](session-003-2026-06-17.md) | 2026-06-17 | Swap saturation — staggered PM2 restart (reclaimed 3.7 G swap) + grew swap 6→8 G + `max_memory_restart` caps (24/38 apps; relaunched 3 next-server leakers to exec directly) | Done   |
+| [Session 4](session-004-2026-10-08.md) | 2026-10-08 | OpenVPN "peer certificate verification failure" — server cert expired 2026-09-26 (825-day default); renewed server + `dev` client certs (same keys, valid to 2036), revoked superseded serials, CRL regenerated at 10-yr lifetime, daily cert-expiry check on `dev` (Kuma wiring pending) | Done (Mac connect verified) |
