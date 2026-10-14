@@ -70,3 +70,4 @@ Session-based cleanup reports for `/Users/dedi` on macOS (228GB disk).
 | [Session 64](session-064-2026-10-03.md) | 2026-10-03 | ~8GB (11GB free → 19GB; frida/npm/pnpm v3/Docker build cache; uv blocked by MCP lock; miaw-call left to dev agent) | 19GB |
 | [Session 65](session-065-2026-10-06.md) | 2026-10-06 | ~4GB by df (~9GB by du; 41GB free → 45GB; sip-lab wav/pcap, 2 idle worktree node_modules, npm cache; uv blocked by MCP lock) | 45GB |
 | [Session 66](session-066-2026-10-11.md) | 2026-10-11 | ~25GB (1.3GB free → 26GB; Chrome clones ≈0 real, gradle, pnpm v3 prune, rekrutme `.next/dev` 4GB, maxchat ClickHouse logs 5.4GB + unused Langfuse services/images removed; uv blocked by zcode MCP) | 26GB |
+| [Session 67](session-067-2026-10-14.md) | 2026-10-14 | ~14GB (3.9GB free → 18GB; eventopia `.next/dev` ×3 (8GB by du, ~16GB by df) with dev-server restart, zcode log, idle grobiz worktree node_modules, sip-lab media; d91 worktree skipped as active) | 18GB |
