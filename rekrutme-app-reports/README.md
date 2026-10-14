@@ -4,14 +4,14 @@ App-scoped reports for **Rekrut.Me** (`rkrt.me`) — an AI-powered recruitment p
 (github.com/biji-dev/rekrutme, local `~/Projects/rekrutme`). Companies post jobs, manage candidates, parse CVs
 with AI, screen applicants and track the recruitment pipeline; applicants apply and track through public pages.
 
-**Status: LIVE since 2026-10-14** (session-002): `v1.1.0` at `https://app.rkrt.me`, smoke test passed. Owner items
+**Status: LIVE since 2026-10-14** (session-002): `v1.1.0`, smoke test passed; served at **`https://rkrt.me`** since session-003 (same day; `www` and `app.rkrt.me` 301 to it). Owner items
 left: GlitchTip DSN, Uptime Kuma monitor, the owner's own sign-up; the first backup check is due 2026-10-15.
 
 Single Next.js 16 app (App Router, React 19, TypeScript, pnpm; Drizzle ORM). Built as a **standalone** server
 (`server.js`). Background work uses **pg-boss** (PostgreSQL-backed queues `parse-cv`, `screen-candidates`,
 `send-email`) with the workers booted **inside the web process** (`src/instrumentation.ts`). **Postgres only — no
 Redis.** External services: **Anthropic** (CV parsing + candidate ranking), **DigitalOcean Spaces** (CV files, logos),
-**Resend** (transactional email). Deployed version 1.1.0 (tag `v1.1.0`; the checkout is `eed103f`, the tag plus the PM2 `merge_logs` fix).
+**Resend** (transactional email). Deployed version 1.1.0 (tag `v1.1.0`; the checkout is `8d52e8f`: the tag plus the PM2 `merge_logs` fix and the `rkrt.me` origin docs).
 
 **Why exactly one instance:** the login (5 / 15 min) and public-apply (20 / 15 min) rate limiters are in-memory per
 process, and the pg-boss workers live in the web process. More than one PM2 instance multiplies the limits.
@@ -22,7 +22,7 @@ Fork mode, 1 instance, always.
 **No Docker in production** (owner, 2026-10-11): bare-metal Node 22 + PM2 only. The repo's `Dockerfile` /
 `docker-compose*.yml` are for local development and local rehearsal only — never use them on the cluster.
 
-- **App host:** `app` (`devops@154.26.129.104` / `10.0.0.5`), `/home/devops/rekrutme` @ `eed103f` (`v1.1.0` + `merge_logs` fix).
+- **App host:** `app` (`devops@154.26.129.104` / `10.0.0.5`), `/home/devops/rekrutme` @ `8d52e8f` (`v1.1.0` + `merge_logs` fix + origin docs).
   PM2 process `rekrutme` — **fork mode, 1 instance**, Next standalone `server.js` under **nvm Node 22**
   (system default is v24.18.0; nvm has v22.22.0), `HOSTNAME=10.0.0.5 PORT=3160` (private-bound; 3150/3151 belong to
   hoteru-radho, 3160 is free), `TZ=Asia/Jakarta`, `ecosystem.config.cjs` (PM2 needs `.cjs`; `merge_logs: true`, so the logs are
@@ -36,10 +36,10 @@ Fork mode, 1 instance, always.
   (`set_real_ip_from` Cloudflare ranges + `real_ip_header CF-Connecting-IP`); vhost sends `X-Real-IP`, app runs with
   `TRUSTED_IP_HEADER=x-real-ip`. The app sends HSTS `includeSubDomains; preload`.
 - **DNS:** Cloudflare (registrar Namecheap, expires 2027-02-23), orange-cloud, SSL/TLS must be **Full (strict)**.
-- **Monitoring:** Uptime Kuma on `https://app.rkrt.me/api/health` (endpoint added by F38); GlitchTip project (DSN via
+- **Monitoring:** Uptime Kuma on `https://rkrt.me/api/health` (endpoint added by F38); GlitchTip project (DSN via
   `SENTRY_DSN`); OpenObserve via the existing fluent-bit PM2 log glob on `app`.
-- **Env:** `AUTH_URL` / `NEXT_PUBLIC_APP_URL` (the latter is baked at build time) = `https://app.rkrt.me`
-  (apex and `www` 301 to `https://app.rkrt.me`, decided 2026-10-11).
+- **Env:** `AUTH_URL` / `NEXT_PUBLIC_APP_URL` (the latter is baked at build time) = `https://rkrt.me`
+  (owner, 2026-10-14, session-003; `www` and `app.rkrt.me` 301 to it. The 2026-10-11 default was `app.rkrt.me`).
 - **Not part of production:** the old dev instance `dev.rkrt.me` on the dev box (`deploy` user, PM2 `rekrutme`, `:7007`),
   running old code.
 
@@ -47,8 +47,8 @@ Fork mode, 1 instance, always.
 
 | Host | → | Service | Backend |
 | --- | --- | --- | --- |
-| `app.rkrt.me` | proxy | the app (dashboard, public careers/apply/track pages, `/api/*`) | `rekrutme` `10.0.0.5:3160` |
-| `rkrt.me`, `www.rkrt.me` | proxy | 301 to `https://app.rkrt.me` (owner, 2026-10-11) | — (nginx redirect) |
+| `rkrt.me` | proxy | the app (landing, dashboard, public careers/apply/track pages, `/api/*`) | `rekrutme` `10.0.0.5:3160` |
+| `www.rkrt.me`, `app.rkrt.me` | proxy | 301 to `https://rkrt.me$request_uri` (owner, 2026-10-14; `app` keeps links in the first emails working) | — (nginx redirect) |
 
 Mail on `rkrt.me`: MX → Amazon SES inbound (ap-northeast-1); outbound via Resend (`resend._domainkey` DKIM and
 `send.rkrt.me` return path present); `_dmarc` = `v=DMARC1; p=none; rua=mailto:dmarc@rkrt.me`.
@@ -58,7 +58,7 @@ Mail on `rkrt.me`: MX → Amazon SES inbound (ap-northeast-1); outbound via Rese
 Owner actions (before session-002 can finish):
 
 - [x] Cloudflare SSL/TLS **Full (strict)** for `rkrt.me` — set by the owner 2026-10-11.
-- [x] Apex (live 2026-10-14): default chosen by the coordinator 2026-10-11 = `rkrt.me` and `www` **301 → `https://app.rkrt.me$request_uri`** (one origin for sessions and links); owner may override.
+- [x] Origin: **`rkrt.me`** (owner, 2026-10-14, session-003); `www` and `app.rkrt.me` 301 to `https://rkrt.me$request_uri`. (Session-002 first went live on `app.rkrt.me`, the 2026-10-11 default.)
 - [ ] Optional: a Cloudflare DNS token for `rkrt.me` (enables DNS-01 / wildcard; otherwise HTTP-01 webroot, no wildcard,
       and "Always Use HTTPS" on the zone would break renewal).
 - [x] Dedicated DigitalOcean Spaces bucket + a scoped key (the local dev bucket is shared with other apps). Bucket `rekrutme` (sgp1, private) created by the owner 2026-10-11; key pair received 2026-10-11; HeadBucket + List verified read-only (empty bucket). Write/delete/public-read ACL to be proven by the deploy smoke test.
@@ -96,3 +96,4 @@ Post-launch:
 | --- | --- | --- | --- |
 | [Session 1](session-001-2026-10-11.md) | 2026-10-11 | Production readiness assessment (read-only): app state (QA 429/431 PASS, E2E 7/7, v0.10.0), cluster survey of app/db/proxy/DNS, planned footprint, owner actions, deploy plan | Done |
 | [Session 2](session-002-2026-10-14.md) | 2026-10-14 | First production deploy of `v1.1.0` (D0–D9): DB, build, PM2, vhost + LE cert, smoke test 13/13 PASS, log names fixed for fluent-bit (`merge_logs`) | Live; D8a/D8b/D10 owner, D11 2026-10-15 |
+| [Session 3](session-003-2026-10-14.md) | 2026-10-14 | Origin moved from `app.rkrt.me` to `rkrt.me` (owner): rebuild with the new URLs, vhost swap, `www`/`app` 301; mini smoke PASS | Done |
