@@ -24,15 +24,16 @@ forms**; the only JavaScript is the same-origin 21+ age gate (`assets/gate.js`),
 
 ## Redeploy
 
-See "Redeploy" in [session-002](session-002-2026-09-30.md) (deploy from the repo, staged + swapped; purge `style.css` in Cloudflare after CSS changes). Note the **`--exclude .remember`** — the Remember
-plugin creates that directory inside the project and it must never be shipped.
+See "Redeploy" in [session-004](session-004-2026-10-06.md) (deploy from the repo, staged + swapped; purge `style.css` in Cloudflare after CSS changes). Note the **`--exclude .remember`** — the Remember
+plugin creates that directory inside the project and it must never be shipped. The excludes also cover `surprise.jpeg` and the 2 orphaned pack images (`merak-hitam-12`, `sjr-hitam`); expect **24 files** in production.
 
 ## Open follow-ups
 
 - [ ] **Cloudflare Web Analytics beacon is blocked by the strict CSP** (one console error per page load, no
       analytics). Disable the zone's automatic setup, or allow `static.cloudflareinsights.com` in the CSP.
-- [ ] Delete rollback copies on `proxy` (`sijari.uk.prev`, `sijari.uk.conf.bak-20260930`); decide the video (smoking-scene cut is live).
-- [ ] Add an Uptime Kuma monitor for `https://sijari.uk/`.
+- [ ] Delete the rollback copy `/var/www/sijari.uk.prev` on `proxy` (the `a3ffa19` site, kept from session-005); decide the video (smoking-scene cut is live).
+- [ ] Tidy the repo: `git rm` the 2 orphaned pack images (`merak-hitam-12`, `sjr-hitam`); keep source images out of `assets/`.
+- [ ] Add Uptime Kuma monitors for `https://sijari.uk/` and the shop target `https://sijari.gro.biz.id/shop` (all purchase buttons point there).
 - [ ] Decide whether the page needs a contact / partner-onboarding route (the source's WhatsApp ordering flow
       was dropped by request).
 - [ ] Optional `301 /kemitraan → /#kemitraan`.
@@ -43,3 +44,6 @@ plugin creates that directory inside the project and it must never be shipped.
 | --- | --- | --- | --- |
 | [Session 1](session-001-2026-09-26.md) | 2026-09-26 | Redesigned static info site built from the SIJARI preview's content + logo palette, deployed on proxy — nginx vhost, 2-name LE cert (HTTP-01), strict CSP; repaired defective pack cutouts; `.remember/` accidentally rsynced and removed before going live | Done |
 | [Session 2](session-002-2026-09-30.md) | 2026-09-30 | Deployed the BOS Putih redesign + 21+ age gate from the remote repo (`biji-ext/sijari-web` @ `8980049`) — staged + swapped, CSP `script-src 'self'`; stale Cloudflare CSS fixed by manual purge | Done |
+| [Session 3](session-003-2026-10-06.md) | 2026-10-06 | Deployed shop buttons (→ `sijari.gro.biz.id/shop`), Pesta Kejutan poster, PT company footer + JSON-LD address, shelf cut 9→6 packs (`biji-ext/sijari-web` @ `53283fa`) — poster source `surprise.jpeg` committed to git; staged + swapped, 23/23 hashes verified, no nginx change, `.prev` kept for rollback | Done |
+| [Session 4](session-004-2026-10-06.md) | 2026-10-06 | Deployed Merak Hitam 16 back on the shelf — 7 packs (`biji-ext/sijari-web` @ `a3ffa19`); removed `merak-hitam-16.webp` from the rsync excludes, staged + swapped, 24/24 hashes verified, no nginx change or CF purge, `.prev` = `53283fa` for rollback | Done |
+| [Session 5](session-005-2026-10-16.md) | 2026-10-16 | Deployed the footer/JSON-LD address trim — street address removed, now "Tulungagung, Jawa Timur" (`biji-ext/sijari-web` @ `b50534c`, pushed by the user after the auto-mode classifier blocked `git push`) — staged + swapped, 24/24 hashes verified, no nginx change or CF purge, `.prev` = `a3ffa19` for rollback | Done |
