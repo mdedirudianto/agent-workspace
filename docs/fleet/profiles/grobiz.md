@@ -68,7 +68,7 @@
 - `curl /pos` → 404 JSON without `Accept: text/html` (SPA fallback is HTML-only, S059). `GET /api/orders` without `?status=incoming` → 400 by design (S060).
 - Retention prints `pid <n> ((sd-pam)): systemd's user-manager PAM helper, its cwd is unreadable by design: skipped`. That line is the D130 fix working, not a warning. A `retention skipped:` line now names a real blocker, so investigate it (S063).
 - deploy.sh's own health poll logs ~8 `connect() failed (111)` on proxy for `/api/health?hc=N` in the ~20 s API restart gap (S063).
-- GlitchTip grobiz-api: old `UnauthorizedError: Token tidak valid atau sudah kedaluwarsa` issues (#8, #41, #59, #60, #128, #200) re-fire in bursts when one client calls with an expired JWT (S063).
+- GlitchTip grobiz-api: old `UnauthorizedError: Token tidak valid atau sudah kedaluwarsa` issues (#8, #9, #41, #59, #60, #128, #200) re-fire in bursts when one client calls with an expired JWT (S063).
 - `PM2 reload grobiz-api` is not zero-downtime: ~30–60 s of 502 (S013).
 - Expected after deploy #5: admins with old tokens get one 401 and must sign in again (S061).
 
@@ -97,7 +97,7 @@
 16. Tenant counts in the README go stale: re-query before scoping a backfill (S027, S041).
 
 ## Open items
-- **Prod = `origin/main` = `24d55885b`** (deploy #6, S063, api 0.128.0). No migration past 0086. Owed: the first live `relay-static.sh` run (D100/D122), and D233 (the D130 tests on Linux).
+- **Prod = `24d55885b`** (deploy #6, S063, api 0.128.0). `origin/main` has been `81dae1704` since 07:46 10-19: mobile, tooling and docs only, nothing for `app`. No migration past 0086. Owed: the first live `relay-static.sh` run (D100/D122), and D233 (the D130 tests on Linux).
 - **gro.biz.id cert renews ~10-22.** It's the first real run of the proxy deploy hook added 10-19 (proxy S008). The DNS-01 dry-run passed with the default 10 s propagation. Check the served serial afterwards (registry §6).
 - `grobiz-wasessions` backup pull failed 3× in 5 days (10-14, 10-15, 10-18) (backup survey).
 - grobiz logs (`~/grobiz/logs/`) are outside Fluent Bit and pm2-logrotate; a stale 25 MB `~/.pm2/logs/grobiz-api-out.log` is still tailed (app survey).
