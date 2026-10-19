@@ -1,6 +1,6 @@
 # grobiz — profile
 
-**Profile version:** 3 · **Stamped:** 2026-10-19 13:25 WIB (deploy #7, session-064) · **Sources:** grobiz-app-reports up to session-063 (2026-10-19), registry 2026-10-19, repo docs at `24d55885b` (= `origin/main` = prod since deploy #6)
+**Profile version:** 4 · **Stamped:** 2026-10-19 16:45 WIB (proxy sign-in limit, session-065) · **Sources:** grobiz-app-reports up to session-063 (2026-10-19), registry 2026-10-19, repo docs at `24d55885b` (= `origin/main` = prod since deploy #6)
 **Rule:** a profile is a pointer plus the facts a deploy needs. When a repo doc owns a procedure, link it and don't copy it. Bump the version and stamp when you change this file.
 
 ## Owner docs
@@ -98,6 +98,7 @@
 16. Tenant counts in the README go stale: re-query before scoping a backfill (S027, S041).
 17. **The API build outgrew the default Node heap** (S064, D263): see Deploy › Build heap. `deploy.sh --plan` cannot show it; only the build does.
 18. `deploy.sh` never decides `--with-order`/`--with-partner`: check which shared symbols `apps/order`/`apps/partner` import against the diff (S064 P7) before choosing a relay.
+19. **The proxy vhost is not the repo template** (`deployment/nginx/` never runs on prod). Since S065 the app/api/admin server blocks include `snippets/grobiz-cloudflare-realip.conf` (client IP from `CF-Connecting-IP`) and `snippets/grobiz-staff-auth-locations.conf` (admin + partner sign-in, zone `grobiz_staff_auth` in `conf.d/grobiz-staff-auth.conf`, 5 r/m burst 5). A new auth route is limited until it is added to the exempt regex. Merchant `/api/auth/` has no edge limit; `X-Forwarded-For` is still client-supplied (F3).
 
 ## Open items
 - **Prod = `25eaaec8a`** (deploy #7, S064, flip 12:57:51 WIB 10-19): code = `c1801157b` (decimal sale qty) + 3 docs files; api 0.129.0, web 0.100.0, shared 0.149.0, admin 0.39.2 rebuilt; order 0.12.1 / partner 0.4.2 not relayed. No migration past 0086. Rollback `deploy.sh --rollback` → `20261018T233408Z-24d55885ba35`. Mobile 0.93.0 store release owed (R1 old-mobile residual live until then). Owed: D263 (test-free API build), D262 (LIVE BIRD zero-valuation sales refusal, tenant unidentified), the §3 1,25 Kg test sale, the first live `relay-static.sh` run (D100/D122), D233 (the D130 tests on Linux).
