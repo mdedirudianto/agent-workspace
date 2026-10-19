@@ -1,6 +1,6 @@
 # grobiz — profile
 
-**Profile version:** 2 · **Stamped:** 2026-10-19 07:25 WIB (deploy #6, session-063) · **Sources:** grobiz-app-reports up to session-063 (2026-10-19), registry 2026-10-19, repo docs at `24d55885b` (= `origin/main` = prod since deploy #6)
+**Profile version:** 3 · **Stamped:** 2026-10-19 13:25 WIB (deploy #7, session-064) · **Sources:** grobiz-app-reports up to session-063 (2026-10-19), registry 2026-10-19, repo docs at `24d55885b` (= `origin/main` = prod since deploy #6)
 **Rule:** a profile is a pointer plus the facts a deploy needs. When a repo doc owns a procedure, link it and don't copy it. Bump the version and stamp when you change this file.
 
 ## Owner docs
@@ -12,7 +12,7 @@
 | Gateways / channels | `docs/guides/deployment-xendit-gateway.md` (§0 boot guards), `deployment-whatsapp-channel.md`, `docs/runbooks/whatsapp-business-setup.md` |
 | HRMS on tenant sites | `docs/runbooks/2026-09-25-cr-021-m2-hrms-platform.md` (`tenant:install-hrms`) |
 | Scripts | `docs/guides/scripts.md` |
-| Workspace reports | [session-063](../../../grobiz-app-reports/session-063-2026-10-19.md) (deploy #6, deploy-tool batch), [062](../../../grobiz-app-reports/session-062-2026-10-18.md) (read-only census), [061](../../../grobiz-app-reports/session-061-2026-10-18.md) (deploy #5), [060](../../../grobiz-app-reports/session-060-2026-10-18.md) (deploy #4), [058](../../../grobiz-app-reports/session-058-2026-10-15.md) (release-layout bootstrap) |
+| Workspace reports | [session-064](../../../grobiz-app-reports/session-064-2026-10-19.md) (deploy #7, decimal sale qty; build OOM, D263), [session-063](../../../grobiz-app-reports/session-063-2026-10-19.md) (deploy #6, deploy-tool batch), [062](../../../grobiz-app-reports/session-062-2026-10-18.md) (read-only census), [061](../../../grobiz-app-reports/session-061-2026-10-18.md) (deploy #5), [060](../../../grobiz-app-reports/session-060-2026-10-18.md) (deploy #4), [058](../../../grobiz-app-reports/session-058-2026-10-15.md) (release-layout bootstrap) |
 | Memory | `feedback_deploy_main_pin_sha`, `feedback_boot_gates_beyond_env_schema`, `feedback_dry_run_before_trusting_static_read`, `project_grobiz_hrms_rollout_pending`, `feedback_workspace_report_from_app_repo_sessions` |
 
 ## Footprint
@@ -26,7 +26,7 @@
 | partner portal | proxy | `/var/www/grobiz/partner` (`partner.gro.biz.id.conf`, real file in `sites-enabled/` only) | — | partner.gro.biz.id | `gro.biz.id` |
 | ERPNext (Frappe 16.9 / ERPNext 16.6.1 / hrms 16.4.1) | erp | bench `frappe`, `/home/frappe/frappe-bench`; 52 sites = base + 48 tenants + 3 `pool-*` | 10.0.0.6 via proxy | erp.gro.biz.id, `<hash>.erp.gro.biz.id` (`erp-tenants.gro.biz.id.conf`) | cert `erp.gro.biz.id` (`*.erp`) |
 
-- PM2 under `devops`, nvm **Node 22.22.0** for all four; fork ×1; `kill_timeout` 20000 on api/gateway; **no `max_memory_restart`**. Restart baseline after deploy #6: api ↺5, gateway ↺4, admin ↺4, landing ↺4.
+- PM2 under `devops`, nvm **Node 22.22.0** for all four; fork ×1; `kill_timeout` 20000 on api/gateway; **no `max_memory_restart`**. Restart baseline after deploy #7: api ↺6, gateway ↺5, admin ↺5, landing ↺5.
 - Releases: `~/grobiz-releases/<UTC>-<sha12>`, symlinks `current` + `current-static`, `KEEP_RELEASES=4`, `history.log`. `current/.env` → `~/grobiz/.env`. The `~/grobiz` checkout (`8e6739cb5`) is stale; the live code is the release dir.
 - Certs `gro.biz.id` (apex + `*`, exp 2026-11-21, propagation **unset**) and `erp.gro.biz.id` (exp 2026-11-26), dns-cloudflare `cloudflare-gro.ini`, reloaded by the proxy deploy hook (since 2026-10-19, proxy S008).
 
@@ -41,6 +41,7 @@
 
 ## Deploy
 - **Mode:** release dirs + `current` symlink, built on app from a pinned `origin/main` SHA. `~/grobiz-releases/current/deployment/pm2/scripts/deploy.sh --sha <full sha>` (`--plan` first; `--with-order` / `--with-partner` when those changed). The legacy `~/grobiz/deployment/pm2/scripts/deploy.sh` is a stub that exits 2 (S058). Run it in tmux with `| tee ~/grobiz/logs/<name>.log`.
+- **Build heap (D263, from S064):** export `NODE_OPTIONS=--max-old-space-size=4096` in the tmux shell that runs `deploy.sh`. The `@grobiz/api` `tsc` build also compiles every test and needs ~2.5 GB against `app`'s 2 240 MB default; without the export the build dies with `JavaScript heap out of memory` → `EXIT=5`, nothing live changed (~9 min lost). The export reaches only install/build/migrate: `pm2_run` starts PM2 under `env -i` + `PM2_ENV_PASS`, so no grobiz process inherits it. Drop this line once D263's test-free build lands.
 - **Before:** owner pushes the pin; confirm `origin/main` = analysed SHA (memory); read the deploy note in `docs/ops/…followups.md`; diff the boot path for new fail-closed guards (S027); dry-run every backfill (memory); `pg_dump` (W1); check the 09:00 WIB lifecycle run is not in flight.
 - **Inside deploy.sh:** migrations applied before the flip (`[6/13] flip current`); gateway restarted only when the diff rule says so (any `packages/shared` change, S059); `health-check.sh`; tag `deploy-<UTC>`.
 - **Static on proxy:** app cannot SSH to proxy as `devops` (S062 R1). order/partner go app → Mac → proxy via `relay-static.sh` (deployed with deploy #6 but **never yet run against proxy**: `--plan` first, from the Mac checkout at the release sha or later) or by hand: stage, md5 against the release, backup `…/order.bak-<ts>`, `rsync -rlt --delete`, then `chown -R www-data:www-data` with dirs 700 / files 600 (S058, S061).
@@ -95,9 +96,11 @@
 14. A `pending_deletion` transition is required before purging an `active` tenant (S031).
 15. Dev runs PostgreSQL 14 (prod 16), one shared ERPNext site; never run prod's `deploy.sh` there (S037, S042).
 16. Tenant counts in the README go stale: re-query before scoping a backfill (S027, S041).
+17. **The API build outgrew the default Node heap** (S064, D263): see Deploy › Build heap. `deploy.sh --plan` cannot show it; only the build does.
+18. `deploy.sh` never decides `--with-order`/`--with-partner`: check which shared symbols `apps/order`/`apps/partner` import against the diff (S064 P7) before choosing a relay.
 
 ## Open items
-- **Prod = `24d55885b`** (deploy #6, S063, api 0.128.0). `origin/main` has been `81dae1704` since 07:46 10-19: mobile, tooling and docs only, nothing for `app`. No migration past 0086. Owed: the first live `relay-static.sh` run (D100/D122), and D233 (the D130 tests on Linux).
+- **Prod = `25eaaec8a`** (deploy #7, S064, flip 12:57:51 WIB 10-19): code = `c1801157b` (decimal sale qty) + 3 docs files; api 0.129.0, web 0.100.0, shared 0.149.0, admin 0.39.2 rebuilt; order 0.12.1 / partner 0.4.2 not relayed. No migration past 0086. Rollback `deploy.sh --rollback` → `20261018T233408Z-24d55885ba35`. Mobile 0.93.0 store release owed (R1 old-mobile residual live until then). Owed: D263 (test-free API build), D262 (LIVE BIRD zero-valuation sales refusal, tenant unidentified), the §3 1,25 Kg test sale, the first live `relay-static.sh` run (D100/D122), D233 (the D130 tests on Linux).
 - **gro.biz.id cert renews ~10-22.** It's the first real run of the proxy deploy hook added 10-19 (proxy S008). The DNS-01 dry-run passed with the default 10 s propagation. Check the served serial afterwards (registry §6).
 - `grobiz-wasessions` backup pull failed 3× in 5 days (10-14, 10-15, 10-18) (backup survey).
 - grobiz logs (`~/grobiz/logs/`) are outside Fluent Bit and pm2-logrotate; a stale 25 MB `~/.pm2/logs/grobiz-api-out.log` is still tailed (app survey).
