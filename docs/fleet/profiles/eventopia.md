@@ -1,0 +1,127 @@
+# eventopia — profile
+
+**Profile version:** 2 (S071 pepper rotation) · **Stamped:** 2026-10-19 · **Sources:** eventopia-app-reports up to session-070 (2026-10-18), registry 2026-10-19, repo docs at `e491f033` (local branch `followups/ux-backlog`, 55 commits past `origin/main` `e603fcfc` = prod; local refs, not fetched)
+**Rule:** a profile is a pointer plus the facts a deploy needs. When a repo doc owns a procedure, link it and don't copy it. Bump the version and stamp when you change this file.
+
+## Owner docs
+| What | Where (`~/Projects/eventopia/…`) |
+|---|---|
+| Per-release deploy order, env, post-checks | `docs/launch/<feature>-deploy.md` (110 notes; latest `ux-revamp-deploy.md`). Every release's note wins over this profile |
+| Migrations | `packages/db/MIGRATIONS.md`, migrator `packages/db/run-migrate.mjs` |
+| Key rotation (Ed25519, PII keys, `VITE_TICKET_PUBLIC_KEY` encoding) | `docs/engineering/key-rotation.md` |
+| Observability (GlitchTip, OO, OpenPanel, GA4 two-property split) | `docs/engineering/observability.md` |
+| Known issues, gateways | `docs/engineering/known-issues.md`, `xendit-gateway.md`, `doku-gateway.md`, `midtrans-gateway.md`, `google-login.md`, `claude-oauth-guide.md` |
+| Apex nginx carve-outs (canonical) | `infra/nginx/eventopia-apex-capability-paths.conf` (adapt, see G14) |
+| Not what prod runs | `infra/DEPLOY.md` (Docker-only), `infra/DR.md` (stale, S021) |
+| Workspace reports | [session-070](../../../eventopia-app-reports/session-070-2026-10-18.md), [069](../../../eventopia-app-reports/session-069-2026-10-13.md), [068](../../../eventopia-app-reports/session-068-2026-08-22.md) |
+| Memory | `feedback_eventopia_deploy_checklist`, `reference_eventopia_payment_smoke_test`, `feedback_never_delete_real_data`, `feedback_psql_on_app_never_echo_db_url`, `feedback_boot_gates_beyond_env_schema` |
+
+## Footprint
+| Surface | Host | Process / root | Bind | Domain(s) | TLS |
+|---|---|---|---|---|---|
+| api (Bun) | app | PM2 `eventopia-api`, cwd `~/eventopia` | **`*:38001`** (all ifaces, UFW only) | api.eventopia.my | cert `eventopia.my` |
+| workers (Bun, BullMQ) | app | PM2 `eventopia-workers`, cwd `~/eventopia` | metrics **`*:9091`** | — | — |
+| web-public (Next standalone) | app | `eventopia-web-public`, `apps/web-public/.next/standalone/apps/web-public` | 10.0.0.5:38100 | eventopia.my apex, `*.eventopia.my` (tenants), eventopia.co.id + www (marketing), custom domains | `eventopia.my` / `eventopia.co.id` |
+| console (Next) | app | `eventopia-console` | 10.0.0.5:38200 | app.eventopia.my | `eventopia.my` |
+| operator (Next, `apps/admin`) | app | `eventopia-operator` | 10.0.0.5:38400 | admin.eventopia.co.id | `eventopia.co.id` |
+| checkin PWA (Vite static) | proxy | `/var/www/eventopia-checkin` | — | checkin.eventopia.my | `eventopia.my` |
+| nginx | proxy | `eventopia.conf`, `eventopia-coid.conf`, `eventopia-custom-domains.conf` (real files in `sites-enabled/`) | — | `www.eventopia.my` → 301 eventopia.co.id | — |
+
+- PM2 under `devops`, ecosystem `~/eventopia/ecosystem.config.cjs` (**untracked in git**); one shared root `.env`, each app's `.env` a symlink to it. Max mem 500M (api/workers), 700M (Next).
+- Certs: `eventopia.my` (apex + `*`) exp 2027-01-08; `eventopia.co.id` (apex, admin, www) exp 2026-12-07. Both dns-cloudflare (`cloudflare-eventopia.ini`), reloaded by the proxy deploy hook (since 2026-10-19, proxy S008).
+- CF: `eventopia.my` zone is **Full, not strict** (S024, for custom domains). Restart baseline 10-19: api ↺4, workers ↺3, web ↺3, console ↺3, operator ↺2.
+
+## Data
+| Store | Facts |
+|---|---|
+| Postgres `eventopia` on db | owner role `eventopia` (non-superuser, **BYPASSRLS**, member of `app_tenant`, owns `public`); 73 MB, ~20 conns; **168 migrations** (0000–0167) in `drizzle.__drizzle_migrations` |
+| Redis db **6** on db | 6,508 keys, 36 clients. **Redis-only state:** `org:meta:*`, `org:slug:*`, `org:name:*`, `membership:*` (org identity), `sess`, `wa`; BullMQ `bull:wa-send`, `bull:payments`, `bull:ticket-delivery`, … RDB only, no AOF |
+| Object storage | DigitalOcean Spaces bucket `eventopia` (`sgp1`); public cover reads still broken (README) |
+| Email | Resend (`EMAIL_PROVIDER=resend`, `eventopia.my` verified) |
+| Backups | backup host daily `pg/eventopia`; pre-deploy `pg_dump -Fc` → `db:/root/eventopia-backups/`; `.env` copies + Redis org export → `app:~/eventopia-backups/` |
+
+## Deploy
+- **Mode:** PM2 pull-on-host from `main`, pinned SHA (`git fetch`, check `origin/main` = analysed SHA, `git merge --ff-only`), `pnpm install --frozen-lockfile`.
+- **Pre-flight:** memory checklist: read every new migration's SQL, backfills (dry run), new env vars (`.env.example` diff + `process.env` grep), full `git log`, the `docs/launch/` note, boot-path diff for new fail-closed gates. Export `org:*` from Redis db 6 before touching identity code (S069).
+- **Order (default; the launch note overrides):** migrate (`packages/db/run-migrate.mjs`, verify the count in the DB) → api + workers **together** → backfills → web-public → console → operator → checkin.
+- **Restart:** `pm2 startOrRestart ecosystem.config.cjs --only eventopia-api,eventopia-workers` from `~/eventopia`. Never `pm2 restart --update-env` to pick up `.env` (G1).
+- **Builds:** one app at a time, `NODE_OPTIONS=--max-old-space-size=4096`; watch swap (~1.8/4 GB is normal). `NEXT_PUBLIC_*` / `VITE_*` are build-time.
+- **Runtime:** api/workers = Bun (symlinked into `/usr/local/bin`, S062); Next standalone = PM2 `node` = system v24.18.0.
+- **Check-in PWA:** build on app → relay app → Mac → proxy (one binary stream per ssh call, `tar tzf`, stage in `/tmp`, assert `index.html` + `sw.js`, backup `/var/www/eventopia-checkin.bak-<ts>`, `rsync -a --delete`).
+- **Rollback (S070):** `git checkout <prev>` on app, rebuild web-public/console/admin, restore the check-in backup dir, `pm2 startOrRestart`. Migrations are additive; DB fallback = the pre-deploy dump. Never restore `.env` from a pre-deploy copy (S070: stale DB password).
+
+## Verify (after deploy)
+| Check | Expect |
+|---|---|
+| `curl http://10.0.0.5:38001/healthz` / `/readyz` (or `https://api.eventopia.my/…`) | 200; readyz db + redis true. Wait ≥20 s after restart (S069) |
+| eventopia.my, a tenant hub, app.eventopia.my/login, checkin.eventopia.my (+ `sw.js`, manifest), admin.eventopia.co.id/login | 200 |
+| `/v1/public/directory/{events,organizers,facets}` | 200 |
+| www.eventopia.my | 301 → eventopia.co.id (by design) |
+| Logs | `~/.pm2/logs/eventopia-{api,workers,web-public,console,operator}-{out,error}.log` (CEST). No FATAL / `[pii]` lines; workers list 33 queue processors |
+| Errors | GlitchTip org `eventopia`: 17 `eventopia-backend`, 18 `eventopia-web`, 19 `eventopia-checkin` |
+| Analytics | OpenPanel `eventopia-console` / `-operator` / `-checkin`; GA4 product `GT-KF6WDXJF`, marketing `G-8YBGDDMSQ3` |
+| Kuma | **no monitor exists** for eventopia prod |
+
+## Known noise
+- OpenTelemetry "duplicate registration" lines at api/workers start (S069, S070).
+- api.eventopia.my 502 for ~10 s right after an api restart (S069); operator `/login` curl `000` on first hit (~11 s cold start, S070).
+- `operator.eventopia.my` 404s: retired in S013 (S070).
+- Old hashed check-in chunk still 200 after `rsync --delete`: Cloudflare edge cache (S067).
+- `email_message` rows `FAILED`/`RESEND_422` for `@example.com` test addresses (S068, S069).
+- Set-PIN limiter 429 on the 3rd fast request, clears in a minute (S069).
+- Console e2e: 24 pre-existing failures on `main` (S064); `crew-removal-live`/`gate-scope-live`/`gate-wedge-timing` flaky (S065).
+
+## Smoke test
+- **Default (S070):** HTTP-level, read-only: the Verify table. No booking POSTs, no orgs, nothing to clean.
+- **Deeper (reversible):** disposable org via email OTP on an `example.com` address, OTP read from Redis db 6; payment intent via the platform Xendit gateway, left unpaid. Recipe: memory `reference_eventopia_payment_smoke_test`.
+- **Never:** a Gmail/`googlemail` address for a test org (canonicalises to a real inbox); seed prod; a check-in smoke against a live event (burns a real slot, S067: use a past event); DELETE by pattern.
+- **Cleanup:** exact captured IDs only, FK order, include the `membership:<subject>` key (S047) and the `account` row (S017), explicit `COMMIT` in the heredoc (S046), verify row-count deltas vs baseline.
+
+## Gotchas
+1. `pm2 restart --update-env` does not reload `.env`: the ecosystem file parses it at `require()`. Use `startOrRestart`; check env by name in `/proc/<pid>/environ`, not `pm2 env` (S008, S013, S054).
+2. `drizzle-kit migrate` / `pnpm db:migrate` fail silently over SSH and read the dev default URL. Use `run-migrate.mjs` and count rows in the DB (S001, S009, S068).
+3. `source .env` breaks on unquoted `<>` in `EMAIL_FROM`. Use `node --env-file` / `bun run --env-file=../../.env` (S009; memory).
+4. Bun not on PATH over non-interactive SSH: fixed with `/usr/local/bin` symlinks (S009, S062).
+5. Parallel builds OOM (tsc exit 137 at swap 3967/4095 MB). Build one app at a time with a 4 GB heap (S009, S067).
+6. api and workers are one unit: restart them together (S066).
+7. api runs Bun source in memory: a `contracts` change needs an api restart, not just a web-public rebuild (S023).
+8. GlitchTip DSNs need the dash-less 32-hex key; DSNs are baked into all 4 frontends (S009).
+9. Admin needs its own `NEXT_PUBLIC_OPENPANEL_CLIENT_ID` at build (shell override); the root `.env` holds console's (S009, S014).
+10. `VITE_TICKET_PUBLIC_KEY` is base64url of the raw 32-byte key, not SPKI base64; the check-in PWA white-screened for weeks (S027, S029). Before publishing, verify the built bundle carries the prod key and verifies a real token (S067).
+11. `PIN_PEPPER` is a hard boot gate in production (S046). Rotation is lock-out-free: set the new value and move the old one to `PIN_PEPPER_PREVIOUS`; sign-in re-hashes (S071). Only the api loads it. Diff the whole boot path, not just the env schema (memory).
+12. `sites-enabled/eventopia.conf` is a real file, not a symlink: edit it there. Never leave a backup inside `sites-enabled/` (duplicate upstream, reload refused) (S057).
+13. A bare `return` in an nginx `server{}` beats every `location{}`: wrap it in `location /` (S041).
+14. Apex carve-outs from the repo snippet must omit `X-Forwarded-Proto` (self-rewrites `eventopia_web`) (S044).
+15. psql printed the prod `DATABASE_URL` when the command was built as a spaced string: use the quoted-var function + redaction sed (S070). `tr -d "\x27"` deletes `x`, `2`, `7` in GNU tr: use sed (S070).
+16. `/root` on db is 700: `sudo -u postgres pg_dump -f /root/…` fails. Dump to `/tmp`, then move (S068).
+17. Name-index backfill dry run cannot see in-batch duplicates (S069).
+18. `NEXT_PUBLIC_*` change = rebuild at the same commit; `PUBLIC_WEB_BASE_URL` must be the bare apex (S054).
+19. Open console / check-in tabs keep the old bundle until a hard reload (S068, S069, S070).
+
+## Open items
+- `~/eventopia/.env` is mode 664 (S070). `PIN_PEPPER` echoed in S069, **rotated S071** (old value kept as `PIN_PEPPER_PREVIOUS` until the 16 pre-rotation PINs are re-hashed or cleared; never restore an `.env` backup from before S071). Meta tokens exposed S053, unrotated by choice.
+- `app:~/eventopia-backups/env-pre-e603fcfc-*` holds live secrets: delete once the release is trusted (S070). Registry counts 20 eventopia `.env*bak*` files on app.
+- Prod Xendit key not exercised for the bank-code map; one payout profile stores `PLACEHOLDER` (S070).
+- `ANTHROPIC_AUTH_TOKEN` (OAuth) has no refresh loop; died once unnoticed (S024, S053).
+- Operator console: no MFA (`OPERATOR_MFA_ENABLED=false`), no IP allowlist (S052, S053).
+- WA templates: `pin_security_notice_id` rejected (S056), `attendee_offer` not submitted (S063).
+- **Registry (10-19):** api `*:38001` and workers `*:9091` listen on all interfaces; only UFW protects them.
+- **Registry:** `eventopia-custom-domains.conf` `~^.+$` catches every unknown :443 name, including `<tenant>.seenow.ac`.
+- **Registry vs S057:** S057 reconciled `eventopia.conf` enabled/available; on 10-19 they differ again (enabled 08-21, available 08-17). The enabled file is authoritative.
+- **Registry vs S069:** registry §1 says app cannot SSH to proxy; S069 reached `root@10.0.0.2` from `root@app` by key, while grobiz S062 showed `devops@app` is refused. Static relay stays app → Mac → proxy.
+- `eventopia.co.id` cert renews ~11-07: reload nginx afterwards (no hook).
+- No Kuma monitor for eventopia prod (monitor survey).
+- Dev (`*.dev.eventopia.my`) is stopped and ~920+ commits behind prod (S056; registry §3).
+- Next release from the local branch carries migration `0168_orders_buyer_phone_idx` (plain `CREATE INDEX` in a txn, briefly blocks `orders` writes) and asks to archive `ux-revamp-deploy.md`.
+- Unverified: whether the deprecated `NEXT_PUBLIC_GA_MEASUREMENT_ID` was blanked (S054).
+
+## Verify live
+```bash
+APP='ssh -o BatchMode=yes -o ConnectTimeout=15 -i ~/.ssh/devops devops@app'
+$APP 'pm2 ls | grep -E "eventopia"'
+$APP 'ss -tlnH | grep -E ":(38001|38100|38200|38400|9091) "; git -C ~/eventopia log -1 --format="%h %cd" --date=short'
+$APP 'curl -s -o /dev/null -w "%{http_code}\n" http://10.0.0.5:38001/readyz; stat -c "%a %n" ~/eventopia/.env'
+ssh -o BatchMode=yes -o ConnectTimeout=15 root@db 'redis-cli -n 6 DBSIZE; redis-cli -n 6 --scan --pattern "org:meta:*" | wc -l'
+ssh -o BatchMode=yes -o ConnectTimeout=15 root@db "sudo -u postgres psql -XAt -d eventopia -c 'select count(*) from drizzle.__drizzle_migrations'"
+ssh -o BatchMode=yes -o ConnectTimeout=15 root@proxy 'ls -la /etc/nginx/sites-enabled | grep eventopia; certbot certificates 2>/dev/null | grep -A2 "Name: eventopia"'
+```

@@ -1,9 +1,9 @@
 # Operations Workspace: Pattern Analysis and Skill Design
 
-**Date:** 2026-09-26 (rev 1) · **Revised:** 2026-10-18 (rev 2) · **Decisions recorded:** 2026-10-19 (rev 2.1, §11.2)
+**Date:** 2026-09-26 (rev 1) · **Revised:** 2026-10-18 (rev 2) · **Decisions recorded:** 2026-10-19 (rev 2.1, §11.2) · **Phase 0 + 1 built:** 2026-10-19 (rev 2.2, §11.4)
 **Scope:** All 355 session reports across 29 report directories (2026-04 → 2026-10-18), plus READMEs, `telegram-alerts/` scripts and ledger, `docs/`, `CLAUDE.md`, and the 19 auto-memory files. Rev 2 adds the 37 sessions written since rev 1: grobiz 046–062, disk-cleanup 064–069, rekrutme 001–003, pahala 001, sijari 002–005, hoteru 019, eventopia 069 and dev 004.
 **Method:** Rev 1 used eight parallel read-only passes over every session. Rev 2 used four delta passes that compared the new sessions against rev 1, plus read-only `df` and Docker checks on the Mac for the disk section. Nothing in the workspace was modified and no remote commands were run.
-**Status:** Analysis only. No skills have been written yet. §0 lists what rev 2 changed, §8 is the proposed catalog, and §11 is the build plan and the decisions needed from you.
+**Status:** Phase 0 (registry, profiles), Phase 1 (5 core skills) and the hooks are built. See §11.4. Rev 1–2.1 text below is the analysis they were built from. §0 lists what rev 2 changed, §8 is the proposed catalog, and §11 is the build plan and the decisions needed from you.
 
 Markers: **🆕** means new in rev 2, and **✎** means rev 1 content corrected in rev 2.
 
@@ -73,6 +73,7 @@ Markers: **🆕** means new in rev 2, and **✎** means rev 1 content corrected 
 | §10 🆕 | Hygiene items H10–H17 |
 | §11 ✎ | The **skill location** recommendation changed; new decisions 8–10 |
 | **rev 2.1 (10-19)** | All 10 decisions recorded (§11.2); §5.11 gains an **observability analysis** step and is promoted to Tier 2 (decision 10); codex-runtimes moved to Tier B (decision 6); hooks decided as blocking for secrets (decision 3); dev retired as a gate (decision 5); new §8.6 maps existing **ecc plugin** skills and hooks to this catalog |
+| **rev 2.2 (10-19)** | §11.4 added: what was built (hooks, `docs/fleet/` registry + 7 host snapshots + 12 app and 7 server profiles, 5 skills with RED/GREEN results) and the new findings from the live survey that need decisions |
 
 ---
 
@@ -1007,7 +1008,7 @@ Our hooks won't conflict with ecc. If ecc hooks are re-enabled, its observer wou
 
 ## 11. Build plan and open decisions
 
-### 11.1 Phased plan (nothing built yet)
+### 11.1 Phased plan (Phases 0 and 1 built 2026-10-19, see §11.4)
 
 | Phase | Deliverables | Validation |
 |---|---|---|
@@ -1042,3 +1043,52 @@ Use the `skill-creator` / `superpowers:writing-skills` process, with pressure te
 | Parallel | Hooks (blocking secret patterns first); H10 certbot deploy hook; **eventopia secret rotation session** (decision 4) |
 | 1 | `ops-session` gains the "write the workspace report from an app-repo session" path (decision 9) |
 | 2 | `observability-onboard` (decision 10) alongside `new-app-to-cluster`; **disk watch + Tier-A auto-prune** after the Turbopack fix is verified (decision 7a); **scheduled `fleet-health-check` digest** (decision 7b) |
+
+### 11.4 🆕 Built on 2026-10-19 (rev 2.2)
+
+| Item | Where | Validation |
+|---|---|---|
+| `ops-guard` (PreToolUse, Bash): blocks remote env-value prints, unquoted psql URL vars, secret-var echoes, `sk-ant-` keys, `FLUSHDB/ALL`, schema push over ssh, rm in Downloads/.claude/.codex, `rsync -e 'ssh -n'`, wrong proxy user; warns on other risky forms. Override: `# ops-guard: allow (<reason>)` | `~/.claude/hooks/ops-guard.py`, `~/.claude/settings.json` | 80/80 self-tests; replay of 37.5k past commands gave 13 blocks, all genuine |
+| `ops-redact` (PostToolUse, Bash): replaces DB-URL passwords, provider tokens and `SECRET_NAME=value` lines in output | `~/.claude/hooks/ops-redact.py` | 11/11 self-tests; fired correctly during this session (report files with old plaintext credentials) |
+| ecc logs: chmod 600 + redacted | `~/.claude/bash-commands.log`, `cost-tracker.log` | 526 lines redacted, 0 values left |
+| Fleet registry | `docs/fleet/registry.md` | Every row live-read 10-19; verify-live commands per section |
+| Host snapshots | `docs/fleet/hosts/<host>-2026-10-19.md` (app, db, proxy, dev, erp, monitor, backup) | Secret scan 0 hits |
+| App profiles (12) | `docs/fleet/profiles/` | Template sections; gotchas cite sessions; repo HEAD recorded |
+| Server profiles (7) | `docs/fleet/profiles/servers/` | Follow-ups merged from READMEs and live anomalies; drift tables |
+| 5 core skills | sources `docs/fleet/skills/<name>/SKILL.md`, symlinked from `~/.claude/skills/` | See below |
+
+**Skill tests (superpowers:writing-skills).**
+- **RED round 1:** a full-context desk exercise. Agents read about 90k tokens of reports and got almost everything right, so it isn't a useful baseline.
+- **RED round 2:** same tasks under pressure (a 2-file budget, user waiting). Observed failures:
+  - "just do it" taken as blanket approval for every write step;
+  - `pm2 restart --update-env`;
+  - a remote-to-remote rsync;
+  - the repo runbook not opened;
+  - post-deploy checks offered as a list instead of run;
+  - one snapshot instead of passes;
+  - GlitchTip and OpenObserve skipped.
+- **GREEN:** the same pressure prompts with the skills installed. All 5 complied:
+  - per-step approval held under "just do it";
+  - order taken from the profile and runbook;
+  - `startOrRestart` instead of `--update-env`;
+  - the watch ran without asking and covered workers, SPAs and missing monitors;
+  - rename swap with `.prev`;
+  - WIB times and incidents in the report.
+- **Refactor:** the `pm2-app-deploy` description was widened to cover "give me the exact commands". A discovery test then routed all 4 sample requests to the right skill.
+
+**Corrections the live survey made to the docs.**
+- `deploy@dev` accepts only `~/.ssh/id_rsa` (2016 RSA), not `dev-deploy`.
+- seenow-workers use **Redis db 0**, not db 7. `bull:commerce` in db 0 is seenow's: 35.8k retained completed jobs, about +288/day.
+- hoteru Redis 9 = Technopark and 10 = Bwalk, verified by client address.
+- The eventopia DB password rotation was already done in S070. `PIN_PEPPER` was rotated in S071 (decision 4), lock-out-free via `PIN_PEPPER_PREVIOUS`.
+- CLAUDE.md drift:
+  - app runs 47 PM2 apps, not 18;
+  - ytgrab is PM2, not Docker;
+  - meetgrab has a DB;
+  - the sijari repo exists;
+  - eventopia, seenow and wabacall on dev are stopped;
+  - there are `miaw-route-app-reports/` and `asiaweek-app-reports/` dirs that CLAUDE.md doesn't list.
+- Host and profile open items live in `docs/fleet/profiles/servers/*.md`. The ones needing a decision are tracked in [`docs/fleet/open-decisions.md`](fleet/open-decisions.md).
+- **Parallel track done 10-19:** certbot deploy hook on proxy ([proxy S008](../proxy-sysadmin-reports/session-008-2026-10-19.md)); `PIN_PEPPER` rotation ([eventopia S071](../eventopia-app-reports/session-071-2026-10-19.md)).
+
+**Not yet built:** Phase 2 (`new-app-to-cluster`, `observability-onboard`, `proxy-edge-change`, `env-secret-change`, `db-migration-safety`, `prod-smoke-and-cleanup`, `incident-diagnosis`, `erpnext-fleet-op`, `mac-disk-cleanup`), the two automations (decision 7), numa profile.

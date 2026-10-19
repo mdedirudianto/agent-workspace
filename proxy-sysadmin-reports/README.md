@@ -13,3 +13,4 @@ Public-facing nginx reverse proxy for the internal cluster (`10.0.0.0/22`). Term
 | [Session 5](session-005-2026-08-20.md) | 2026-08-20 | Netdata `web_log` alarm flapping — bot-scanner bursts tripping 1-min ratio alarms; widened to 5-min window + raised volume guard | Done |
 | [Session 6](session-006-2026-09-20.md) | 2026-09-20 | Netdata `web_log` alarm noise round 2 — silenced `bad_requests`/`redirects`/`unmatched`, `successful` now CRITICAL-only `<40 %` for 10 min | Done |
 | [Session 7](session-007-2026-09-22.md) | 2026-09-22 | Multi-domain flapping investigation (youtubegrab/qute.my/foucher.co) — traced to transient Cloudflare-to-origin connectivity, self-recovered, no server-side fault; 2nd occurrence in 2 days | Analysis only |
+| [Session 8](session-008-2026-10-19.md) | 2026-10-19 | certbot deploy hook `10-reload-nginx.sh`, so the 16 DNS-01/webroot certs get served after renewal; gro.biz.id DNS-01 dry-run OK | Done; verify first real renewal ~10-22 |
