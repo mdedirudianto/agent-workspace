@@ -1,6 +1,6 @@
 # grobiz — profile
 
-**Profile version:** 4 · **Stamped:** 2026-10-19 16:45 WIB (proxy sign-in limit, session-065) · **Sources:** grobiz-app-reports up to session-063 (2026-10-19), registry 2026-10-19, repo docs at `24d55885b` (= `origin/main` = prod since deploy #6)
+**Profile version:** 5 · **Stamped:** 2026-10-19 17:45 WIB (deploy #8, session-066) · **Sources:** grobiz-app-reports up to session-066 (2026-10-19), registry 2026-10-19, repo docs at `7b5e4d6f8` (= `origin/main` = prod since deploy #8)
 **Rule:** a profile is a pointer plus the facts a deploy needs. When a repo doc owns a procedure, link it and don't copy it. Bump the version and stamp when you change this file.
 
 ## Owner docs
@@ -12,7 +12,7 @@
 | Gateways / channels | `docs/guides/deployment-xendit-gateway.md` (§0 boot guards), `deployment-whatsapp-channel.md`, `docs/runbooks/whatsapp-business-setup.md` |
 | HRMS on tenant sites | `docs/runbooks/2026-09-25-cr-021-m2-hrms-platform.md` (`tenant:install-hrms`) |
 | Scripts | `docs/guides/scripts.md` |
-| Workspace reports | [session-064](../../../grobiz-app-reports/session-064-2026-10-19.md) (deploy #7, decimal sale qty; build OOM, D263), [session-063](../../../grobiz-app-reports/session-063-2026-10-19.md) (deploy #6, deploy-tool batch), [062](../../../grobiz-app-reports/session-062-2026-10-18.md) (read-only census), [061](../../../grobiz-app-reports/session-061-2026-10-18.md) (deploy #5), [060](../../../grobiz-app-reports/session-060-2026-10-18.md) (deploy #4), [058](../../../grobiz-app-reports/session-058-2026-10-15.md) (release-layout bootstrap) |
+| Workspace reports | [session-066](../../../grobiz-app-reports/session-066-2026-10-19.md) (deploy #8, booked-sale errors), [session-064](../../../grobiz-app-reports/session-064-2026-10-19.md) (deploy #7, decimal sale qty; build OOM, D263), [session-063](../../../grobiz-app-reports/session-063-2026-10-19.md) (deploy #6, deploy-tool batch), [062](../../../grobiz-app-reports/session-062-2026-10-18.md) (read-only census), [061](../../../grobiz-app-reports/session-061-2026-10-18.md) (deploy #5), [060](../../../grobiz-app-reports/session-060-2026-10-18.md) (deploy #4), [058](../../../grobiz-app-reports/session-058-2026-10-15.md) (release-layout bootstrap) |
 | Memory | `feedback_deploy_main_pin_sha`, `feedback_boot_gates_beyond_env_schema`, `feedback_dry_run_before_trusting_static_read`, `project_grobiz_hrms_rollout_pending`, `feedback_workspace_report_from_app_repo_sessions` |
 
 ## Footprint
@@ -26,7 +26,7 @@
 | partner portal | proxy | `/var/www/grobiz/partner` (`partner.gro.biz.id.conf`, real file in `sites-enabled/` only) | — | partner.gro.biz.id | `gro.biz.id` |
 | ERPNext (Frappe 16.9 / ERPNext 16.6.1 / hrms 16.4.1) | erp | bench `frappe`, `/home/frappe/frappe-bench`; 52 sites = base + 48 tenants + 3 `pool-*` | 10.0.0.6 via proxy | erp.gro.biz.id, `<hash>.erp.gro.biz.id` (`erp-tenants.gro.biz.id.conf`) | cert `erp.gro.biz.id` (`*.erp`) |
 
-- PM2 under `devops`, nvm **Node 22.22.0** for all four; fork ×1; `kill_timeout` 20000 on api/gateway; **no `max_memory_restart`**. Restart baseline after deploy #7: api ↺6, gateway ↺5, admin ↺5, landing ↺5.
+- PM2 under `devops`, nvm **Node 22.22.0** for all four; fork ×1; `kill_timeout` 20000 on api/gateway; **no `max_memory_restart`**. Restart baseline after deploy #8 and the 10-19 provider reboot: api ↺0, gateway ↺1, admin ↺0, landing ↺0 (S066).
 - Releases: `~/grobiz-releases/<UTC>-<sha12>`, symlinks `current` + `current-static`, `KEEP_RELEASES=4`, `history.log`. `current/.env` → `~/grobiz/.env`. The `~/grobiz` checkout (`8e6739cb5`) is stale; the live code is the release dir.
 - Certs `gro.biz.id` (apex + `*`, exp 2026-11-21, propagation **unset**) and `erp.gro.biz.id` (exp 2026-11-26), dns-cloudflare `cloudflare-gro.ini`, reloaded by the proxy deploy hook (since 2026-10-19, proxy S008).
 
@@ -99,9 +99,10 @@
 17. **The API build outgrew the default Node heap** (S064, D263): see Deploy › Build heap. `deploy.sh --plan` cannot show it; only the build does.
 18. `deploy.sh` never decides `--with-order`/`--with-partner`: check which shared symbols `apps/order`/`apps/partner` import against the diff (S064 P7) before choosing a relay.
 19. **The proxy vhost is not the repo template** (`deployment/nginx/` never runs on prod). Since S065 the app/api/admin server blocks include `snippets/grobiz-cloudflare-realip.conf` (client IP from `CF-Connecting-IP`) and `snippets/grobiz-staff-auth-locations.conf` (admin + partner sign-in, zone `grobiz_staff_auth` in `conf.d/grobiz-staff-auth.conf`, 5 r/m burst 5). A new auth route is limited until it is added to the exempt regex. Merchant `/api/auth/` has no edge limit; `X-Forwarded-For` is still client-supplied (F3).
+20. **After any host or proxy outage, check the WhatsApp gateway's `/instances`.** Its boot reconcile retries for ~37 s only, then logs `reconciled 0 instance(s) — giving up` and leaves every paired socket down until `pm2 restart grobiz-wa-gateway` (S066: down ~2 h after the provider reboot). The restart triggers a backlog catch-up at ~100 % CPU and ~1.1 GB, with `/health` unanswered for ~3 min.
 
 ## Open items
-- **Prod = `25eaaec8a`** (deploy #7, S064, flip 12:57:51 WIB 10-19): code = `c1801157b` (decimal sale qty) + 3 docs files; api 0.129.0, web 0.100.0, shared 0.149.0, admin 0.39.2 rebuilt; order 0.12.1 / partner 0.4.2 not relayed. No migration past 0086. Rollback `deploy.sh --rollback` → `20261018T233408Z-24d55885ba35`. Mobile 0.93.0 store release owed (R1 old-mobile residual live until then). Owed: D263 (test-free API build), D262 (LIVE BIRD zero-valuation sales refusal, tenant unidentified), the §3 1,25 Kg test sale, the first live `relay-static.sh` run (D100/D122), D233 (the D130 tests on Linux).
+- **Prod = `7b5e4d6f8`** (deploy #8, S066, flip 17:34:46 WIB 10-19): booked-sale errors (F-1 discount basis, Q1–Q3, per-order finalize lock 409 `ORDER_FINALIZE_IN_PROGRESS`, which has no log line of its own); api 0.130.0, shared 0.150.0, web 0.100.0 rebuilt (`index-BfKZS-qs.js`), admin 0.39.2; order 0.12.1 / partner 0.4.2 not relayed. No migration past 0086. Rollback `deploy.sh --rollback` → `20261019T054317Z-25eaaec8a07e`. No tenant prices tax-inclusive (S066 C6), so F-1 is inert today; its case A smoke is owed (needs an inclusive tenant). Owed: D263 (test-free API build), D262 (LIVE BIRD zero-valuation sales refusal, tenant unidentified), the first live `relay-static.sh` run (D100/D122), D233 (the D130 tests on Linux), mobile 0.93.0 store release.
 - **gro.biz.id cert renews ~10-22.** It's the first real run of the proxy deploy hook added 10-19 (proxy S008). The DNS-01 dry-run passed with the default 10 s propagation. Check the served serial afterwards (registry §6).
 - `grobiz-wasessions` backup pull failed 3× in 5 days (10-14, 10-15, 10-18) (backup survey).
 - grobiz logs (`~/grobiz/logs/`) are outside Fluent Bit and pm2-logrotate; a stale 25 MB `~/.pm2/logs/grobiz-api-out.log` is still tailed (app survey).
