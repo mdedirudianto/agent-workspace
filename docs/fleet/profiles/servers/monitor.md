@@ -1,6 +1,6 @@
 # monitor — server profile
 
-**Stamp:** profile v1 · 2026-10-19 · sources: [registry.md](../../registry.md) (10-19), [hosts/monitor-2026-10-19.md](../../hosts/monitor-2026-10-19.md) (survey 2026-10-18T23:26Z = 10-19 06:26 WIB), [monitor-sysadmin-reports](../../../../monitor-sysadmin-reports/README.md) README + [s001]–[s011] (s008–s011 read in full), [telegram-alerts README](../../../../telegram-alerts/README.md), CLAUDE.md
+**Stamp:** profile v2 · 2026-10-20 (failed-unit cleanup, backup S006) · sources: [registry.md](../../registry.md) (10-19), [hosts/monitor-2026-10-19.md](../../hosts/monitor-2026-10-19.md) (survey 2026-10-18T23:26Z = 10-19 06:26 WIB), [monitor-sysadmin-reports](../../../../monitor-sysadmin-reports/README.md) README + [s001]–[s011] (s008–s011 read in full), [telegram-alerts README](../../../../telegram-alerts/README.md), CLAUDE.md
 **Rule:** where this profile and an older report disagree, the 10-19 snapshot wins. See **Drift**.
 
 ## Role
@@ -31,7 +31,7 @@ Monitoring and analytics hub for the cluster (`217.15.162.56` / `10.0.0.3`, Ubun
 | Schedule (server-local, CEST until 10-25, then CET) | WIB | Job |
 |---|---|---|
 | `7 * * * *` `/etc/cron.d/telegram-digest` → `digest.sh --scheduled` | hourly; sends **once a day at ~08:07 WIB** (01:07Z) | The gate is in WIB (≥08:00, once per WIB day), so the **10-25 DST shift doesn't move it**. cron 3.0 has no `CRON_TZ` [s011] |
-| `@reboot` `/etc/cron.d/staticroute` | — | re-applies the eth0 link route [s001] |
+| ~~`@reboot` `/etc/cron.d/staticroute`~~ | — | had CRLF line endings, so cron rejected it ("bad minute") at every boot and it never ran; moved to `/root/disabled-20261020/` on 2026-10-20 ([backup S006](../../../backup-sysadmin-reports/session-006-2026-10-20.md)). Routes are correct without it |
 | apt / unattended-upgrades systemd timers | timer-defined | not enumerated on 10-19, so verify live |
 
 - The clock is **Europe/Berlin**: container and journal times are WIB −5 h now and WIB −6 h after 10-25. Normalise times in reports.

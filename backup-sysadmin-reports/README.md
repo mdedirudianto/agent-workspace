@@ -13,6 +13,7 @@ Dedicated **backup target** for the internal cluster. Pulls daily PostgreSQL + M
 | [Session 3](session-003-2026-06-20.md) | 2026-06-20 | Tier 2 backup coverage gap — fixed broken `miawflow` job, switched Tier 2 to **auto-discovery** (9 prod DBs were unbacked-up); verified restores; routine dumps moved to least-priv `backup_reader` | Done |
 | [Session 4](session-004-2026-08-03.md) | 2026-08-03 | `grobiz-sites.sh` coverage gap — stdin-eating `ssh` in a `while read` loop meant only 1 of 11 tenant sites was ever backed up per run; fixed with a stdin redirect, verified all 11 back up | Done |
 | [Session 5](session-005-2026-09-22.md) | 2026-09-22 | grobiz verify false positives — 16 `no db archive` FAILs were orphaned dirs from an August site-rename, not lost backups; cleaned up + `rotate.sh` now self-cleans empty site dirs | Done |
+| [Session 6](session-006-2026-10-20.md) | 2026-10-20 | Fleet-wide provider power-off 2026-10-19 (all 8 hosts, ~18:12–19:24 WIB) — post-restart audit; interrupted 10-19 backup cycle (truncated wagrab dump, tier2/3/mongo/erp-bench skipped) re-run by hand; failed-unit hygiene on app/dev/db/proxy/monitor/backup | Done (follow-ups open) |
 
 ## Open follow-ups (from session 001)
 

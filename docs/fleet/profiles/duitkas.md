@@ -1,6 +1,6 @@
 # duitkas — profile
 
-**Profile version:** 1 · **Stamped:** 2026-10-19 · **Sources:** duitkas-app-reports up to session-003 (2026-06-17), app-sysadmin session-001, registry + hosts 2026-10-19, repo `biji-dev/miaw-flow` at `b3b1c57` (= `origin/main` = prod; the local checkout is on `feat/multi-tenant-platform` `fa15dc5`)
+**Profile version:** 2 · **Stamped:** 2026-10-20 · **Sources:** duitkas-app-reports up to session-003 (2026-06-17), app-sysadmin session-001, registry + hosts 2026-10-19, repo `biji-dev/miaw-flow` at `b3b1c57` (= `origin/main` = prod; the local checkout is on `feat/multi-tenant-platform` `fa15dc5`)
 **Rule:** a profile is a pointer plus the facts a deploy needs. When a repo doc owns a procedure, link it and don't copy it. Bump the version and stamp when you change this file.
 
 ## Owner docs
@@ -53,7 +53,7 @@ Multi-tenant **by instance**: one folder, PM2 pair, DB, Redis db and WhatsApp pa
 - `QR code received` broadcasting on lpekin while it's unpaired (s002).
 - Prefixed Redis keys appear only after the first message (s003).
 - The root `miaw-core` symlink is dangling; the real dependency is `node_modules/miaw-core` (s001).
-- The failed systemd unit `actions.runner.biji-dev-miaw-flow.app` (since 08-02) is an old GitHub runner, not the app (app survey).
+- The systemd unit `actions.runner.biji-dev-miaw-flow.app` (failed since 08-02) was an old GitHub runner, not the app; disabled 2026-10-20 ([backup S006](../../backup-sysadmin-reports/session-006-2026-10-20.md)).
 
 ## Smoke test
 - Safe: `/health`, socket.io handshake, page GET, log tail.

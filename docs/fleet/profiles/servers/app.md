@@ -1,6 +1,6 @@
 # app — server profile
 
-**Stamp:** profile v1 · 2026-10-19 · sources: [registry.md](../../registry.md) (10-19), [hosts/app-2026-10-19.md](../../hosts/app-2026-10-19.md) (survey 2026-10-19 06:26 WIB), [app-sysadmin-reports](../../../../app-sysadmin-reports/README.md) README + sessions 001–005, CLAUDE.md, app-scoped reports (ytgrab 018/022, duitkas 001, grobiz 027, rekrutme 002, eventopia 069), memory (`project_app_node24_followups`, `feedback_psql_on_app_never_echo_db_url`, `reference_ops_guard_hooks`, `feedback_deploy_main_pin_sha`).
+**Stamp:** profile v2 · 2026-10-20 (failed-unit cleanup, backup S006) · sources: [registry.md](../../registry.md) (10-19), [hosts/app-2026-10-19.md](../../hosts/app-2026-10-19.md) (survey 2026-10-19 06:26 WIB), [app-sysadmin-reports](../../../../app-sysadmin-reports/README.md) README + sessions 001–005, CLAUDE.md, app-scoped reports (ytgrab 018/022, duitkas 001, grobiz 027, rekrutme 002, eventopia 069), memory (`project_app_node24_followups`, `feedback_psql_on_app_never_echo_db_url`, `reference_ops_guard_hooks`, `feedback_deploy_main_pin_sha`).
 **Rule:** the live snapshot wins over older reports. Drift is in its own section below.
 
 ## Role
@@ -29,7 +29,7 @@ Production Node host for the cluster: 47 PM2 apps under `devops`, plus miaw-rout
 | systemd | `vector` | active | ytgrab logs → stream `ytgrab` (also tails the gone `ytgrab-api-*`) |
 | systemd | `netdata` | active | `127.0.0.1:19999`, Telegram alarms ([s004](../../../../app-sysadmin-reports/session-004-2026-06-17.md)) |
 | systemd | `fail2ban`, `unattended-upgrades` | active | |
-| failed | `actions.runner.biji-dev-miaw-flow.app`, `snap.certbot.renew` | **failed** | runner failed since 08-02 and is still enabled; Actions are org-disabled (github s001) |
+| failed | `actions.runner.biji-dev-miaw-flow.app`, `snap.certbot.renew` | cleared 2026-10-20 | runner unit disabled (its user `miaw` doesn't exist) and the expired `api.wagrab.com` renewal conf moved to `/root/disabled-20261020/` ([backup S006](../../../backup-sysadmin-reports/session-006-2026-10-20.md)); `systemctl --failed` is empty |
 | Docker | — | **absent** (no `docker.sock`) | disabled in s004; the 10-19 survey reports it as not installed |
 
 | Schedule | Server time (CEST) | WIB now | WIB from 10-25 (CET) |
@@ -67,7 +67,7 @@ $D 'sudo ufw status numbered; sudo fail2ban-client status sshd | tail -3'
 
 ## Known noise
 - `ytgrab-web` restart count climbs about daily (500M cap). That's a known item, not a new incident.
-- `systemctl --failed` lists the miaw-flow Actions runner and `snap.certbot.renew`. Both are expected (app holds no certs; Actions are disabled).
+- `systemctl --failed` should now be empty (the miaw-flow Actions runner and `snap.certbot.renew` were cleared 2026-10-20). Anything listed is new. After a host restart, `pm2-devops` brings all 48 PM2 entries back by itself (proven 2026-10-19).
 - eventopia (3–4) and grobiz (3–4) restarts on 10-18 were deploys, not a crash loop.
 - Stale `~/.pm2/logs` files: bgutil-pot, ecosystem.tpm, idle-test, miaw-route, ytgrab-api/be/fe, and the old 25 MB `grobiz-api-out.log`. Fluent Bit still tails that last one.
 - Swap sits around 1.8 / 4 GiB. That is stale pages, below Netdata's `used_swap` warn level of 80 %.
