@@ -97,3 +97,4 @@ Post-launch:
 | [Session 1](session-001-2026-10-11.md) | 2026-10-11 | Production readiness assessment (read-only): app state (QA 429/431 PASS, E2E 7/7, v0.10.0), cluster survey of app/db/proxy/DNS, planned footprint, owner actions, deploy plan | Done |
 | [Session 2](session-002-2026-10-14.md) | 2026-10-14 | First production deploy of `v1.1.0` (D0–D9): DB, build, PM2, vhost + LE cert, smoke test 13/13 PASS, log names fixed for fluent-bit (`merge_logs`) | Live; D8a/D8b/D10 owner, D11 2026-10-15 |
 | [Session 3](session-003-2026-10-14.md) | 2026-10-14 | Origin moved from `app.rkrt.me` to `rkrt.me` (owner): rebuild with the new URLs, vhost swap, `www`/`app` 301; mini smoke PASS | Done |
+| [Session 4](session-004-2026-10-20.md) | 2026-10-20 | Redeploy to `6b28451`: prod realigned (no runtime change, no migrations), dev upgraded from v0.9.0 to real staging (schema reset, 12 migrations, Next 16, AI token from local `.env`) | Live; watch passes 10:16 / 10:21 WIB, OK |

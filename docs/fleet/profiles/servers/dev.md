@@ -6,7 +6,7 @@
 
 Shared, swap-bound **dev/staging box** (`154.26.130.96`, Ubuntu 22.04.5, 4 vCPU / 5.8 GiB RAM / 8 GiB swap, 145 G disk at 76 %). Not on the `10.0.0.0/24` cluster, so it reaches the cluster only over public endpoints (e.g. `observe.biji.uk`).
 
-- **Depends on it:** staging for hoteru (`*.dev.hoteru.uk`, campaigns), avilia (`*.dev.avilia.id` :4030), pahala (`dev.pahala.co` :7005), rekrutme (old code, `dev.rkrt.me` :7007), grobiz (`dev.gro.biz.id` :7006 + docker ERPNext `erp.dev.gro.biz.id`), foucher (`api.dev.foucher.co` :8058), miaw SIP staging (docker). Also the OpenVPN server (`10.8.0.1`, UDP 1194) the Mac uses.
+- **Depends on it:** staging for hoteru (`*.dev.hoteru.uk`, campaigns), avilia (`*.dev.avilia.id` :4030), pahala (`dev.pahala.co` :7005), rekrutme (staging on `6b28451` since 2026-10-20, `dev.rkrt.me` :7007), grobiz (`dev.gro.biz.id` :7006 + docker ERPNext `erp.dev.gro.biz.id`), foucher (`api.dev.foucher.co` :8058), miaw SIP staging (docker). Also the OpenVPN server (`10.8.0.1`, UDP 1194) the Mac uses.
 - **Parked here, stopped 10-19:** eventopia (`*.dev.eventopia.my`), seenow (`*.dev.seenow.ac`), wabacall (`wabacall.dev.biji.uk` :19000), asiaweek, iccn, wagrab, ytgrab, teamy, washop, miaw-api/web/route.
 - **No production traffic.** Production names in dev nginx are stale (see Drift).
 

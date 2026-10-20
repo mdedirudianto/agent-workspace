@@ -83,7 +83,7 @@ Upstreams that dev nginx proxies to, with what the port means. Most bind loopbac
 | 6001–6003 | asiaweek | dev.asiaweek.uk | stopped |
 | 7005 | pahala staging | dev.pahala.co | online |
 | 7006 (all interfaces) | grobiz | dev.gro.biz.id, app./api./admin. | online |
-| 7007 | rekrutme (old code) | dev.rkrt.me | online |
+| 7007 | rekrutme (staging, `6b28451`, Next 16, `next start` fork ×1, system Node 22, local PG `rekrutme` 13 tables) | dev.rkrt.me | online |
 | 8058 (all interfaces) | foucher-api | api.dev.foucher.co | online |
 | 18400 | docker (grobiz ERPNext nginx) | erp.dev.gro.biz.id | up |
 | 19000 | wabacall | wabacall.dev.biji.uk | **stopped** |

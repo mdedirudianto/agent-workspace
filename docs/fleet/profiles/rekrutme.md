@@ -1,6 +1,6 @@
 # rekrutme — profile
 
-**Profile version:** 1 · **Stamped:** 2026-10-19 · **Sources:** rekrutme-app-reports up to session-003 (2026-10-14), registry 2026-10-19, repo docs at `origin/main` `01d3107` (local `main` `10f8205`; deployed `8d52e8f`)
+**Profile version:** 2 · **Stamped:** 2026-10-20 · **Sources:** rekrutme-app-reports up to session-004 (2026-10-20), registry 2026-10-20, live checks 2026-10-20; prod and dev both deployed at `6b28451` (`origin/main`, `v1.1.0-34`)
 **Rule:** a profile is a pointer plus the facts a deploy needs. When a repo doc owns a procedure, link it and don't copy it. Bump the version and stamp when you change this file.
 
 ## Owner docs
@@ -17,9 +17,9 @@
 ## Footprint
 | Surface | Host | Process / root | Bind | Domain(s) | TLS |
 |---|---|---|---|---|---|
-| App (Next 16 standalone `server.js` + pg-boss workers in-process) | app | PM2 `rekrutme` (id 47, **fork ×1**), `/home/devops/rekrutme` @ `8d52e8f` detached (`v1.1.0-6`) | `10.0.0.5:3160` | `rkrt.me` | LE `rkrt.me` (apex, `www`, `app`), HTTP-01 webroot, expires 2027-01-11, **no auto reload** |
+| App (Next 16 standalone `server.js` + pg-boss workers in-process) | app | PM2 `rekrutme` (id 42 live 2026-10-20, **fork ×1**), `/home/devops/rekrutme` @ `6b28451` detached (`v1.1.0-34`, S004) | `10.0.0.5:3160` | `rkrt.me` | LE `rkrt.me` (apex, `www`, `app`), HTTP-01 webroot, expires 2027-01-11, **no auto reload** |
 | Redirects | proxy | vhost `rkrt.me.conf` | — | `www.rkrt.me`, `app.rkrt.me`, all :80 → 301 `https://rkrt.me$request_uri` | same cert |
-| Old dev copy (not staging) | dev | PM2 `rekrutme` under `deploy`, old code | `127.0.0.1:7007` | `dev.rkrt.me` | dev nginx |
+| Staging (S004: upgraded from v0.9.0) | dev | PM2 `rekrutme` (id 57, **fork ×1**) under `deploy`, `/home/deploy/rekrutme` @ `6b28451` on branch `dev`, `pnpm build` + `next start -H 127.0.0.1 -p 7007`, system Node 22.22 (**no nvm on dev**) | `127.0.0.1:7007` | `dev.rkrt.me` | dev nginx; testing banner **on** (`NEXT_PUBLIC_SHOW_TESTING_BANNER=true`) |
 
 - Runtime: nvm Node v22.22.0 (system is v24), `HOSTNAME`/`PORT`/`NODE_ENV`/`TZ=Asia/Jakarta` come from `ecosystem.config.cjs`, `.env` read by Node via `--env-file=.env`; `max_memory_restart 1G`; `merge_logs: true` (registry, S002).
 - Cloudflare: orange, Full (strict), "Always Use HTTPS" **off**. Registrar Namecheap, domain expires 2027-02-23.
@@ -90,11 +90,12 @@
 - Owner: secrets into Vaultwarden (`AUTH_SECRET`, DB password exist only in `~/rekrutme/.env`); rotate `ANTHROPIC_AUTH_TOKEN` (pasted into a chat 10-14) for a workspace-scoped key + spend limit; rotate the Resend key; enable `rkrt.me` auto-renew.
 - D11: dumps exist (registry). First `verify.sh` covering rekrutme is Tue 2026-10-20 21:00; no restore test yet.
 - ~~Fleet: certbot deploy hook on `proxy`~~: done 2026-10-19 (proxy S008).
+- Dev (S004): its Postgres is the local cluster on `dev` (DB `rekrutme`, role `postgres`); schema was reset and re-migrated 0000–0011 on 2026-10-20. It runs on the owner's subscription token copied from the local project `.env` (owner-approved). Pre-upgrade copies on dev: `~/rekrutme-pre-6b28451/`, `~/dumps/rekrutme-dev-pre-6b28451.dump`; prod dump `root@db:/root/rekrutme-backups/rekrutme-pre-6b28451-*.dump`. Delete them once accepted.
 - Dev: CSP, retention purge of soft-deleted rows, graceful pg-boss stop, pg-boss retry when DB was down at boot, candidate data export (runbook §10).
 - Remove S003 rollback copies on `app`: `~/rekrutme-standalone-app-origin`, `~/rekrutme-env.bak-app-origin`.
-- Decide the old `dev.rkrt.me` (retire or make it real staging).
+- ~~Decide the old `dev.rkrt.me`~~: made real staging on 2026-10-20 (S004).
 - Recapture landing image `step-collect` (shows `app.rkrt.me`) (S003).
-- Registry vs reports: README "Monitoring" lists Kuma + GlitchTip as if present; the registry shows neither, so the registry wins. `origin/main` is 4 docs-only commits past the deployed `8d52e8f`; nothing to deploy.
+- Registry vs reports: README "Monitoring" lists Kuma + GlitchTip as if present; the registry shows neither, so the registry wins. Prod and dev now both run `6b28451`; the commits since `8d52e8f` were harness/e2e/docs plus two dev-only lines, so prod's runtime is unchanged.
 
 ## Verify live
 ```bash
