@@ -27,7 +27,7 @@
 - External: Anthropic via OAuth token (`ANTHROPIC_AUTH_MODE=oauth`, no refresh token), Gemini fallback, PayPal (creds empty, billing inert), Midtrans **sandbox** keys, Google OAuth.
 
 ## Deploy
-- Mode: pull-on-host for the API on app; web/admin **built on app, relayed app → Mac → proxy** (app can't SSH to proxy); no CD (repo workflows are stubs; Actions off org-wide).
+- Mode: pull-on-host for the API on app; web/admin **built on app, deployed app → proxy directly** (`devops@app` → `root@proxy` since 2026-10-20; Mac relay is the fallback); no CD (repo workflows are stubs; Actions off org-wide).
 - API: OPS §2. `git pull` on `main` → `pnpm install --frozen-lockfile` → **`pnpm turbo run build --filter=@meetgrab/api`** (never a bare `pnpm --filter … build`) → migrations **before** restart (`PGOPTIONS` lock/statement timeouts) → stamp `BUILD_SHA` + `BUILD_RELEASED_AT` in `apps/api/.env` → `pm2 restart meetgrab-api` → `pm2 save`.
 - Web: no `.env` for web on app. Export the 6 `PUBLIC_*` vars inline (names and values listed in the README) plus `PUBLIC_BUILD_SHA` and `PUBLIC_API_URL`, then build. Grep `dist/` for the baked GA id and GlitchTip host before shipping. Clean-replace `/var/www/meetgrab.us` the staged way (skill `static-deploy-to-proxy`; memory: never delete before verifying the replacement).
 - Admin: `turbo run build` refreshes `apps/admin/dist` (`VITE_API_URL`, `VITE_ADMIN_TOKEN` baked); staged replace of `/var/www/meetgrab-admin`.

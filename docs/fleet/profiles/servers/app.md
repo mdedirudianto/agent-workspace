@@ -16,7 +16,7 @@ Production Node host for the cluster: 47 PM2 apps under `devops`, plus miaw-rout
 | ~~`deploy`~~ | **does not exist on app.** `deploy@app` fails as "Permission denied", which looks like a ban but isn't one ([s003](../../../../app-sysadmin-reports/session-003-2026-06-08.md)) | — |
 
 - **fail2ban** sshd is active. It was configured as 5 tries / 10 min → 1 h ban ([s001](../../../../app-sysadmin-reports/session-001-2026-05-12.md)); not re-surveyed on 10-19. `ignoreip` has the office IP `103.119.54.100`, the old `125.166.13.120` ([s003](../../../../app-sysadmin-reports/session-003-2026-06-08.md)) and the cluster range. The Mac's home IP is **dynamic** (eventopia s069 saw `125.166.13.146`), so wrong-user retries from home can ban you. The ban on app is milder than proxy's 24 h ban.
-- `app → proxy` SSH: the registry says app can't reach proxy, so static files relay app → Mac → proxy. But eventopia [s069](../../../../eventopia-app-reports/session-069-2026-10-13.md) unbanned an IP on proxy *from* `root@app` over `10.0.0.2`. See Drift.
+- `app → proxy` SSH: `devops@app` → `root@proxy` works since 2026-10-20 ([s006](../../../../app-sysadmin-reports/session-006-2026-10-20.md)), key pinned `from=10.0.0.5`, alias `proxy`. Static deploys go direct; the Mac relay is the fallback.
 
 ## Services
 | Kind | Unit / process | State 10-19 | Notes |
@@ -106,7 +106,7 @@ $D 'sudo ufw status numbered; sudo fail2ban-client status sshd | tail -3'
 | nginx "installed but unused" | serves `hoteru-uploads` on `10.0.0.5:8931` | [s001](../../../../app-sysadmin-reports/session-001-2026-05-12.md) M3 |
 | "System Node 24 for most apps, no nvm" | true for PM2 `node`, but nvm default is 22.22.0, so an interactive `node` ≠ PM2's `node`. 6 apps run on 22 | [s005](../../../../app-sysadmin-reports/session-005-2026-07-22.md) |
 | README lists 2 open follow-ups | the snapshot adds 20 anomalies (merged above) | README |
-| app cannot SSH to proxy (registry) | eventopia s069 ran `fail2ban-client` on proxy from `root@app` via `10.0.0.2`. **Unresolved:** likely root can and devops can't | registry §1 vs eventopia [s069](../../../../eventopia-app-reports/session-069-2026-10-13.md) |
+| app cannot SSH to proxy (registry) | eventopia s069 ran `fail2ban-client` on proxy from `root@app` via `10.0.0.2`. **Resolved 2026-10-20 ([s006](../../../../app-sysadmin-reports/session-006-2026-10-20.md)):** root could always; `devops@app` now can too (`from=10.0.0.5`, aliases in `~/.ssh/config`) | registry §1 vs eventopia [s069](../../../../eventopia-app-reports/session-069-2026-10-13.md) |
 
 ## Verify live
 ```bash
@@ -114,5 +114,5 @@ ssh -o BatchMode=yes -o ConnectTimeout=15 root@app 'timedatectl | grep "Time zon
 ssh -o BatchMode=yes -o ConnectTimeout=15 -i ~/.ssh/devops devops@app 'pm2 ls | tail -n +1 | wc -l; ss -tlnH | awk "{print \$4}" | sort -u'
 ssh -o BatchMode=yes -o ConnectTimeout=15 -i ~/.ssh/devops devops@app 'node -v; /usr/bin/node -v; for a in wagrab-admin feyfa-admin rekrutme pahala; do pm2 describe $a | grep -E "interpreter  "; done'
 ssh -o BatchMode=yes -o ConnectTimeout=15 root@app 'ufw status; fail2ban-client get sshd ignoreip; fail2ban-client get sshd bantime; systemctl --failed --no-legend'
-ssh -o BatchMode=yes -o ConnectTimeout=15 root@app 'ssh -o BatchMode=yes -o ConnectTimeout=5 root@10.0.0.2 true && echo app-root-to-proxy:OK'   # settles the drift row
+ssh -o BatchMode=yes -o ConnectTimeout=15 -i ~/.ssh/devops devops@app 'ssh -o BatchMode=yes -o ConnectTimeout=5 proxy true && echo devops-to-proxy:OK'
 ```

@@ -39,7 +39,7 @@
 `.env` names (8, registry): `NODE_ENV PORT HOST API_VERSION DATABASE_URL JWT_SECRET SECRET_ENCRYPTION_KEY ALLOWED_ORIGINS`.
 
 ## Deploy
-- **Mode:** PM2 pull-on-host for the API + **static relay app → Mac → proxy** for the portal (`app` can't SSH to `proxy`).
+- **Mode:** PM2 pull-on-host for the API + **static deploy app → proxy** for the portal (direct `devops@app` → `root@proxy` since 2026-10-20, skill `static-deploy-to-proxy`; Mac relay is the fallback).
 - **Steps (S001/S002):** `git pull --ff-only` (pinned SHA), `pnpm install --frozen-lockfile`, **explicit `prisma generate`** (pnpm 10 skips dependency build scripts), `prisma migrate deploy`, `pnpm build:packages`, backend `tsc`, portal `vite build`, `pm2 restart avilia-api`.
 - **Migrations:** `prisma migrate deploy` only. The repo's `db:migrate` script is `prisma migrate dev`: never on prod. Check `prisma migrate status` first (S002: up to date, none new).
 - **Build-time vars:** none for the portal. It calls a relative `/api`, so an API host change needs no rebuild (S001).

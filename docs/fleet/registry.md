@@ -23,7 +23,7 @@ Used by the ops skills (`ops-session`, `release-preflight`, `pm2-app-deploy`, `s
 
 - **dev:** the only Mac key `deploy@dev` accepts is `~/.ssh/id_rsa` (`rsa-key-20160704`, 2016). Add a replacement key before anyone prunes it (dev session-001 H6).
 - Always pass `-o BatchMode=yes -o ConnectTimeout=15`. `~/.ssh/config` is empty and `/etc/hosts` maps the short names, so a bare `ssh proxy` connects as the local user `dedi` and counts as a failed auth. The `ops-guard` hook blocks that for proxy.
-- `app` cannot SSH to `proxy`. Static artifacts relay app → Mac → proxy.
+- **SSH mesh (2026-10-20, [app s006](../../app-sysadmin-reports/session-006-2026-10-20.md)):** root on proxy, db, erp, monitor, backup, app can SSH to each other over `10.0.0.x` and to `root@dev` (shared `root@prod` key); short aliases (`ssh proxy`) exist on all six. `devops@app` can SSH to root on proxy/db/erp/monitor/backup (`from=10.0.0.5`) and `deploy@dev` (aliases `proxy db erp monitor backup dev`). **dev is receive-only** (no outbound keys, by decision). numa is Mac-only inbound; `klo-cloud@numa` is authorized as root on db/erp/monitor/backup/app/dev. Static deploys now go app → proxy directly (skill `static-deploy-to-proxy`); Mac relay is the fallback.
 - Normalise times in reports. PM2 log times on app and erp are CEST (WIB − 5 h); db and proxy are WIB; Playwright is UTC.
 - Verify live: `ssh … 'timedatectl | grep "Time zone"; hostnamectl | grep Operating'`.
 
@@ -200,7 +200,7 @@ Verify live: `ssh -o BatchMode=yes root@proxy 'certbot certificates 2>/dev/null 
 
 | Dir | Served as | Deployed by |
 |---|---|---|
-| grobiz/order, grobiz/partner | order.gro.biz.id + `*.gro.biz.id`, partner.gro.biz.id | grobiz relay (`relay-static.sh`) |
+| grobiz/order, grobiz/partner | order.gro.biz.id + `*.gro.biz.id`, partner.gro.biz.id | grobiz (`relay-static.sh` Mac fallback, or direct from app) |
 | eventopia-checkin | checkin.eventopia.my | eventopia relay |
 | hoteru-app, hoteru-tpm-app, hoteru-bwalk-app, hoteru-radho-app | app.<instance> | hoteru stage/`.prev` swap |
 | seenow/web-{learner,teacher,b2b,admin} | learner./teacher./b2b./admin.seenow.ac (+ tenants, see §7) | seenow relay |

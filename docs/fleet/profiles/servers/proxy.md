@@ -14,7 +14,7 @@ Public ingress for the whole cluster: nginx 1.24 + certbot 2.9 terminate TLS for
 
 - **fail2ban sshd:** `maxretry 3` / `findtime 600` / `bantime 86400` (24 h), counts failed *auth events*, so one wrong-user connection can ban instantly ([s004](../../../../proxy-sysadmin-reports/session-004-2026-07-14.md)). `ignoreip` 127.0.0.0/8, ::1, 10.0.0.0/24, 103.119.54.100, 157.85.208.16. 50 IPs banned at survey, 255 total.
 - A bare `ssh proxy` connects as local `dedi` → ban. The `ops-guard` hook blocks wrong user / bare host for proxy. Stop after 2 failed attempts.
-- Recovery route if the Mac is banned: `root@app` → `root@46.250.234.153` (public IP; the 10.0.0.2 path is now in ignoreip) ([s004](../../../../proxy-sysadmin-reports/session-004-2026-07-14.md)). `app` **cannot** SSH to proxy as devops; static artifacts relay app → Mac → proxy.
+- Recovery route if the Mac is banned: `root@app` → `root@46.250.234.153` (public IP; the 10.0.0.2 path is now in ignoreip) ([s004](../../../../proxy-sysadmin-reports/session-004-2026-07-14.md)). `devops@app` can SSH to `root@proxy` (since 2026-10-20, `from=10.0.0.5`); static artifacts deploy app → proxy directly, Mac relay as fallback.
 - UFW: default deny in; 22/80/443 from anywhere; all from `10.0.0.0/24` (eth1 is a /22). Netdata :19999 binds 0.0.0.0 but UFW has no public rule.
 
 ## Services

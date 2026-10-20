@@ -47,7 +47,7 @@
 - **Restart:** `pm2 startOrRestart ecosystem.config.cjs --only eventopia-api,eventopia-workers` from `~/eventopia`. Never `pm2 restart --update-env` to pick up `.env` (G1).
 - **Builds:** one app at a time, `NODE_OPTIONS=--max-old-space-size=4096`; watch swap (~1.8/4 GB is normal). `NEXT_PUBLIC_*` / `VITE_*` are build-time.
 - **Runtime:** api/workers = Bun (symlinked into `/usr/local/bin`, S062); Next standalone = PM2 `node` = system v24.18.0.
-- **Check-in PWA:** build on app → relay app → Mac → proxy (one binary stream per ssh call, `tar tzf`, stage in `/tmp`, assert `index.html` + `sw.js`, backup `/var/www/eventopia-checkin.bak-<ts>`, `rsync -a --delete`).
+- **Check-in PWA:** build on app → deploy app → proxy directly (skill `static-deploy-to-proxy`; Mac relay is the fallback, one binary stream per ssh call, `tar tzf`, stage in `/tmp`, assert `index.html` + `sw.js`, backup `/var/www/eventopia-checkin.bak-<ts>`, `rsync -a --delete`).
 - **Rollback (S070):** `git checkout <prev>` on app, rebuild web-public/console/admin, restore the check-in backup dir, `pm2 startOrRestart`. Migrations are additive; DB fallback = the pre-deploy dump. Never restore `.env` from a pre-deploy copy (S070: stale DB password).
 
 ## Verify (after deploy)
@@ -108,7 +108,7 @@
 - **Registry (10-19):** api `*:38001` and workers `*:9091` listen on all interfaces; only UFW protects them.
 - **Registry:** `eventopia-custom-domains.conf` `~^.+$` catches every unknown :443 name, including `<tenant>.seenow.ac`.
 - **Registry vs S057:** S057 reconciled `eventopia.conf` enabled/available; on 10-19 they differ again (enabled 08-21, available 08-17). The enabled file is authoritative.
-- **Registry vs S069:** registry §1 says app cannot SSH to proxy; S069 reached `root@10.0.0.2` from `root@app` by key, while grobiz S062 showed `devops@app` is refused. Static relay stays app → Mac → proxy.
+- **Registry vs S069:** registry §1 says app cannot SSH to proxy; S069 reached `root@10.0.0.2` from `root@app` by key, while grobiz S062 showed `devops@app` is refused. **Resolved 2026-10-20:** `devops@app` now reaches `root@proxy` ([app s006](../../app-sysadmin-reports/session-006-2026-10-20.md)); direct static deploy is the default, Mac relay the fallback.
 - `eventopia.co.id` cert renews ~11-07: reload nginx afterwards (no hook).
 - No Kuma monitor for eventopia prod (monitor survey).
 - Dev (`*.dev.eventopia.my`) is stopped and ~920+ commits behind prod (S056; registry §3).

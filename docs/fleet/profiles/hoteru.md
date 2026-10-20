@@ -40,7 +40,7 @@
 - `.env` names: backend `NODE_ENV PORT HOST DATABASE_URL REDIS_URL JWT_SECRET JWT_REFRESH_SECRET JWT_EXPIRES_IN JWT_REFRESH_EXPIRES_IN ALLOWED_ORIGINS API_VERSION UPLOAD_ROOT UPLOAD_BASE_URL` (+ `AVILIA_ENABLED AVILIA_EVENTS_URL AVILIA_SERVICE_ID AVILIA_SERVICE_SECRET` on tpm/bwalk). Sites: `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_<HOTEL>_HOTEL_ID`, `NEXT_PUBLIC_SITE_URL`. Mgmt: `VITE_API_BASE_URL VITE_PUBLIC_SITE_URLS VITE_ENABLE_MSW`.
 
 ## Deploy
-- **Mode:** PM2 pull-on-host per checkout + **mgmt static relay app → Mac → proxy**. One SHA for all instances; re-check `origin/main` == analysed SHA just before pulling (S019).
+- **Mode:** PM2 pull-on-host per checkout + **mgmt static deploy app → proxy** (direct since 2026-10-20, Mac relay fallback). One SHA for all instances; re-check `origin/main` == analysed SHA just before pulling (S019).
 - **Pre-deploy:** `pg_dump -Fc` of each DB from `app` with that instance's `DATABASE_URL` → `~/db-backups/<db>_pre_sessionNNN_<ts>.dump`; save `pre-deploy-{pm2,head}-sessionNNN.txt` (S016–S019).
 - **Per checkout:** `git pull --ff-only` → `pnpm install --frozen-lockfile` → `pnpm build:packages` → `prisma migrate deploy` + `migrate status` (only if migrations changed) → build only what the diff touches (backend `tsc`; guest site with `rm -rf .next` first; mgmt Vite; marketing central only).
 - **Build-time:** every `NEXT_PUBLIC_*`/`VITE_*` (API base, hotel id, site URL). One build per tenant.

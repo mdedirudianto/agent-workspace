@@ -42,7 +42,7 @@
 - **API/workers:** run from source on Bun, so `git pull` + `pm2 restart seenow-api seenow-workers` (S004). Bun reads `.env` at start, so a plain restart picks up `.env` changes.
 - **Build-time env:** `apps/web-public/.env.production` and `apps/web-{learner,teacher,b2b,admin}/.env` bake the API and portal URLs; the root `.env` is not forwarded by turbo (G2). Build with `bun run build` (turbo, 7 tasks).
 - **web-public:** rebuild, then `pm2 restart seenow-web-public` (`next start -H 10.0.0.5 -p 4901`).
-- **SPAs:** build on app, relay app → Mac → proxy `/var/www/seenow/web-*` (one binary stream per ssh call, stage, assert `index.html`, backup, `rsync -a --delete`). Skill `static-deploy-to-proxy`.
+- **SPAs:** build on app, deploy app → proxy directly (Mac relay is the fallback) to `/var/www/seenow/web-*` (stage, assert `index.html`, backup, `rsync -a --delete`). Skill `static-deploy-to-proxy`.
 - **Rollback:** `git checkout <prev>` + rebuild + `pm2 restart`; migrations are additive; DB fallback = a `pg_dump` taken before the deploy (repo §11: never hand-edit migration history). Keep the SPA backup dir until verified.
 
 ## Verify (after deploy)

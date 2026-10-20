@@ -9,6 +9,7 @@ Session-based sysadmin reports for `root@app` (154.26.129.104 — KVM VPS, Ubunt
 | [Session 3](session-003-2026-06-08.md) | 2026-06-08 | SSH "ban" misdiagnosis (use `devops@app`) + fleet-wide fail2ban office-IP whitelist | Done   |
 | [Session 4](session-004-2026-06-17.md) | 2026-06-17 | `routes.biji.uk` login 504s → host swap-thrash from ytgrab-api 2.5 GB leak; restart + `max_memory_restart` cap | Done   |
 | [Session 5](session-005-2026-07-22.md) | 2026-07-22 | `admin.wagrab.com` 502 → Node 22→24 broke `isolated-vm` in `wagrab-admin`/`feyfa-admin`; pinned both to Node 22 via nvm; paused `foucher-admin.conf` (domain renewal pending) | Open follow-ups |
+| [Session 6](session-006-2026-10-20.md) | 2026-10-20 | Fleet SSH mesh: root↔root already complete; authorized `devops@app` on the 5 cluster roots (`from=10.0.0.5`), host aliases, fail2ban ignoreip on app/dev; dev outbound declined; numa checked read-only (no fleet key); static-deploy skill switched to direct app→proxy | Open follow-ups |
 
 ## Open follow-ups
 
