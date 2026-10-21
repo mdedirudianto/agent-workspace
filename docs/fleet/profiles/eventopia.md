@@ -1,6 +1,6 @@
 # eventopia — profile
 
-**Profile version:** 2 (S071 pepper rotation) · **Stamped:** 2026-10-19 · **Sources:** eventopia-app-reports up to session-070 (2026-10-18), registry 2026-10-19, repo docs at `e491f033` (local branch `followups/ux-backlog`, 55 commits past `origin/main` `e603fcfc` = prod; local refs, not fetched)
+**Profile version:** 3 (S072 redeploy to `b35dfb70`) · **Stamped:** 2026-10-21 · **Sources:** eventopia-app-reports up to session-072 (2026-10-21), registry 2026-10-19, repo docs at `b35dfb70` (`origin/main` = prod, fetched 2026-10-21)
 **Rule:** a profile is a pointer plus the facts a deploy needs. When a repo doc owns a procedure, link it and don't copy it. Bump the version and stamp when you change this file.
 
 ## Owner docs
@@ -13,7 +13,7 @@
 | Known issues, gateways | `docs/engineering/known-issues.md`, `xendit-gateway.md`, `doku-gateway.md`, `midtrans-gateway.md`, `google-login.md`, `claude-oauth-guide.md` |
 | Apex nginx carve-outs (canonical) | `infra/nginx/eventopia-apex-capability-paths.conf` (adapt, see G14) |
 | Not what prod runs | `infra/DEPLOY.md` (Docker-only), `infra/DR.md` (stale, S021) |
-| Workspace reports | [session-070](../../../eventopia-app-reports/session-070-2026-10-18.md), [069](../../../eventopia-app-reports/session-069-2026-10-13.md), [068](../../../eventopia-app-reports/session-068-2026-08-22.md) |
+| Workspace reports | [session-072](../../../eventopia-app-reports/session-072-2026-10-21.md), [session-070](../../../eventopia-app-reports/session-070-2026-10-18.md), [069](../../../eventopia-app-reports/session-069-2026-10-13.md), [068](../../../eventopia-app-reports/session-068-2026-08-22.md) |
 | Memory | `feedback_eventopia_deploy_checklist`, `reference_eventopia_payment_smoke_test`, `feedback_never_delete_real_data`, `feedback_psql_on_app_never_echo_db_url`, `feedback_boot_gates_beyond_env_schema` |
 
 ## Footprint
@@ -29,12 +29,12 @@
 
 - PM2 under `devops`, ecosystem `~/eventopia/ecosystem.config.cjs` (**untracked in git**); one shared root `.env`, each app's `.env` a symlink to it. Max mem 500M (api/workers), 700M (Next).
 - Certs: `eventopia.my` (apex + `*`) exp 2027-01-08; `eventopia.co.id` (apex, admin, www) exp 2026-12-07. Both dns-cloudflare (`cloudflare-eventopia.ini`), reloaded by the proxy deploy hook (since 2026-10-19, proxy S008).
-- CF: `eventopia.my` zone is **Full, not strict** (S024, for custom domains). Restart baseline 10-19: api ↺4, workers ↺3, web ↺3, console ↺3, operator ↺2.
+- CF: `eventopia.my` zone is **Full, not strict** (S024, for custom domains). Restart baseline 10-21 (after S072): api ↺1, workers ↺1, web-public ↺2, console ↺1, operator ↺1.
 
 ## Data
 | Store | Facts |
 |---|---|
-| Postgres `eventopia` on db | owner role `eventopia` (non-superuser, **BYPASSRLS**, member of `app_tenant`, owns `public`); 73 MB, ~20 conns; **168 migrations** (0000–0167) in `drizzle.__drizzle_migrations` |
+| Postgres `eventopia` on db | owner role `eventopia` (non-superuser, **BYPASSRLS**, member of `app_tenant`, owns `public`); 73 MB, ~20 conns; **171 migrations** (0000–0170) in `drizzle.__drizzle_migrations` |
 | Redis db **6** on db | 6,508 keys, 36 clients. **Redis-only state:** `org:meta:*`, `org:slug:*`, `org:name:*`, `membership:*` (org identity), `sess`, `wa`; BullMQ `bull:wa-send`, `bull:payments`, `bull:ticket-delivery`, … RDB only, no AOF |
 | Object storage | DigitalOcean Spaces bucket `eventopia` (`sgp1`); public cover reads still broken (README) |
 | Email | Resend (`EMAIL_PROVIDER=resend`, `eventopia.my` verified) |
@@ -57,7 +57,7 @@
 | eventopia.my, a tenant hub, app.eventopia.my/login, checkin.eventopia.my (+ `sw.js`, manifest), admin.eventopia.co.id/login | 200 |
 | `/v1/public/directory/{events,organizers,facets}` | 200 |
 | www.eventopia.my | 301 → eventopia.co.id (by design) |
-| Logs | `~/.pm2/logs/eventopia-{api,workers,web-public,console,operator}-{out,error}.log` (CEST). No FATAL / `[pii]` lines; workers list 33 queue processors |
+| Logs | `~/.pm2/logs/eventopia-{api,workers,web-public,console,operator}-{out,error}.log` (CEST). No FATAL / `[pii]` lines; workers list 34 queue processors (incl. `payout-in-doubt-alert`) |
 | Errors | GlitchTip org `eventopia`: 17 `eventopia-backend`, 18 `eventopia-web`, 19 `eventopia-checkin` |
 | Analytics | OpenPanel `eventopia-console` / `-operator` / `-checkin`; GA4 product `GT-KF6WDXJF`, marketing `G-8YBGDDMSQ3` |
 | Kuma | **no monitor exists** for eventopia prod |
@@ -73,7 +73,7 @@
 
 ## Smoke test
 - **Default (S070):** HTTP-level, read-only: the Verify table. No booking POSTs, no orgs, nothing to clean.
-- **Deeper (reversible):** disposable org via email OTP on an `example.com` address, OTP read from Redis db 6; payment intent via the platform Xendit gateway, left unpaid. Recipe: memory `reference_eventopia_payment_smoke_test`.
+- **Deeper (reversible):** disposable org via email OTP on an `example.com` address, OTP read from Redis db 6; payment intent via the platform Xendit gateway, left unpaid (S072: an organizer with KYC only `SUBMITTED` + MoU v2 signed can still create a QRIS intent, so no operator account or KYC fixture is needed any more). Free ONLINE orders auto-fulfil to PAID (tickets with signed tokens) and exercise `cancel-free` (1-seat order) and seat release. Recipe: memory `reference_eventopia_payment_smoke_test`.
 - **Never:** a Gmail/`googlemail` address for a test org (canonicalises to a real inbox); seed prod; a check-in smoke against a live event (burns a real slot, S067: use a past event); DELETE by pattern.
 - **Cleanup:** exact captured IDs only, FK order, include the `membership:<subject>` key (S047) and the `account` row (S017), explicit `COMMIT` in the heredoc (S046), verify row-count deltas vs baseline.
 
@@ -97,9 +97,12 @@
 17. Name-index backfill dry run cannot see in-batch duplicates (S069).
 18. `NEXT_PUBLIC_*` change = rebuild at the same commit; `PUBLIC_WEB_BASE_URL` must be the bare apex (S054).
 19. Open console / check-in tabs keep the old bundle until a hard reload (S068, S069, S070).
+20. The shared root `.env` carries console's OpenPanel client id, so an admin build needs `NEXT_PUBLIC_OPENPANEL_CLIENT_ID=822c5a7b-64ef-44c0-b441-87e14f3b0b2c` as a shell override (gotcha 9). S070 built admin without it (live bundle held console's id); S072 used the override (verified: own id in, console's out).
+21. Check-in PWA over `devops@app` → `root@10.0.0.2` worked first time (S072). Keep the previous hashed assets in the new dir (`cp -a --update=none` old `assets/.`) when a gate may be open. Never curl the new hashed asset URL before the swap: Cloudflare caches the SPA fallback (HTML) for it. Send multi-line remote logic as `bash -s` on stdin and use `ssh -n` for inner calls; an unescaped `$VAR` in a double-quoted ssh command expands on the Mac (S072 staged to `/root/.staging-*` that way).
+22. `operator-audit-verify CHAIN BREAK at seq 56` logs every 5 min since 2026-07-10 (S017): pre-existing, not a deploy regression.
 
 ## Open items
-- `~/eventopia/.env` is mode 664 (S070). `PIN_PEPPER` echoed in S069, **rotated S071** (old value kept as `PIN_PEPPER_PREVIOUS` until the 16 pre-rotation PINs are re-hashed or cleared; never restore an `.env` backup from before S071). Meta tokens exposed S053, unrotated by choice.
+- `~/eventopia/.env` is now mode 600 (S072). `PIN_PEPPER` echoed in S069, **rotated S071** (old value kept as `PIN_PEPPER_PREVIOUS` until the 16 pre-rotation PINs are re-hashed or cleared; never restore an `.env` backup from before S071). Meta tokens exposed S053, unrotated by choice.
 - `app:~/eventopia-backups/env-pre-e603fcfc-*` holds live secrets: delete once the release is trusted (S070). Registry counts 20 eventopia `.env*bak*` files on app.
 - Prod Xendit key not exercised for the bank-code map; one payout profile stores `PLACEHOLDER` (S070).
 - `ANTHROPIC_AUTH_TOKEN` (OAuth) has no refresh loop; died once unnoticed (S024, S053).
@@ -112,7 +115,7 @@
 - `eventopia.co.id` cert renews ~11-07: reload nginx afterwards (no hook).
 - No Kuma monitor for eventopia prod (monitor survey).
 - Dev (`*.dev.eventopia.my`) is stopped and ~920+ commits behind prod (S056; registry §3).
-- Next release from the local branch carries migration `0168_orders_buyer_phone_idx` (plain `CREATE INDEX` in a txn, briefly blocks `orders` writes) and asks to archive `ux-revamp-deploy.md`.
+- `docs/launch/ux-revamp-deploy.md` can be archived now that its release has shipped (S072). `OPS_ADMIN_TOKEN` and the `/internal/.../kyc/verify` route are gone (KYC is approved only in the operator console, which needs opened documents).
 - Unverified: whether the deprecated `NEXT_PUBLIC_GA_MEASUREMENT_ID` was blanked (S054).
 
 ## Verify live
