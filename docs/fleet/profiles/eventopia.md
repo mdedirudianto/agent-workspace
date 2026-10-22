@@ -103,7 +103,7 @@
 
 ## Open items
 - `~/eventopia/.env` is now mode 600 (S072). `PIN_PEPPER` echoed in S069, **rotated S071** (old value kept as `PIN_PEPPER_PREVIOUS` until the 16 pre-rotation PINs are re-hashed or cleared; never restore an `.env` backup from before S071). Meta tokens exposed S053, unrotated by choice.
-- `app:~/eventopia-backups/env-pre-b35dfb70-*` holds live secrets: delete once the release is trusted (about a week after 2026-10-21). The older `env-pre-e603fcfc-*` and `env-pre-pepper-rotation-*` copies were deleted 2026-10-23 (S072 addendum). Registry counts 20 eventopia `.env*bak*` files on app (not re-counted).
+- `env-pre-b35dfb70-*` secrets copy **deleted 2026-10-23** (S073; `.env` unchanged since 10-19, so it was redundant). `app:~/eventopia-backups/` now holds only build logs, the 10-13 Redis org export and the proxy-ts stash patch. Registry counts 20 eventopia `.env*bak*` files on app (not re-counted).
 - Prod Xendit key not exercised for the bank-code map; one payout profile stores `PLACEHOLDER` (S070).
 - `ANTHROPIC_AUTH_TOKEN` (OAuth) has no refresh loop; died once unnoticed (S024, S053).
 - Operator console: no MFA (`OPERATOR_MFA_ENABLED=false`), no IP allowlist (S052, S053).
@@ -113,7 +113,7 @@
 - **Registry vs S057:** S057 reconciled `eventopia.conf` enabled/available; on 10-19 they differ again (enabled 08-21, available 08-17). The enabled file is authoritative.
 - **Registry vs S069:** registry §1 says app cannot SSH to proxy; S069 reached `root@10.0.0.2` from `root@app` by key, while grobiz S062 showed `devops@app` is refused. **Resolved 2026-10-20:** `devops@app` now reaches `root@proxy` ([app s006](../../app-sysadmin-reports/session-006-2026-10-20.md)); direct static deploy is the default, Mac relay the fallback.
 - Certs: `eventopia.co.id` expires 2026-12-07, `eventopia.my` (+ wildcard) 2027-01-08. Renewals reload nginx through proxy's global certbot deploy hook (since 2026-10-19), so no manual reload. Check the served serial after the first renewal (the earlier "~11-07, no hook" note was wrong).
-- Proxy check-in rollback dirs: only the live dir and `eventopia-checkin.prev-20261021-105200` remain (4 old `bak-*` deleted 2026-10-23); delete the `.prev` later once the release is trusted.
+- Proxy check-in rollback dirs: none left. `eventopia-checkin.prev-20261021-105200` deleted 2026-10-23 (S073; its 4 assets were all inside the live dir first). The next check-in deploy creates a fresh `.prev`.
 - No Kuma monitor for eventopia prod (monitor survey).
 - Dev (`*.dev.eventopia.my`) is stopped and ~920+ commits behind prod (S056; registry §3).
 - `docs/launch/ux-revamp-deploy.md` can be archived now that its release has shipped (S072). `OPS_ADMIN_TOKEN` and the `/internal/.../kyc/verify` route are gone (KYC is approved only in the operator console, which needs opened documents).
