@@ -1,6 +1,6 @@
 # eventopia — profile
 
-**Profile version:** 3 (S072 redeploy to `b35dfb70`) · **Stamped:** 2026-10-21 · **Sources:** eventopia-app-reports up to session-072 (2026-10-21), registry 2026-10-19, repo docs at `b35dfb70` (`origin/main` = prod, fetched 2026-10-21)
+**Profile version:** 5 (S073 redeploy to `89344cdb`) · **Stamped:** 2026-10-23 · **Sources:** eventopia-app-reports up to session-073 (2026-10-23), registry 2026-10-19, repo docs at `89344cdb` (`origin/main` = prod, fetched 2026-10-23)
 **Rule:** a profile is a pointer plus the facts a deploy needs. When a repo doc owns a procedure, link it and don't copy it. Bump the version and stamp when you change this file.
 
 ## Owner docs
@@ -13,7 +13,7 @@
 | Known issues, gateways | `docs/engineering/known-issues.md`, `xendit-gateway.md`, `doku-gateway.md`, `midtrans-gateway.md`, `google-login.md`, `claude-oauth-guide.md` |
 | Apex nginx carve-outs (canonical) | `infra/nginx/eventopia-apex-capability-paths.conf` (adapt, see G14) |
 | Not what prod runs | `infra/DEPLOY.md` (Docker-only), `infra/DR.md` (stale, S021) |
-| Workspace reports | [session-072](../../../eventopia-app-reports/session-072-2026-10-21.md), [session-070](../../../eventopia-app-reports/session-070-2026-10-18.md), [069](../../../eventopia-app-reports/session-069-2026-10-13.md), [068](../../../eventopia-app-reports/session-068-2026-08-22.md) |
+| Workspace reports | [session-073](../../../eventopia-app-reports/session-073-2026-10-23.md), [session-072](../../../eventopia-app-reports/session-072-2026-10-21.md), [session-070](../../../eventopia-app-reports/session-070-2026-10-18.md), [069](../../../eventopia-app-reports/session-069-2026-10-13.md), [068](../../../eventopia-app-reports/session-068-2026-08-22.md) |
 | Memory | `feedback_eventopia_deploy_checklist`, `reference_eventopia_payment_smoke_test`, `feedback_never_delete_real_data`, `feedback_psql_on_app_never_echo_db_url`, `feedback_boot_gates_beyond_env_schema` |
 
 ## Footprint
@@ -29,7 +29,7 @@
 
 - PM2 under `devops`, ecosystem `~/eventopia/ecosystem.config.cjs` (**untracked in git**); one shared root `.env`, each app's `.env` a symlink to it. Max mem 500M (api/workers), 700M (Next).
 - Certs: `eventopia.my` (apex + `*`) exp 2027-01-08; `eventopia.co.id` (apex, admin, www) exp 2026-12-07. Both dns-cloudflare (`cloudflare-eventopia.ini`), reloaded by the proxy deploy hook (since 2026-10-19, proxy S008).
-- CF: `eventopia.my` zone is **Full, not strict** (S024, for custom domains). Restart baseline 10-21 (after S072): api ↺1, workers ↺1, web-public ↺2, console ↺1, operator ↺1.
+- CF: `eventopia.my` zone is **Full, not strict** (S024, for custom domains). Restart baseline 10-23 (after S073): api ↺2, workers ↺2, web-public ↺3, console ↺2, operator ↺1. web-public and operator still run the `b35dfb70` build (S073 changed nothing functional there).
 
 ## Data
 | Store | Facts |
@@ -88,7 +88,7 @@
 8. GlitchTip DSNs need the dash-less 32-hex key; DSNs are baked into all 4 frontends (S009).
 9. Admin needs its own `NEXT_PUBLIC_OPENPANEL_CLIENT_ID` at build (shell override); the root `.env` holds console's (S009, S014).
 10. `VITE_TICKET_PUBLIC_KEY` is base64url of the raw 32-byte key, not SPKI base64; the check-in PWA white-screened for weeks (S027, S029). Before publishing, verify the built bundle carries the prod key and verifies a real token (S067).
-11. `PIN_PEPPER` is a hard boot gate in production (S046). Rotation is lock-out-free: set the new value and move the old one to `PIN_PEPPER_PREVIOUS`; sign-in re-hashes (S071). Only the api loads it. Diff the whole boot path, not just the env schema (memory).
+11. **Boot gates (S073):** since `89344cdb`, api and workers (and any process loading `@eventopia/db`/`@eventopia/keys`) also refuse to start under `NODE_ENV=production` without `EVENTOPIA_ED25519_PRIVATE_KEY`/`_PUBLIC_KEY`, `EVENTOPIA_PII_ENC_KEY`, `EVENTOPIA_PII_HMAC_KEY`, and refuse the DEV signing key; a `VITE_APP_ENV=prod` check-in build fails without `VITE_TICKET_PUBLIC_KEY`. Prod verified compliant 2026-10-23. Presigned uploads sign `content-type` (public uploads raster-only, 415 `UPLOAD_TYPE_NOT_ALLOWED`); ship console with api. `ADMIN_TRUSTED_PROXY_HOPS` is optional and only matters with `ADMIN_IP_ALLOWLIST` (prod has neither). `PIN_PEPPER` is a hard boot gate in production (S046). Rotation is lock-out-free: set the new value and move the old one to `PIN_PEPPER_PREVIOUS`; sign-in re-hashes (S071). Only the api loads it. Diff the whole boot path, not just the env schema (memory).
 12. `sites-enabled/eventopia.conf` is a real file, not a symlink: edit it there. Never leave a backup inside `sites-enabled/` (duplicate upstream, reload refused) (S057).
 13. A bare `return` in an nginx `server{}` beats every `location{}`: wrap it in `location /` (S041).
 14. Apex carve-outs from the repo snippet must omit `X-Forwarded-Proto` (self-rewrites `eventopia_web`) (S044).
@@ -99,11 +99,11 @@
 19. Open console / check-in tabs keep the old bundle until a hard reload (S068, S069, S070).
 20. The shared root `.env` carries console's OpenPanel client id, so an admin build needs `NEXT_PUBLIC_OPENPANEL_CLIENT_ID=822c5a7b-64ef-44c0-b441-87e14f3b0b2c` as a shell override (gotcha 9). S070 built admin without it (live bundle held console's id); S072 used the override (verified: own id in, console's out).
 21. Check-in PWA over `devops@app` → `root@10.0.0.2` worked first time (S072). Keep the previous hashed assets in the new dir (`cp -a --update=none` old `assets/.`) when a gate may be open. Never curl the new hashed asset URL before the swap: Cloudflare caches the SPA fallback (HTML) for it. Send multi-line remote logic as `bash -s` on stdin and use `ssh -n` for inner calls; an unescaped `$VAR` in a double-quoted ssh command expands on the Mac (S072 staged to `/root/.staging-*` that way).
-22. `operator-audit-verify CHAIN BREAK at seq 56` logs every 5 min since 2026-07-10 (S017): pre-existing, not a deploy regression.
+22. `operator-audit-verify CHAIN BREAK at seq 56 (row_hash_mismatch)` logs every 10 min (about 144 a day) since 2026-07-10 (S017): pre-existing, not a deploy regression. Diagnosed in the S072 addendum: only that one row (the sole `audit.export`, "QA test") fails, all `prev_hash` links and the other 534 hashes verify. It predates the writer fix `2be3f840` (2026-08-08), which needs no backfill, so it never clears. `verifyChain` stops at the first break, so it cannot see problems after seq 56: to check the whole chain, recompute every row without early exit (read-only, in memory). Decision R15 in `open-decisions.md`.
 
 ## Open items
 - `~/eventopia/.env` is now mode 600 (S072). `PIN_PEPPER` echoed in S069, **rotated S071** (old value kept as `PIN_PEPPER_PREVIOUS` until the 16 pre-rotation PINs are re-hashed or cleared; never restore an `.env` backup from before S071). Meta tokens exposed S053, unrotated by choice.
-- `app:~/eventopia-backups/env-pre-e603fcfc-*` holds live secrets: delete once the release is trusted (S070). Registry counts 20 eventopia `.env*bak*` files on app.
+- `app:~/eventopia-backups/env-pre-b35dfb70-*` holds live secrets: delete once the release is trusted (about a week after 2026-10-21). The older `env-pre-e603fcfc-*` and `env-pre-pepper-rotation-*` copies were deleted 2026-10-23 (S072 addendum). Registry counts 20 eventopia `.env*bak*` files on app (not re-counted).
 - Prod Xendit key not exercised for the bank-code map; one payout profile stores `PLACEHOLDER` (S070).
 - `ANTHROPIC_AUTH_TOKEN` (OAuth) has no refresh loop; died once unnoticed (S024, S053).
 - Operator console: no MFA (`OPERATOR_MFA_ENABLED=false`), no IP allowlist (S052, S053).
@@ -112,7 +112,8 @@
 - **Registry:** `eventopia-custom-domains.conf` `~^.+$` catches every unknown :443 name, including `<tenant>.seenow.ac`.
 - **Registry vs S057:** S057 reconciled `eventopia.conf` enabled/available; on 10-19 they differ again (enabled 08-21, available 08-17). The enabled file is authoritative.
 - **Registry vs S069:** registry §1 says app cannot SSH to proxy; S069 reached `root@10.0.0.2` from `root@app` by key, while grobiz S062 showed `devops@app` is refused. **Resolved 2026-10-20:** `devops@app` now reaches `root@proxy` ([app s006](../../app-sysadmin-reports/session-006-2026-10-20.md)); direct static deploy is the default, Mac relay the fallback.
-- `eventopia.co.id` cert renews ~11-07: reload nginx afterwards (no hook).
+- Certs: `eventopia.co.id` expires 2026-12-07, `eventopia.my` (+ wildcard) 2027-01-08. Renewals reload nginx through proxy's global certbot deploy hook (since 2026-10-19), so no manual reload. Check the served serial after the first renewal (the earlier "~11-07, no hook" note was wrong).
+- Proxy check-in rollback dirs: only the live dir and `eventopia-checkin.prev-20261021-105200` remain (4 old `bak-*` deleted 2026-10-23); delete the `.prev` later once the release is trusted.
 - No Kuma monitor for eventopia prod (monitor survey).
 - Dev (`*.dev.eventopia.my`) is stopped and ~920+ commits behind prod (S056; registry §3).
 - `docs/launch/ux-revamp-deploy.md` can be archived now that its release has shipped (S072). `OPS_ADMIN_TOKEN` and the `/internal/.../kyc/verify` route are gone (KYC is approved only in the operator console, which needs opened documents).
