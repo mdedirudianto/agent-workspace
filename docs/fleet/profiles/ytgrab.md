@@ -1,6 +1,6 @@
 # ytgrab — profile
 
-**Profile version:** 1 · **Stamped:** 2026-10-19 · **Sources:** ytgrab-app-reports up to session-042 (2026-09-20), app-sysadmin session-004/005, registry + hosts 2026-10-19 (numa not surveyed), repo docs at `a84b894` (local `main`; `origin/main` = `5ac47ef`; prod = `71dcc62`)
+**Profile version:** 2 · **Stamped:** 2026-10-23 · **Sources:** ytgrab-app-reports up to session-043 (2026-10-23), app-sysadmin session-004/005/007, registry + hosts 2026-10-19 (numa not surveyed), repo at `fc9f7a1` (`origin/main` = local `main`; prod web on `app` = `fc9f7a1`, prod API on numa/db = `71dcc62`)
 **Rule:** a profile is a pointer plus the facts a deploy needs. When a repo doc owns a procedure, link it and don't copy it. Bump the version and stamp when you change this file.
 
 ## Owner docs
@@ -72,6 +72,8 @@
 13. A saved PM2 config is not the running one: the `bgutil-pot` heap cap was configured but never loaded (s035). Confirm env values in the live process (s033 §10).
 14. numa's deploy key is read-only, so repo fixes land from the Mac (s031).
 15. A 2.5 GB `ytgrab-api` leak on app swap-thrashed the host and froze miaw-route. That's why the API left app and has memory caps (app-sysadmin s004).
+16. Next 15.5 scans the whole `.next/standalone/apps/web/.next/cache/images` at boot (serial `readdir`+`readFile`) and every `/_next/image` request awaits it. An uncapped cache (54k entries / 1.5 GB) hung all thumbnails ~17 min after a cold reboot (s043). `images.maximumDiskCacheSize` is now 256 MiB (`fc9f7a1`); the web build recreates the cache dir. Check with `du -sh` on that dir; prune with a path-guarded `find … -mtime +7` (derived cache, no restart needed).
+17. The web build is slow: ~3.7 min compile plus ~5 min "Collecting build traces" (about 10.8 min, asset gap for the whole time, s043). In a backgrounded SSH command redirect everything: a bare `date` on the pipe hung the tool call.
 
 ## Open items
 - **Drift (CLAUDE.md):** says "Docker compose stack on app". Live truth (registry, s018, s042): `ytgrab-web` PM2 on app :3009; `ytgrab-api` + `bgutil-pot` on root PM2 on numa (primary) and db; Docker isn't installed on app. Fix the CLAUDE.md line.
@@ -80,7 +82,8 @@
 - `ytgrab-web`: 57 restarts, hit `max_memory_restart` 500M at least 5× on 10-17/18, and has no `NODE_ENV`/`TZ` in its PM2 env (registry anomalies 1, 15).
 - Vector double-ships web logs and still tails the dead `ytgrab-api-*` logs on app (anomaly 6). app still holds an unused `apps/api/.env` with a live `WEBSHARE_API_KEY` (DEPLOYMENT §1).
 - `ytgrab_prod` has no app role (owner `postgres`) and had 0 connections at the 06:26 WIB survey. Confirm which role the apps connect as.
-- Local `main` is 5 commits ahead of `origin/main` (web 1.18.1 `4011a33` "stop advertising MP3", unpushed). Push before the next web deploy (memory: deploy from main, pin the SHA).
+- ~~Local `main` ahead of `origin/main`~~ done in s043: pushed and deployed as `fc9f7a1` (web 1.18.1). The userscript 1.0.1 text still needs re-publishing on Greasy Fork by hand.
+- Image-cache cap shipped in s043: confirm it stays ≲ 256 MiB, time one cold restart; Cloudflare doesn't cache `/_next/image` (`DYNAMIC`, decision pending).
 - Carried from README: watch the `enforce` limiter; mobile 0.8.0 native build; dubbed-only videos; `curl_cffi` missing; Python 3.10 venv on db; no pm2-logrotate on numa/db; db has no tier canaries; OO alert rename check; build-time `GIT_SHA`; legacy `ytgrab-be`/`ytgrab-fe` leftovers; idle `until curl` loop on numa.
 - Kuma #51 (datacenter tier) was DOWN at survey time. Recheck.
 
