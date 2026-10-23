@@ -1,6 +1,6 @@
 # app — server profile
 
-**Stamp:** profile v2 · 2026-10-20 (failed-unit cleanup, backup S006) · sources: [registry.md](../../registry.md) (10-19), [hosts/app-2026-10-19.md](../../hosts/app-2026-10-19.md) (survey 2026-10-19 06:26 WIB), [app-sysadmin-reports](../../../../app-sysadmin-reports/README.md) README + sessions 001–005, CLAUDE.md, app-scoped reports (ytgrab 018/022, duitkas 001, grobiz 027, rekrutme 002, eventopia 069), memory (`project_app_node24_followups`, `feedback_psql_on_app_never_echo_db_url`, `reference_ops_guard_hooks`, `feedback_deploy_main_pin_sha`).
+**Stamp:** profile v3 · 2026-10-23 (private-NIC outage, app S007) · v2 2026-10-20 (failed-unit cleanup, backup S006) · sources: [registry.md](../../registry.md) (10-19), [hosts/app-2026-10-19.md](../../hosts/app-2026-10-19.md) (survey 2026-10-19 06:26 WIB), [app-sysadmin-reports](../../../../app-sysadmin-reports/README.md) README + sessions 001–005, CLAUDE.md, app-scoped reports (ytgrab 018/022, duitkas 001, grobiz 027, rekrutme 002, eventopia 069), memory (`project_app_node24_followups`, `feedback_psql_on_app_never_echo_db_url`, `reference_ops_guard_hooks`, `feedback_deploy_main_pin_sha`).
 **Rule:** the live snapshot wins over older reports. Drift is in its own section below.
 
 ## Role
@@ -67,11 +67,12 @@ $D 'sudo ufw status numbered; sudo fail2ban-client status sshd | tail -3'
 
 ## Known noise
 - `ytgrab-web` restart count climbs about daily (500M cap). That's a known item, not a new incident.
-- `systemctl --failed` should now be empty (the miaw-flow Actions runner and `snap.certbot.renew` were cleared 2026-10-20). Anything listed is new. After a host restart, `pm2-devops` brings all 48 PM2 entries back by itself (proven 2026-10-19).
+- `systemctl --failed` should now be empty (the miaw-flow Actions runner and `snap.certbot.renew` were cleared 2026-10-20). Anything listed is new. After a host restart, `pm2-devops` brings all 48 PM2 entries back by itself (proven 2026-10-19). Proven again 2026-10-23: 48/48 online about 2.5 min after boot; load peaks near 40 for ~4 min, so `pm2 jlist` and ssh commands time out meanwhile and `api.wagrab.com` (Directus, `:8001`) is the last to answer.
 - eventopia (3–4) and grobiz (3–4) restarts on 10-18 were deploys, not a crash loop.
 - Stale `~/.pm2/logs` files: bgutil-pot, ecosystem.tpm, idle-test, miaw-route, ytgrab-api/be/fe, and the old 25 MB `grobiz-api-out.log`. Fluent Bit still tails that last one.
 - Swap sits around 1.8 / 4 GiB. That is stale pages, below Netdata's `used_swap` warn level of 80 %.
 - PM2 log times are CEST (WIB −5 h; −6 h from 10-25).
+- **Private-NIC outage signature (2026-10-23, [s007](../../../../app-sysadmin-reports/session-007-2026-10-23.md)):** every app-backed site 502 while `proxy` and its static sites are fine; nginx logs `113: No route to host` for `10.0.0.5`; on app `ip neigh` shows `FAILED`/`INCOMPLETE` for the other 10.0.0.x and `eth1` rx doesn't move; `systemd-networkd: eth1: Lost carrier` in the journal at the start. ufw and netplan are not involved. A guest `eth1` down/up and a guest reboot did **not** clear it (2026-10-23); a shutdown + start from the provider panel did. Triage: ping matrix from each host, `tcpdump -ni eth1 arp` on app while another host pings it, then the provider panel. Same class hit `db` on 2026-10-22.
 
 ## Open follow-ups
 | # | Item | Status | Source | Prio |
